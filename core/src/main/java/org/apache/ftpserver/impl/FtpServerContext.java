@@ -39,6 +39,11 @@ import org.apache.ftpserver.message.MessageResource;
  */
 public interface FtpServerContext extends FtpletContext {
 
+    /**
+     * Get the connection configuration
+     *
+     * @return the connection configuration
+     */
     ConnectionConfig getConnectionConfig();
 
     /**
@@ -55,8 +60,19 @@ public interface FtpServerContext extends FtpletContext {
      */
     FtpletContainer getFtpletContainer();
 
+    /**
+     * Get a specific listener
+     *
+     * @param name The listener to fetch
+     * @return The found listener
+     */
     Listener getListener(String name);
 
+    /**
+     * Get all the listeners
+     *
+     * @return The list of existing listeners
+     */
     Map<String, Listener> getListeners();
 
     /**

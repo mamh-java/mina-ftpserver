@@ -74,7 +74,7 @@ public class DELE extends AbstractCommand {
         try {
             file = session.getFileSystemView().getFile(fileName);
         } catch (Exception ex) {
-            LOG.debug("Could not get file " + fileName, ex);
+            LOG.debug("Could not get file {}", fileName, ex);
         }
         if (file == null) {
             session.write(LocalizedFileActionFtpReply.translate(session, request, context,

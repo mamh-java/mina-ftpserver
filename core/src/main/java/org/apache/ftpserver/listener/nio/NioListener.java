@@ -136,6 +136,7 @@ public class NioListener extends AbstractListener {
             acceptor.setReuseAddress(true);
             acceptor.getSessionConfig().setReadBufferSize(2048);
             acceptor.getSessionConfig().setIdleTime(IdleStatus.BOTH_IDLE, getIdleTimeout());
+
             // Decrease the default receiver buffer size
             acceptor.getSessionConfig().setReceiveBufferSize(512);
 

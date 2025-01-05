@@ -203,7 +203,7 @@ public class NativeFtpFile implements FtpFile {
      * {@inheritDoc}
      */
     public boolean isWritable() {
-        LOG.debug("Checking authorization for " + getAbsolutePath());
+        LOG.debug("Checking authorization for {}", getAbsolutePath());
         if (user.authorize(new WriteRequest(getAbsolutePath())) == null) {
             LOG.debug("Not authorized");
             return false;
@@ -211,7 +211,7 @@ public class NativeFtpFile implements FtpFile {
 
         LOG.debug("Checking if file exists");
         if (file.exists()) {
-            LOG.debug("Checking can write: " + file.canWrite());
+            LOG.debug("Checking can write: {}", file.canWrite());
             return file.canWrite();
         }
 

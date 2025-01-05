@@ -103,7 +103,7 @@ public class PORT extends AbstractCommand {
                     FtpReply.REPLY_501_SYNTAX_ERROR_IN_PARAMETERS_OR_ARGUMENTS, "PORT", null));
             return;
         } catch (IllegalPortException e) {
-            LOG.debug("Invalid data port: " + request.getArgument(), e);
+            LOG.debug("Invalid data port: {}", request.getArgument(), e);
             session
                     .write(LocalizedFtpReply
                             .translate(

@@ -215,14 +215,12 @@ public class PropertiesUserManager extends AbstractUserManager {
     public void refresh() {
         synchronized (userDataProp) {
             if (userDataFile != null) {
-                LOG.debug("Refreshing user manager using file: "
-                        + userDataFile.getAbsolutePath());
+                LOG.debug("Refreshing user manager using file: {}", userDataFile.getAbsolutePath());
                 loadFromFile(userDataFile);
 
             } else {
                 //file is null, must have been created using URL
-                LOG.debug("Refreshing user manager using URL: "
-                        + userUrl.toString());
+                LOG.debug("Refreshing user manager using URL: {}", userUrl.toString());
                 loadFromUrl(userUrl);
             }
         }

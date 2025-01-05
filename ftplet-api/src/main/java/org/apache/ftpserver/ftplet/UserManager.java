@@ -25,6 +25,8 @@ package org.apache.ftpserver.ftplet;
  * @author <a href="http://mina.apache.org">Apache MINA Project</a>
  */
 public interface UserManager {
+    /** The anonymous user */
+    String ANONYMOUS = "anonymous";
 
     /**
      * Get user by name.

@@ -38,9 +38,10 @@ import org.apache.mina.filter.firewall.Subnet;
  * @author <a href="http://mina.apache.org">Apache MINA Project</a>
  */
 public class ListenerFactory {
-
+    /** The server address */
     private String serverAddress;
 
+    /** The port. Default to 21 */
     private int port = 21;
 
     private SslConfiguration ssl;
@@ -96,6 +97,7 @@ public class ListenerFactory {
         } catch (UnknownHostException e) {
             throw new FtpServerConfigurationException("Unknown host", e);
         }
+
         // Deal with the old style black list and new session Filter here.
         if (sessionFilter != null) {
             if (blockedAddresses != null || blockedSubnets != null) {
@@ -103,6 +105,7 @@ public class ListenerFactory {
                         "Usage of SessionFilter in combination with blockedAddesses/subnets is not supported. ");
             }
         }
+
         if (blockedAddresses != null || blockedSubnets != null) {
             return new NioListener(serverAddress, port, implicitSsl, ssl,
                     dataConnectionConfig, idleTimeout, blockedAddresses,
@@ -117,8 +120,7 @@ public class ListenerFactory {
      * Is listeners created by this factory in SSL mode automatically or must the client explicitly
      * request to use SSL
      *
-     * @return true is listeners created by this factory is automatically in SSL mode, false
-     *         otherwise
+     * @return true is listeners created by this factory is automatically in SSL mode, false otherwise
      */
     public boolean isImplicitSsl() {
         return implicitSsl;
@@ -128,9 +130,8 @@ public class ListenerFactory {
      * Should listeners created by this factory be in SSL mode automatically or must the client
      * explicitly request to use SSL
      *
-     * @param implicitSsl
-     *            true is listeners created by this factory should automatically be in SSL mode,
-     *            false otherwise
+     * @param implicitSsl <code>true</code> is listeners created by this factory should automatically be in SSL mode,
+     *            <code>false</code> otherwise
      */
     public void setImplicitSsl(boolean implicitSsl) {
         this.implicitSsl = implicitSsl;
@@ -149,8 +150,7 @@ public class ListenerFactory {
      * Set the port on which listeners created by this factory will accept requests. Or set to 0
      * (zero) is the port should be automatically assigned
      *
-     * @param port
-     *            The port to use.
+     * @param port The port to use.
      */
     public void setPort(int port) {
         this.port = port;
@@ -170,8 +170,7 @@ public class ListenerFactory {
      * Set the {@link InetAddress} used for binding the local socket. Defaults
      * to null, that is, the server binds to all available network interfaces
      *
-     * @param serverAddress
-     *            The local socket {@link InetAddress}
+     * @param serverAddress The local socket {@link InetAddress}
      */
     public void setServerAddress(String serverAddress) {
         this.serverAddress = serverAddress;
@@ -188,6 +187,7 @@ public class ListenerFactory {
 
     /**
      * Set the {@link SslConfiguration} to use by listeners created by this factory
+     *
      * @param ssl The {@link SslConfiguration}
      */
     public void setSslConfiguration(SslConfiguration ssl) {
@@ -206,8 +206,7 @@ public class ListenerFactory {
     /**
      * Set configuration for data connections made within listeners created by this factory
      *
-     * @param dataConnectionConfig
-     *            The data connection configuration
+     * @param dataConnectionConfig The data connection configuration
      */
     public void setDataConnectionConfiguration(
             DataConnectionConfiguration dataConnectionConfig) {
@@ -217,6 +216,7 @@ public class ListenerFactory {
     /**
      * Get the number of seconds during which no network activity
      * is allowed before a session is closed due to inactivity.
+     *
      * @return The idle time out
      */
     public int getIdleTimeout() {
@@ -250,8 +250,7 @@ public class ListenerFactory {
      * Sets the {@link InetAddress} that listeners created by this factory will block from
      * connecting
      *
-     * @param blockedAddresses
-     *            The list of {@link InetAddress}es
+     * @param blockedAddresses The list of {@link InetAddress}es
      */
     @Deprecated
     public void setBlockedAddresses(List<InetAddress> blockedAddresses) {
@@ -294,8 +293,7 @@ public class ListenerFactory {
     /**
      * Sets the session filter to the given filter.
      *
-     * @param sessionFilter
-     *            the session filter.
+     * @param sessionFilter the session filter.
      */
     public void setSessionFilter(SessionFilter sessionFilter) {
         this.sessionFilter = sessionFilter;

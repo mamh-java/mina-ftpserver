@@ -93,7 +93,7 @@ public class REST extends AbstractCommand {
                                         "REST", null));
             }
         } catch (NumberFormatException ex) {
-            LOG.debug("Invalid restart position: " + argument, ex);
+            LOG.debug("Invalid restart position: {}", argument, ex);
             session.write(LocalizedFtpReply.translate(session, request, context,
                     FtpReply.REPLY_501_SYNTAX_ERROR_IN_PARAMETERS_OR_ARGUMENTS,
                     "REST.invalid", null));

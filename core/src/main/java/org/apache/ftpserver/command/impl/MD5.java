@@ -102,7 +102,7 @@ public class MD5 extends AbstractCommand {
             try {
                 file = session.getFileSystemView().getFile(fileName);
             } catch (Exception ex) {
-                LOG.debug("Exception getting the file object: " + fileName, ex);
+                LOG.debug("Exception getting the file object: {}", fileName, ex);
             }
 
             if (file == null) {

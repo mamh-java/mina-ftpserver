@@ -79,7 +79,7 @@ public class TYPE extends AbstractCommand {
             session.write(LocalizedFtpReply.translate(session, request, context,
                     FtpReply.REPLY_200_COMMAND_OKAY, "TYPE", null));
         } catch (IllegalArgumentException e) {
-            LOG.debug("Illegal type argument: " + request.getArgument(), e);
+            LOG.debug("Illegal type argument: {}", request.getArgument(), e);
             session
                     .write(LocalizedFtpReply
                             .translate(

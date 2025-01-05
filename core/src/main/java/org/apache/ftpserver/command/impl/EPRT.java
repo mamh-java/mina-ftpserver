@@ -88,7 +88,7 @@ public class EPRT extends AbstractCommand {
             host = arg.substring(3, lastDelimIdx);
             port = arg.substring(lastDelimIdx + 1, arg.length() - 1);
         } catch (Exception ex) {
-            LOG.debug("Exception parsing host and port: " + arg, ex);
+            LOG.debug("Exception parsing host and port: {}", arg, ex);
             session.write(LocalizedFtpReply.translate(session, request, context,
                     FtpReply.REPLY_501_SYNTAX_ERROR_IN_PARAMETERS_OR_ARGUMENTS, "EPRT", null));
             return;
@@ -99,7 +99,7 @@ public class EPRT extends AbstractCommand {
         try {
             dataAddr = InetAddress.getByName(host);
         } catch (UnknownHostException ex) {
-            LOG.debug("Unknown host: " + host, ex);
+            LOG.debug("Unknown host: {}", host, ex);
             session
                     .write(LocalizedFtpReply
                             .translate(
@@ -129,7 +129,7 @@ public class EPRT extends AbstractCommand {
         try {
             dataPort = Integer.parseInt(port);
         } catch (NumberFormatException ex) {
-            LOG.debug("Invalid port: " + port, ex);
+            LOG.debug("Invalid port: {}", port, ex);
             session
                     .write(LocalizedFtpReply
                             .translate(

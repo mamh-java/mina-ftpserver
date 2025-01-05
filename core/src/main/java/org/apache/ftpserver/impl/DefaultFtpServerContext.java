@@ -59,9 +59,8 @@ import org.slf4j.LoggerFactory;
  * @author <a href="http://mina.apache.org">Apache MINA Project</a>
  */
 public class DefaultFtpServerContext implements FtpServerContext {
-
-    private final Logger LOG = LoggerFactory
-            .getLogger(DefaultFtpServerContext.class);
+    /** Defines the logger for this class */
+    private final Logger LOG = LoggerFactory.getLogger(DefaultFtpServerContext.class);
 
     /** The FTP messages per language */
     private MessageResource messageResource = new MessageResourceFactory().createMessageResource();
@@ -76,8 +75,10 @@ public class DefaultFtpServerContext implements FtpServerContext {
 
     private CommandFactory commandFactory = new CommandFactoryFactory().createCommandFactory();
 
+    /** The connection configuration */
     private ConnectionConfig connectionConfig = new ConnectionConfigFactory().createConnectionConfig();
 
+    /** The declared listeners for this context */
     private Map<String, Listener> listeners = new HashMap<>();
 
     private static final List<Authority> ADMIN_AUTHORITIES = new ArrayList<>();
@@ -90,7 +91,6 @@ public class DefaultFtpServerContext implements FtpServerContext {
 
     static {
         ADMIN_AUTHORITIES.add(new WritePermission());
-
         ANON_AUTHORITIES.add(new ConcurrentLoginPermission(20, 2));
         ANON_AUTHORITIES.add(new TransferRatePermission(4800, 4800));
     }
@@ -113,25 +113,24 @@ public class DefaultFtpServerContext implements FtpServerContext {
 
         // create admin user
         String adminName = userManager.getAdminName();
+
         if (!userManager.doesExist(adminName)) {
-            LOG.info("Creating user : " + adminName);
+            LOG.info("Creating user : {}", adminName);
             BaseUser adminUser = new BaseUser();
             adminUser.setName(adminName);
             adminUser.setPassword(adminName);
             adminUser.setEnabled(true);
-
             adminUser.setAuthorities(ADMIN_AUTHORITIES);
-
             adminUser.setHomeDirectory("./res/home");
             adminUser.setMaxIdleTime(0);
             userManager.save(adminUser);
         }
 
         // create anonymous user
-        if (!userManager.doesExist("anonymous")) {
-            LOG.info("Creating user : anonymous");
+        if (!userManager.doesExist(UserManager.ANONYMOUS)) {
+            LOG.info("Creating user : {}", UserManager.ANONYMOUS);
             BaseUser anonUser = new BaseUser();
-            anonUser.setName("anonymous");
+            anonUser.setName(UserManager.ANONYMOUS);
             anonUser.setPassword("");
 
             anonUser.setAuthorities(ANON_AUTHORITIES);
@@ -211,9 +210,11 @@ public class DefaultFtpServerContext implements FtpServerContext {
     public void dispose() {
         listeners.clear();
         ftpletContainer.getFtplets().clear();
+
         if (threadPoolExecutor != null) {
             LOG.debug("Shutting down the thread pool executor");
             threadPoolExecutor.shutdown();
+
             try {
                 threadPoolExecutor.awaitTermination(5000, TimeUnit.MILLISECONDS);
             } catch (InterruptedException e) {
@@ -223,6 +224,9 @@ public class DefaultFtpServerContext implements FtpServerContext {
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public Listener getListener(String name) {
         return listeners.get(name);
     }
@@ -231,6 +235,9 @@ public class DefaultFtpServerContext implements FtpServerContext {
         listeners.put(name, listener);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public Map<String, Listener> getListeners() {
         return listeners;
     }
@@ -267,6 +274,9 @@ public class DefaultFtpServerContext implements FtpServerContext {
         this.userManager = userManager;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public ConnectionConfig getConnectionConfig() {
         return connectionConfig;
     }
@@ -278,17 +288,21 @@ public class DefaultFtpServerContext implements FtpServerContext {
     public synchronized ThreadPoolExecutor getThreadPoolExecutor() {
         if (threadPoolExecutor == null) {
             int maxThreads = connectionConfig.getMaxThreads();
+
             if (maxThreads < 1) {
                 int maxLogins = connectionConfig.getMaxLogins();
+
                 if (maxLogins > 0) {
                     maxThreads = maxLogins;
                 } else {
                     maxThreads = 16;
                 }
             }
+
             LOG.debug("Intializing shared thread pool executor with max threads of {}", maxThreads);
             threadPoolExecutor = new OrderedThreadPoolExecutor(maxThreads);
         }
+
         return threadPoolExecutor;
     }
 }

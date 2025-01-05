@@ -258,8 +258,7 @@ public class PASS extends AbstractCommand {
     private void delayAfterLoginFailure(final int loginFailureDelay) {
 
         if (loginFailureDelay > 0) {
-            LOG.debug("Waiting for " + loginFailureDelay
-                    + " milliseconds due to login failure");
+            LOG.debug("Waiting for {} milliseconds due to login failure", loginFailureDelay);
 
             try {
                 Thread.sleep(loginFailureDelay);
