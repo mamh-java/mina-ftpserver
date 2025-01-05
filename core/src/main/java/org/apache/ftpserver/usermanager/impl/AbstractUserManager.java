@@ -90,6 +90,7 @@ public abstract class AbstractUserManager implements UserManager {
 
     /**
      * Retrieve the password encryptor used for this user manager
+     *
      * @return The password encryptor. Default to {@link Md5PasswordEncryptor}
      *  if no other has been provided
      */

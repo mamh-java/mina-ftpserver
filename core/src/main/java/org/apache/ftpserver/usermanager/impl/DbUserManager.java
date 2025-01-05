@@ -103,18 +103,12 @@ public class DbUserManager extends AbstractUserManager {
         this.authenticateStmt = authenticateStmt;
         this.isAdminStmt = isAdminStmt;
 
-        Connection con = null;
-        try {
-            // test the connection
-            con = createConnection();
-
+        try (Connection connection = createConnection()) {
             LOG.info("Database connection opened.");
         } catch (SQLException ex) {
             LOG.error("Failed to open connection to user database", ex);
             throw new FtpServerConfigurationException(
             "Failed to open connection to user database", ex);
-        } finally{
-            closeQuitely(con);
         }
     }
 
@@ -283,32 +277,24 @@ public class DbUserManager extends AbstractUserManager {
      */
     @Override
     public boolean isAdmin(String login) throws FtpException {
-
         // check input
         if (login == null) {
             return false;
         }
 
-        Statement stmt = null;
-        ResultSet rs = null;
-        try {
+        // create the sql query
+        HashMap<String, Object> map = new HashMap<>();
+        map.put(ATTR_LOGIN, escapeString(login));
+        String sql = StringUtils.replaceString(isAdminStmt, map);
+        LOG.info(sql);
 
-            // create the sql query
-            HashMap<String, Object> map = new HashMap<>();
-            map.put(ATTR_LOGIN, escapeString(login));
-            String sql = StringUtils.replaceString(isAdminStmt, map);
-            LOG.info(sql);
-
-            // execute query
-            stmt = createConnection().createStatement();
-            rs = stmt.executeQuery(sql);
+        // execute query
+        try (Statement stmt = createConnection().createStatement();
+             ResultSet rs = stmt.executeQuery(sql)) {
             return rs.next();
         } catch (SQLException ex) {
             LOG.error("DbUserManager.isAdmin()", ex);
             throw new FtpException("DbUserManager.isAdmin()", ex);
-        } finally {
-            closeQuitely(rs);
-            closeQuitely(stmt);
         }
     }
 
@@ -336,15 +322,11 @@ public class DbUserManager extends AbstractUserManager {
         LOG.info(sql);
 
         // execute query
-        Statement stmt = null;
-        try {
-            stmt = createConnection().createStatement();
+        try (Statement stmt = createConnection().createStatement()){
             stmt.executeUpdate(sql);
         } catch (SQLException ex) {
             LOG.error("DbUserManager.delete()", ex);
             throw new FtpException("DbUserManager.delete()", ex);
-        } finally {
-            closeQuitely(stmt);
         }
     }
 
@@ -359,131 +341,84 @@ public class DbUserManager extends AbstractUserManager {
             throw new NullPointerException("User name is null.");
         }
 
-        Statement stmt = null;
-        try {
+        // create sql query
+        HashMap<String, Object> map = new HashMap<>();
+        map.put(ATTR_LOGIN, escapeString(user.getName()));
 
-            // create sql query
-            HashMap<String, Object> map = new HashMap<>();
-            map.put(ATTR_LOGIN, escapeString(user.getName()));
+        String password = null;
 
-            String password = null;
-            if (user.getPassword() != null) {
-                // password provided, encrypt it and store the encrypted value
-                password= getPasswordEncryptor().encrypt(user.getPassword());
-            } else {
-                // password was not provided, either load from the existing user and store that again
-                // or store as null
-                ResultSet rs = null;
+        if (user.getPassword() != null) {
+            // password provided, encrypt it and store the encrypted value
+            password= getPasswordEncryptor().encrypt(user.getPassword());
+        } else {
+            // password was not provided, either load from the existing user and store that again
+            // or store as null
+            try {
+                User userWithPassword = selectUserByName(user.getName());
 
-                try {
-                    User userWithPassword = selectUserByName(user.getName());
-
-                    if (userWithPassword != null) {
-                        // user exists, reuse password
-                        password = userWithPassword.getPassword();
-                    }
-                } finally {
-                    closeQuitely(rs);
+                if (userWithPassword != null) {
+                    // user exists, reuse password
+                    password = userWithPassword.getPassword();
                 }
+            } catch (SQLException ex) {
+                LOG.error("DbUserManager.save()", ex);
+                throw new FtpException("DbUserManager.save()", ex);
             }
-            map.put(ATTR_PASSWORD, escapeString(password));
+        }
 
+        map.put(ATTR_PASSWORD, escapeString(password));
 
-            String home = user.getHomeDirectory();
-            if (home == null) {
-                home = "/";
-            }
-            map.put(ATTR_HOME, escapeString(home));
-            map.put(ATTR_ENABLE, String.valueOf(user.getEnabled()));
+        String home = user.getHomeDirectory();
 
-            map.put(ATTR_WRITE_PERM, String.valueOf(user
-                    .authorize(new WriteRequest()) != null));
-            map.put(ATTR_MAX_IDLE_TIME, user.getMaxIdleTime());
+        if (home == null) {
+            home = "/";
+        }
 
-            TransferRateRequest transferRateRequest = new TransferRateRequest();
-            transferRateRequest = (TransferRateRequest) user
-                    .authorize(transferRateRequest);
+        map.put(ATTR_HOME, escapeString(home));
+        map.put(ATTR_ENABLE, String.valueOf(user.getEnabled()));
+        map.put(ATTR_WRITE_PERM, String.valueOf(user.authorize(new WriteRequest()) != null));
+        map.put(ATTR_MAX_IDLE_TIME, user.getMaxIdleTime());
 
-            if (transferRateRequest != null) {
-                map.put(ATTR_MAX_UPLOAD_RATE, transferRateRequest
-                        .getMaxUploadRate());
-                map.put(ATTR_MAX_DOWNLOAD_RATE, transferRateRequest
-                        .getMaxDownloadRate());
-            } else {
-                map.put(ATTR_MAX_UPLOAD_RATE, 0);
-                map.put(ATTR_MAX_DOWNLOAD_RATE, 0);
-            }
+        TransferRateRequest transferRateRequest = new TransferRateRequest();
+        transferRateRequest = (TransferRateRequest) user.authorize(transferRateRequest);
 
-            // request that always will succeed
-            ConcurrentLoginRequest concurrentLoginRequest = new ConcurrentLoginRequest(
-                    0, 0);
-            concurrentLoginRequest = (ConcurrentLoginRequest) user
-                    .authorize(concurrentLoginRequest);
+        if (transferRateRequest != null) {
+            map.put(ATTR_MAX_UPLOAD_RATE, transferRateRequest.getMaxUploadRate());
+            map.put(ATTR_MAX_DOWNLOAD_RATE, transferRateRequest.getMaxDownloadRate());
+        } else {
+            map.put(ATTR_MAX_UPLOAD_RATE, 0);
+            map.put(ATTR_MAX_DOWNLOAD_RATE, 0);
+        }
 
-            if (concurrentLoginRequest != null) {
-                map.put(ATTR_MAX_LOGIN_NUMBER, concurrentLoginRequest
-                        .getMaxConcurrentLogins());
-                map.put(ATTR_MAX_LOGIN_PER_IP, concurrentLoginRequest
-                        .getMaxConcurrentLoginsPerIP());
-            } else {
-                map.put(ATTR_MAX_LOGIN_NUMBER, 0);
-                map.put(ATTR_MAX_LOGIN_PER_IP, 0);
-            }
+        // request that always will succeed
+        ConcurrentLoginRequest concurrentLoginRequest = new ConcurrentLoginRequest(0, 0);
+        concurrentLoginRequest = (ConcurrentLoginRequest) user.authorize(concurrentLoginRequest);
 
-            String sql = null;
-            if (!doesExist(user.getName())) {
-                sql = StringUtils.replaceString(insertUserStmt, map);
-            } else {
-                sql = StringUtils.replaceString(updateUserStmt, map);
-            }
-            LOG.info(sql);
+        if (concurrentLoginRequest != null) {
+            map.put(ATTR_MAX_LOGIN_NUMBER, concurrentLoginRequest.getMaxConcurrentLogins());
+            map.put(ATTR_MAX_LOGIN_PER_IP, concurrentLoginRequest.getMaxConcurrentLoginsPerIP());
+        } else {
+            map.put(ATTR_MAX_LOGIN_NUMBER, 0);
+            map.put(ATTR_MAX_LOGIN_PER_IP, 0);
+        }
 
+        String sql = null;
+
+        if (!doesExist(user.getName())) {
+            sql = StringUtils.replaceString(insertUserStmt, map);
+        } else {
+            sql = StringUtils.replaceString(updateUserStmt, map);
+        }
+
+        LOG.info(sql);
+
+        // execute query
+        try (Statement stmt = createConnection().createStatement()){
             // execute query
-            stmt = createConnection().createStatement();
             stmt.executeUpdate(sql);
         } catch (SQLException ex) {
             LOG.error("DbUserManager.save()", ex);
             throw new FtpException("DbUserManager.save()", ex);
-        } finally {
-            closeQuitely(stmt);
-        }
-    }
-
-    private void closeQuitely(Statement stmt) {
-        if (stmt != null) {
-            Connection con = null;
-            try {
-                con = stmt.getConnection();
-            } catch (Exception e) {
-            }
-
-            try {
-                    stmt.close();
-            } catch (SQLException e) {
-                    // ignore
-            }
-
-            closeQuitely(con);
-        }
-    }
-
-    private void closeQuitely(ResultSet rs) {
-        if (rs != null) {
-            try {
-                rs.close();
-            } catch (SQLException e) {
-                // ignore
-            }
-        }
-    }
-
-    protected void closeQuitely(Connection con) {
-        if (con != null) {
-            try {
-            con.close();
-            } catch (SQLException e) {
-            // ignore
-            }
         }
     }
 
@@ -494,15 +429,12 @@ public class DbUserManager extends AbstractUserManager {
         String sql = StringUtils.replaceString(selectUserStmt, map);
         LOG.info(sql);
 
-        Statement stmt = null;
-        ResultSet rs = null;
-        try {
-            // execute query
-            stmt = createConnection().createStatement();
-            rs = stmt.executeQuery(sql);
-
+        // execute query
+        try (Statement stmt = createConnection().createStatement();
+            ResultSet rs = stmt.executeQuery(sql)) {
             // populate user object
             BaseUser thisUser = null;
+
             if (rs.next()) {
                 thisUser = new BaseUser();
                 thisUser.setName(rs.getString(ATTR_LOGIN));
@@ -512,6 +444,7 @@ public class DbUserManager extends AbstractUserManager {
                 thisUser.setMaxIdleTime(rs.getInt(ATTR_MAX_IDLE_TIME));
 
                 List<Authority> authorities = new ArrayList<>();
+
                 if (rs.getBoolean(ATTR_WRITE_PERM)) {
                     authorities.add(new WritePermission());
                 }
@@ -525,11 +458,8 @@ public class DbUserManager extends AbstractUserManager {
 
                 thisUser.setAuthorities(authorities);
             }
-            return thisUser;
 
-        } finally {
-            closeQuitely(rs);
-            closeQuitely(stmt);
+            return thisUser;
         }
     }
 
@@ -539,8 +469,6 @@ public class DbUserManager extends AbstractUserManager {
      * {@inheritDoc}
      */
     public User getUserByName(String name) throws FtpException {
-        Statement stmt = null;
-        ResultSet rs = null;
         try {
 
             BaseUser user = selectUserByName(name);
@@ -551,14 +479,9 @@ public class DbUserManager extends AbstractUserManager {
             }
 
             return user;
-
-
         } catch (SQLException ex) {
             LOG.error("DbUserManager.getUserByName()", ex);
             throw new FtpException("DbUserManager.getUserByName()", ex);
-        } finally {
-            closeQuitely(rs);
-            closeQuitely(stmt);
         }
     }
 
@@ -568,26 +491,19 @@ public class DbUserManager extends AbstractUserManager {
      * {@inheritDoc}
      */
     public boolean doesExist(String name) throws FtpException {
-        Statement stmt = null;
-        ResultSet rs = null;
-        try {
+        // create the sql
+        HashMap<String, Object> map = new HashMap<>();
+        map.put(ATTR_LOGIN, escapeString(name));
+        String sql = StringUtils.replaceString(selectUserStmt, map);
+        LOG.info(sql);
 
-            // create the sql
-            HashMap<String, Object> map = new HashMap<>();
-            map.put(ATTR_LOGIN, escapeString(name));
-            String sql = StringUtils.replaceString(selectUserStmt, map);
-            LOG.info(sql);
-
-            // execute query
-            stmt = createConnection().createStatement();
-            rs = stmt.executeQuery(sql);
+        // execute query
+        try (Statement stmt = createConnection().createStatement();
+            ResultSet rs = stmt.executeQuery(sql)) {
             return rs.next();
         } catch (SQLException ex) {
             LOG.error("DbUserManager.doesExist()", ex);
             throw new FtpException("DbUserManager.doesExist()", ex);
-        } finally {
-            closeQuitely(rs);
-            closeQuitely(stmt);
         }
     }
 
@@ -597,31 +513,24 @@ public class DbUserManager extends AbstractUserManager {
      * {@inheritDoc}
      */
     public String[] getAllUserNames() throws FtpException {
+        // create sql query
+        String sql = selectAllStmt;
+        LOG.info(sql);
 
-        Statement stmt = null;
-        ResultSet rs = null;
-        try {
-
-            // create sql query
-            String sql = selectAllStmt;
-            LOG.info(sql);
-
-            // execute query
-            stmt = createConnection().createStatement();
-            rs = stmt.executeQuery(sql);
-
+        // execute query
+        try (Statement stmt = createConnection().createStatement();
+            ResultSet rs = stmt.executeQuery(sql)) {
             // populate list
             ArrayList<String> names = new ArrayList<>();
+
             while (rs.next()) {
                 names.add(rs.getString(ATTR_LOGIN));
             }
+
             return names.toArray(new String[0]);
         } catch (SQLException ex) {
             LOG.error("DbUserManager.getAllUserNames()", ex);
             throw new FtpException("DbUserManager.getAllUserNames()", ex);
-        } finally {
-            closeQuitely(rs);
-            closeQuitely(stmt);
         }
     }
 
@@ -630,8 +539,7 @@ public class DbUserManager extends AbstractUserManager {
      *
      * {@inheritDoc}
      */
-    public User authenticate(Authentication authentication)
-            throws AuthenticationFailedException {
+    public User authenticate(Authentication authentication) throws AuthenticationFailedException {
         if (authentication instanceof UsernamePasswordAuthentication) {
             UsernamePasswordAuthentication upauth = (UsernamePasswordAuthentication) authentication;
 
@@ -646,43 +554,33 @@ public class DbUserManager extends AbstractUserManager {
                 password = "";
             }
 
-            Statement stmt = null;
-            ResultSet rs = null;
-            try {
+            // create the sql query
+            HashMap<String, Object> map = new HashMap<>();
+            map.put(ATTR_LOGIN, escapeString(user));
+            String sql = StringUtils.replaceString(authenticateStmt, map);
+            LOG.info(sql);
 
-                // create the sql query
-                HashMap<String, Object> map = new HashMap<>();
-                map.put(ATTR_LOGIN, escapeString(user));
-                String sql = StringUtils.replaceString(authenticateStmt, map);
-                LOG.info(sql);
-
-                // execute query
-                stmt = createConnection().createStatement();
-                rs = stmt.executeQuery(sql);
+            // execute query
+            try (Statement stmt = createConnection().createStatement();
+                ResultSet rs = stmt.executeQuery(sql)) {
                 if (rs.next()) {
                     try {
                         String storedPassword = rs.getString(ATTR_PASSWORD);
+
                         if (getPasswordEncryptor().matches(password, storedPassword)) {
                             return getUserByName(user);
                         } else {
-                            throw new AuthenticationFailedException(
-                                    "Authentication failed");
+                            throw new AuthenticationFailedException("Authentication failed");
                         }
                     } catch (FtpException e) {
-                        throw new AuthenticationFailedException(
-                                "Authentication failed", e);
+                        throw new AuthenticationFailedException("Authentication failed", e);
                     }
                 } else {
-                    throw new AuthenticationFailedException(
-                            "Authentication failed");
+                    throw new AuthenticationFailedException("Authentication failed");
                 }
             } catch (SQLException ex) {
                 LOG.error("DbUserManager.authenticate()", ex);
-                throw new AuthenticationFailedException(
-                        "Authentication failed", ex);
-            } finally {
-                closeQuitely(rs);
-                closeQuitely(stmt);
+                throw new AuthenticationFailedException("Authentication failed", ex);
             }
         } else if (authentication instanceof AnonymousAuthentication) {
             try {
@@ -695,12 +593,10 @@ public class DbUserManager extends AbstractUserManager {
             } catch (AuthenticationFailedException e) {
                 throw e;
             } catch (FtpException e) {
-                throw new AuthenticationFailedException(
-                        "Authentication failed", e);
+                throw new AuthenticationFailedException("Authentication failed", e);
             }
         } else {
-            throw new IllegalArgumentException(
-                    "Authentication not supported by this user manager");
+            throw new IllegalArgumentException("Authentication not supported by this user manager");
         }
     }
 
@@ -713,15 +609,20 @@ public class DbUserManager extends AbstractUserManager {
         }
 
         StringBuilder valBuf = new StringBuilder(input);
-        for (int i = 0; i < valBuf.length(); i++) {
-            char ch = valBuf.charAt(i);
-            if (ch == '\'' || ch == '\\' || ch == '$' || ch == '^' || ch == '['
-                    || ch == ']' || ch == '{' || ch == '}') {
 
-                valBuf.insert(i, '\\');
-                i++;
+        for (int i = 0; i < valBuf.length(); i++) {
+            switch (valBuf.charAt(i)) {
+                case '\'':
+                case '\\':
+                case '$':
+                case '[':
+                case ']':
+                case '{':
+                case '}':
+                    valBuf.insert(i++, '\\');
             }
         }
+
         return valBuf.toString();
     }
 }
