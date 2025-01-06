@@ -47,7 +47,7 @@ public interface FtpRequest {
     /**
      * Check if request contains an argument
      *
-     * @return true if an argument is available
+     * @return <code>true</code> if an argument is available
      */
     boolean hasArgument();
 

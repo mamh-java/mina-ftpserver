@@ -38,13 +38,13 @@ public interface DataConnectionConfiguration {
 
     /**
      * Is active data connection enabled?
-     * @return true if active data connections are enabled
+     * @return <code>true</code> if active data connections are enabled
      */
     boolean isActiveEnabled();
 
     /**
      * Check the PORT IP with the client IP?
-     * @return true if the PORT IP is verified
+     * @return <code>true</code> if the PORT IP is verified
      */
     boolean isActiveIpCheck();
 

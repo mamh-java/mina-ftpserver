@@ -45,7 +45,7 @@ public interface FileSystemView {
      * Change directory.
      *
      * @param dir The path of the directory to set as the current directory for the user
-     * @return true if successful
+     * @return <code>true</code> if successful
      * @throws FtpException When the change to Home Directory can't be done
      */
     boolean changeWorkingDirectory(String dir) throws FtpException;
@@ -62,7 +62,7 @@ public interface FileSystemView {
     /**
      * Does the file system support random file access?
      *
-     * @return true if the file supports random access
+     * @return <code>true</code> if the file supports random access
      * @throws FtpException When random file access isn't supported
      */
     boolean isRandomAccessible() throws FtpException;

@@ -66,7 +66,7 @@ public class BaseProperties extends Properties {
      *
      * @param str The property to read
      * @throws FtpException If the property is null
-     * @return <code>true</code> if th property contains 'true'
+     * @return <code>true</code> if the property contains 'true'
      */
     public boolean getBoolean(final String str) throws FtpException {
         String prop = getProperty(str);

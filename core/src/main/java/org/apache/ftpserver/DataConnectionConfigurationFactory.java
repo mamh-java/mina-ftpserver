@@ -99,7 +99,7 @@ public class DataConnectionConfigurationFactory {
 
     /**
      * Is PORT enabled?
-     * @return true if active data connections are enabled
+     * @return <code>true</code> if active data connections are enabled
      */
     public boolean isActiveEnabled() {
         return activeEnabled;
@@ -115,7 +115,7 @@ public class DataConnectionConfigurationFactory {
 
     /**
      * Check the PORT IP?
-     * @return true if the client IP is verified against the PORT IP
+     * @return <code>true</code> if the client IP is verified against the PORT IP
      */
     public boolean isActiveIpCheck() {
         return activeIpCheck;

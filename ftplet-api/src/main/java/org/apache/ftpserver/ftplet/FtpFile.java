@@ -62,7 +62,7 @@ public interface FtpFile {
     /**
      * Is it a file?
      *
-     * @return <code>true</code> if the {@link FtpFile} is a file, false if it is a directory
+     * @return <code>true</code> if the {@link FtpFile} is a file, <code>false</code> if it is a directory
      */
     boolean isFile();
 

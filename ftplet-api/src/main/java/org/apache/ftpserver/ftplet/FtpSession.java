@@ -207,7 +207,7 @@ public interface FtpSession {
      * Indicates whether the control socket for this session is secure, that is,
      * running over SSL/TLS
      *
-     * @return true if the control socket is secured
+     * @return <code>true</code> if the control socket is secured
      */
     boolean isSecure();
 

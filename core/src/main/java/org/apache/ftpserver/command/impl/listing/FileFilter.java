@@ -36,7 +36,7 @@ public interface FileFilter {
      *
      * @param file
      *            The {@link FtpFile}
-     * @return true if the {@link FtpFile} was selected
+     * @return <code>true</code> if the {@link FtpFile} was selected
      */
     boolean accept(FtpFile file);
 

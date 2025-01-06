@@ -791,7 +791,7 @@ public class FtpIoSession implements IoSession {
      * Indicates whether the control socket for this session is secure, that is,
      * running over SSL/TLS
      *
-     * @return true if the control socket is secured
+     * @return <code>true</code> if the control socket is secured
      */
     public boolean isSecure() {
         return getFilterChain().contains(SslFilter.class);

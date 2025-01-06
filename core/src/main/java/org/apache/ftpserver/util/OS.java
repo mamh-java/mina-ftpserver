@@ -86,7 +86,7 @@ public final class OS {
      *
      * @param family
      *            the family to check for
-     * @return true if the OS matches
+     * @return <code>true</code> if the OS matches
      */
     private static boolean isFamily(final String family) {
         return isOs(family, null, null, null);
@@ -141,7 +141,7 @@ public final class OS {
      *
      * @param name
      *            the OS name to check for
-     * @return true if the OS matches
+     * @return <code>true</code> if the OS matches
      */
     public static boolean isName(final String name) {
         return isOs(null, name, null, null);
@@ -153,7 +153,7 @@ public final class OS {
      *
      * @param arch
      *            the OS architecture to check for
-     * @return true if the OS matches
+     * @return <code>true</code> if the OS matches
      */
     public static boolean isArch(final String arch) {
         return isOs(null, null, arch, null);
@@ -165,7 +165,7 @@ public final class OS {
      *
      * @param version
      *            the OS version to check for
-     * @return true if the OS matches
+     * @return <code>true</code> if the OS matches
      */
     public static boolean isVersion(final String version) {
         return isOs(null, null, null, version);
@@ -183,7 +183,7 @@ public final class OS {
      *            The OS architecture
      * @param version
      *            The OS version
-     * @return true if the OS matches
+     * @return <code>true</code> if the OS matches
      */
     public static boolean isOs(final String family, final String name,
             final String arch, final String version) {

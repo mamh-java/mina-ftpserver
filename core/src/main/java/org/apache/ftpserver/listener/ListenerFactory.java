@@ -120,7 +120,8 @@ public class ListenerFactory {
      * Is listeners created by this factory in SSL mode automatically or must the client explicitly
      * request to use SSL
      *
-     * @return true is listeners created by this factory is automatically in SSL mode, false otherwise
+     * @return <code>true</code> is listeners created by this factory is automatically in SSL mode,
+     * <code>false</code> otherwise
      */
     public boolean isImplicitSsl() {
         return implicitSsl;

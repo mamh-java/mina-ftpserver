@@ -74,7 +74,7 @@ public class ListArgument {
      *
      * @param option
      *            The option to check
-     * @return true if the option is set
+     * @return <code>true</code> if the option is set
      */
     public boolean hasOption(char option) {
         for (int i = 0; i < options.length; i++) {

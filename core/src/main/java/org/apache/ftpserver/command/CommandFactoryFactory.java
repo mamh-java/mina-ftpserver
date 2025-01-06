@@ -184,7 +184,7 @@ public class CommandFactoryFactory {
     /**
      * Are default commands used?
      *
-     * @return true if default commands are used
+     * @return <code>true</code> if default commands are used
      */
     public boolean isUseDefaultCommands() {
         return useDefaultCommands;

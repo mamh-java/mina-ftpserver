@@ -30,7 +30,7 @@ public class PasswordUtil {
      *
      * @throws IllegalArgumentException when the limit is less than the password length
      *
-     * @return true if the passwords match
+     * @return <code>true</code> if the passwords match
      */
     public static boolean secureCompare(String input, String password, int loops) {
         if (loops < password.length()) {
@@ -67,7 +67,7 @@ public class PasswordUtil {
      * @param password correct password
      * @throws IllegalArgumentException when the limit is less than the password length
      *
-     * @return true if the passwords match
+     * @return <code>true</code> if the passwords match
      */
     public static boolean secureCompareFast(String input, String password) {
         /*

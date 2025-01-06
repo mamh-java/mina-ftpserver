@@ -42,8 +42,8 @@ public interface Authority {
      * @param request
      *            The {@link AuthorizationRequest}
      * @return Returns a populated AuthorizationRequest as long as If
-     *         {@link #canAuthorize(AuthorizationRequest)} returns true for the
-     *         AuthorizationRequest, otherwise returns null.
+     *         {@link #canAuthorize(AuthorizationRequest)} returns <code>true</code> for the
+     *         AuthorizationRequest, otherwise returns <code>null</code>.
      *         {@link #canAuthorize(AuthorizationRequest)} should always be checked before
      *         calling this method.
      */

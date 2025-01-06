@@ -94,7 +94,7 @@ public class FtpLoggingFilter extends LoggingFilter {
     /**
      * Are password masked?
      *
-     * @return true if passwords are masked
+     * @return <code>true</code> if passwords are masked
      */
     public boolean isMaskPassword() {
         return maskPassword;

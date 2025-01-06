@@ -38,7 +38,7 @@ public interface DataConnectionFactory {
      * Indicates whether the data socket created by this factory will be secure
      * that is, running over SSL/TLS.
      *
-     * @return true if the data socket will be secured
+     * @return <code>true</code> if the data socket will be secured
      */
 
     boolean isSecure();

@@ -56,7 +56,7 @@ public interface ConnectionConfig {
 
     /**
      * Is anonymous logins allowed at the server?
-     * @return true if anonymous logins are enabled
+     * @return <code>true</code> if anonymous logins are enabled
      */
     boolean isAnonymousLoginEnabled();
 

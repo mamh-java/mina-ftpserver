@@ -127,7 +127,7 @@ public class UserFactory {
 
     /**
      * Get the enabled status for users created by this factory
-     * @return true if the user is enabled (allowed to log in)
+     * @return <code>true</code> if the user is enabled (allowed to log in)
      */
     public boolean isEnabled() {
         return isEnabled;

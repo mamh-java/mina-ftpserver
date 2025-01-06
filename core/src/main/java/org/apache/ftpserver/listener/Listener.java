@@ -95,8 +95,7 @@ public interface Listener {
      * Is this listener in SSL mode automatically or must the client explicitly
      * request to use SSL
      *
-     * @return true is the listener is automatically in SSL mode, false
-     *         otherwise
+     * @return <code>true</code> is the listener is automatically in SSL mode, <code>false</code> otherwise
      */
     boolean isImplicitSsl();
 

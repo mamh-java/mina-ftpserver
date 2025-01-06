@@ -76,7 +76,7 @@ public interface User {
     /**
      * Get the user enable status.
      *
-     * @return true if the user is enabled
+     * @return <code>true</code> if the user is enabled
      */
     boolean getEnabled();
 

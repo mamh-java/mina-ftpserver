@@ -273,7 +273,7 @@ public class DbUserManager extends AbstractUserManager {
     }
 
     /**
-     * @return true if user with this login is administrator
+     * @return <code>true</code> if user with this login is administrator
      */
     @Override
     public boolean isAdmin(String login) throws FtpException {

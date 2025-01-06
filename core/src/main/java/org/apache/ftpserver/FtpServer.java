@@ -44,7 +44,7 @@ public interface FtpServer {
 
     /**
      * Get the server status.
-     * @return true if the server is stopped
+     * @return <code>true</code> if the server is stopped
      */
     boolean isStopped();
 
@@ -60,7 +60,7 @@ public interface FtpServer {
 
     /**
      * Is the server suspended
-     * @return true if the server is suspended
+     * @return <code>true</code> if the server is suspended
      */
     boolean isSuspended();
 

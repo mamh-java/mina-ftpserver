@@ -36,7 +36,7 @@ public class ClassUtils {
      *            The class to check
      * @param className
      *            The class name to look for in the super classes
-     * @return true if the class extends a class by the specified name.
+     * @return <code>true</code> if the class extends a class by the specified name.
      */
     public static boolean extendsClass(final Class<?> clazz, String className) {
         Class<?> superClass = clazz.getSuperclass();

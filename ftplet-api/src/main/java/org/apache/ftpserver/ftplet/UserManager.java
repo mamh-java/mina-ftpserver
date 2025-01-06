@@ -70,7 +70,7 @@ public interface UserManager {
     /**
      * Check if the user exists.
      * @param username the name of the user to check.
-     * @return true if the user exist, false otherwise.
+     * @return <code>true</code> if the user exist, <code>false</code> otherwise.
      * @throws FtpException
      */
     boolean doesExist(String username) throws FtpException;
@@ -94,7 +94,7 @@ public interface UserManager {
     /**
      * Check if the user is admin.
      * @param username The name of the {@link User} to check
-     * @return true if user with this login is administrator
+     * @return <code>true</code> if user with this login is administrator
      * @throws FtpException when the UserManager can't fulfill the request.
      */
     boolean isAdmin(String username) throws FtpException;

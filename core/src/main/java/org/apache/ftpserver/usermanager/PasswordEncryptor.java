@@ -38,7 +38,7 @@ public interface PasswordEncryptor {
      * Matches an encrypted password with that stored
      * @param passwordToCheck The encrypted password to check
      * @param storedPassword The stored password
-     * @return true if the password match
+     * @return <code>true</code> if the password match
      */
     boolean matches(String passwordToCheck, String storedPassword);
 }

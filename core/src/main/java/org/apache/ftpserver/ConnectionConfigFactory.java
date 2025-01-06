@@ -87,7 +87,7 @@ public class ConnectionConfigFactory {
 
     /**
      * Is anonymous logins allowed at the server?
-     * @return true if anonymous logins are enabled
+     * @return <code>true</code> if anonymous logins are enabled
      */
     public boolean isAnonymousLoginEnabled() {
         return anonymousLoginEnabled;
