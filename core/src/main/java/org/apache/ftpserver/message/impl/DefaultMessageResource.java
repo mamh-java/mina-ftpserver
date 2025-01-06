@@ -41,8 +41,8 @@ import org.slf4j.LoggerFactory;
  * <br>
  * Basic message search path is:
  *
- * Custom Language Specific Messages -> Default Language Specific Messages ->
- * Custom Common Messages -> Default Common Messages -> null (not found)
+ * Custom Language Specific Messages -&gt; Default Language Specific Messages -&gt;
+ * Custom Common Messages -&gt; Default Common Messages -&gt; null (not found)
  * <br>
  * <strong>Internal class, do not use directly.</strong>
  *

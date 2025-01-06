@@ -38,6 +38,7 @@ public class MessageResourceFactory {
 
     /**
      * Create an {@link MessageResource} based on the configuration on this factory
+     *
      * @return The {@link MessageResource} instance
      */
     public MessageResource createMessageResource() {
@@ -46,23 +47,25 @@ public class MessageResourceFactory {
 
     /**
      * The languages for which messages are available
-     * @return The list of available languages
+     *
+     * @return The list of supported languages
      */
     public List<String> getLanguages() {
         return languages;
     }
 
     /**
-     * Set the languages for which messages are available
-     * @param languages The list of available languages
+     * Set the languages for which messages are supported
+     *
+     * @param languages The list of supported languages
      */
-
     public void setLanguages(List<String> languages) {
         this.languages = languages;
     }
 
     /**
      * The directory where custom message bundles can be located
+     *
      * @return The {@link File} denoting the directory with message bundles
      */
     public File getCustomMessageDirectory() {
@@ -71,6 +74,7 @@ public class MessageResourceFactory {
 
     /**
      * Set the directory where custom message bundles can be located
+     *
      * @param customMessageDirectory The {@link File} denoting the directory with message bundles
      */
     public void setCustomMessageDirectory(File customMessageDirectory) {

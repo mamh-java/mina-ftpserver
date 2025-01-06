@@ -34,7 +34,6 @@ import org.apache.ftpserver.usermanager.impl.BaseUser;
 *
 */
 public abstract class FtpFileTestTemplate extends TestCase {
-
     protected static final String FILE2_PATH = "/dir1/file2";
 
     protected static final String DIR1_PATH = "/dir1";
@@ -123,5 +122,4 @@ public abstract class FtpFileTestTemplate extends TestCase {
         assertEquals("file1", files.get(1).getName());
         assertEquals("file3", files.get(2).getName());
     }
-
 }

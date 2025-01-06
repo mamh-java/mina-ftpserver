@@ -44,7 +44,6 @@ import org.apache.ftpserver.ftplet.User;
  *
  * @author <a href="http://mina.apache.org">Apache MINA Project</a>
  */
-
 public class BaseUser implements User {
     private String name = null;
 

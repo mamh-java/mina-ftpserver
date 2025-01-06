@@ -27,15 +27,16 @@ import java.util.List;
  * @author <a href="http://mina.apache.org">Apache MINA Project</a>
  */
 public interface User {
-
     /**
      * Get the user name.
+     *
      * @return The user name, the same used for login
      */
     String getName();
 
     /**
      * Get password.
+     *
      * @return The users password or null if the user manager can not provide the password
      */
     String getPassword();
@@ -49,6 +50,7 @@ public interface User {
 
     /**
      * Get authorities of the specified type granted to this user
+     *
      * @param clazz The type of {@link Authority}
      * @return Authorities of the specified class
      */
@@ -57,8 +59,7 @@ public interface User {
     /**
      * Authorize a {@link AuthorizationRequest} for this user
      *
-     * @param request
-     *            The {@link AuthorizationRequest} to authorize
+     * @param request The {@link AuthorizationRequest} to authorize
      * @return A populated AuthorizationRequest if the user was authorized, null
      *         otherwise.
      */
@@ -67,18 +68,21 @@ public interface User {
     /**
      * Get the maximum idle time in seconds. Zero or less idle time means no
      * limit.
+     *
      * @return The idle time in seconds
      */
     int getMaxIdleTime();
 
     /**
      * Get the user enable status.
+     *
      * @return true if the user is enabled
      */
     boolean getEnabled();
 
     /**
      * Get the user home directory
+     *
      * @return The path to the home directory for the user
      */
     String getHomeDirectory();
