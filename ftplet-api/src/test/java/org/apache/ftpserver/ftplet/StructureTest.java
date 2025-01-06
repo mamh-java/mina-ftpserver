@@ -22,15 +22,28 @@ package org.apache.ftpserver.ftplet;
 import junit.framework.TestCase;
 
 /**
+ * A structure base test
  *
  * @author <a href="http://mina.apache.org">Apache MINA Project</a>
  */
 public class StructureTest extends TestCase {
+    /**
+     * Default constructor
+     */
+    public StructureTest() {
+    }
+
+    /**
+     * A File parse test
+     */
     public void testParseF() {
         assertSame(Structure.FILE, Structure.parseArgument('F'));
         assertSame(Structure.FILE, Structure.parseArgument('f'));
     }
 
+    /**
+     * An unknown parse test
+     */
     public void testParseUnknown() {
         try {
             Structure.parseArgument('x');

@@ -49,11 +49,10 @@ public interface UserManager {
 
     /**
      * Delete the user from the system.
-     * @param username The name of the {@link User} to delete
      *
+     * @param username The name of the {@link User} to delete
      * @throws FtpException when the UserManager can't fulfill the request.
-     * @throws UnsupportedOperationException
-     *             if UserManager in read-only mode
+     * @throws UnsupportedOperationException if UserManager in read-only mode
      */
     void delete(String username) throws FtpException;
 
@@ -62,30 +61,31 @@ public interface UserManager {
      *
      * @param user the Uset to save
      * @throws FtpException when the UserManager can't fulfill the request.
-     * @throws UnsupportedOperationException
-     *             if UserManager in read-only mode
+     * @throws UnsupportedOperationException if UserManager in read-only mode
      */
     void save(User user) throws FtpException;
 
     /**
      * Check if the user exists.
+     *
      * @param username the name of the user to check.
      * @return <code>true</code> if the user exist, <code>false</code> otherwise.
-     * @throws FtpException
+     * @throws FtpException If we got an error during the check
      */
     boolean doesExist(String username) throws FtpException;
 
     /**
      * Authenticate user
+     *
      * @param authentication The {@link Authentication} that proves the users identity
      * @return the authenticated account.
-     * @throws AuthenticationFailedException
+     * @throws AuthenticationFailedException If the authentication failed
      */
-    User authenticate(Authentication authentication)
-            throws AuthenticationFailedException;
+    User authenticate(Authentication authentication) throws AuthenticationFailedException;
 
     /**
      * Get admin user name
+     *
      * @return the admin user name
      * @throws FtpException when the UserManager can't fulfill the request.
      */
@@ -93,6 +93,7 @@ public interface UserManager {
 
     /**
      * Check if the user is admin.
+     *
      * @param username The name of the {@link User} to check
      * @return <code>true</code> if user with this login is administrator
      * @throws FtpException when the UserManager can't fulfill the request.

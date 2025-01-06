@@ -22,25 +22,29 @@ package org.apache.ftpserver.ftplet;
 import java.io.IOException;
 
 /**
- *
+ * And FtpTel exemple test
  * @author <a href="http://mina.apache.org">Apache MINA Project</a>
  */
 public class ExampleFtplet extends DefaultFtplet {
+    /**
+     * Default constructor
+     */
+    public ExampleFtplet() {
+    }
 
     @Override
-    public FtpletResult onMkdirEnd(FtpSession session, FtpRequest request)
-            throws FtpException, IOException {
+    public FtpletResult onMkdirEnd(FtpSession session, FtpRequest request) throws FtpException, IOException {
         session.write(new DefaultFtpReply(550, "Error!"));
+
         return FtpletResult.SKIP;
     }
 
     @Override
-    public FtpletResult onMkdirStart(FtpSession session, FtpRequest request)
-            throws FtpException, IOException {
+    public FtpletResult onMkdirStart(FtpSession session, FtpRequest request) throws FtpException, IOException {
         if (session.isSecure() && session.getDataConnection().isSecure()) {
             // all is good
         }
+
         return null;
     }
-
 }

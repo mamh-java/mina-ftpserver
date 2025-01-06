@@ -22,21 +22,36 @@ package org.apache.ftpserver.ftplet;
 import junit.framework.TestCase;
 
 /**
+ * A Data type based test
  *
  * @author <a href="http://mina.apache.org">Apache MINA Project</a>
  */
 public class DataTypeTest extends TestCase {
+    /**
+     * Default constructor
+     */
+    public DataTypeTest() {
+    }
 
+    /**
+     * Test Ascii
+     */
     public void testParseA() {
         assertSame(DataType.ASCII, DataType.parseArgument('A'));
         assertSame(DataType.ASCII, DataType.parseArgument('a'));
     }
 
+    /**
+     * Tst Binary
+     */
     public void testParseI() {
         assertSame(DataType.BINARY, DataType.parseArgument('I'));
         assertSame(DataType.BINARY, DataType.parseArgument('i'));
     }
 
+    /**
+     * test unknown type
+     */
     public void testParseUnknown() {
         try {
             DataType.parseArgument('x');
@@ -45,5 +60,4 @@ public class DataTypeTest extends TestCase {
             // ignore
         }
     }
-
 }
