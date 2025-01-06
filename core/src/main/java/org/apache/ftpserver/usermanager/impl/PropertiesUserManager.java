@@ -28,7 +28,6 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Enumeration;
-import java.util.Iterator;
 import java.util.List;
 
 import org.apache.ftpserver.FtpServerConfigurationException;
@@ -114,9 +113,7 @@ import org.slf4j.LoggerFactory;
  * @author <a href="http://mina.apache.org">Apache MINA Project</a>
  */
 public class PropertiesUserManager extends AbstractUserManager {
-
-    private final Logger LOG = LoggerFactory
-            .getLogger(PropertiesUserManager.class);
+    private final Logger LOG = LoggerFactory.getLogger(PropertiesUserManager.class);
 
     private static final  String PREFIX = "ftpserver.user.";
 
@@ -190,21 +187,19 @@ public class PropertiesUserManager extends AbstractUserManager {
     }
 
     private void loadFromUrl(URL userDataPath) {
-        try {
-            userDataProp = new BaseProperties();
+        userDataProp = new BaseProperties();
 
-            if (userDataPath != null) {
-                LOG.debug("URL configured, will try loading");
+        if (userDataPath != null) {
+            LOG.debug("URL configured, will try loading");
 
-                userUrl = userDataPath;
+            userUrl = userDataPath;
 
-                try (InputStream is = userDataPath.openStream()) {
-                    userDataProp.load(is);
-                }
-            }
-        } catch (IOException e) {
-            throw new FtpServerConfigurationException(
+            try (InputStream is = userDataPath.openStream()) {
+                userDataProp.load(is);
+            } catch (IOException e) {
+                throw new FtpServerConfigurationException(
                     "Error loading user data resource : " + userDataPath, e);
+            }
         }
     }
 
@@ -227,7 +222,7 @@ public class PropertiesUserManager extends AbstractUserManager {
     }
 
     /**
-     * Retrive the file backing this user manager
+     * Retreive the file backing this user manager
      *
      * @return The file
      */
@@ -336,10 +331,8 @@ public class PropertiesUserManager extends AbstractUserManager {
             }
         }
 
-        Iterator<String> remKeysIt = remKeys.iterator();
-
-        while (remKeysIt.hasNext()) {
-            userDataProp.remove(remKeysIt.next());
+        for (String remKey:remKeys) {
+            userDataProp.remove(remKey);
         }
 
         saveUserData();
