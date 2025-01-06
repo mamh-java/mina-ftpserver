@@ -25,12 +25,12 @@ package org.apache.ftpserver.ftplet;
  * @author <a href="http://mina.apache.org">Apache MINA Project</a>
  */
 public interface FileSystemFactory {
-
     /**
      * Create user specific file system view.
+     *
      * @param user The user for which the file system should be created
      * @return The current {@link FileSystemView} for the provided user
-     * @throws FtpException
+     * @throws FtpException If a FTP error is thrown while creating the File System view
      */
     FileSystemView createFileSystemView(User user) throws FtpException;
 }

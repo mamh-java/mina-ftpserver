@@ -25,41 +25,45 @@ package org.apache.ftpserver.ftplet;
  * @author <a href="http://mina.apache.org">Apache MINA Project</a>
  */
 public interface FileSystemView {
-
     /**
      * Get the user home directory.
+     *
      * @return The {@link FtpFile} for the users home directory
-     * @throws FtpException
+     * @throws FtpException When the Home Directory can't be retrieved
      */
     FtpFile getHomeDirectory() throws FtpException;
 
     /**
      * Get user current directory.
+     *
      * @return The {@link FtpFile} for the users current directory
-     * @throws FtpException
+     * @throws FtpException When the working Directory can't be retrieved
      */
     FtpFile getWorkingDirectory() throws FtpException;
 
     /**
      * Change directory.
+     *
      * @param dir The path of the directory to set as the current directory for the user
      * @return true if successful
-     * @throws FtpException
+     * @throws FtpException When the change to Home Directory can't be done
      */
     boolean changeWorkingDirectory(String dir) throws FtpException;
 
     /**
      * Get file object.
+     *
      * @param file The path to the file to get
      * @return The {@link FtpFile} for the provided path
-     * @throws FtpException
+     * @throws FtpException When the file can't be retrieved
      */
     FtpFile getFile(String file) throws FtpException;
 
     /**
      * Does the file system support random file access?
+     *
      * @return true if the file supports random access
-     * @throws FtpException
+     * @throws FtpException When random file access isn't supported
      */
     boolean isRandomAccessible() throws FtpException;
 

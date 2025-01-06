@@ -35,9 +35,7 @@ import org.slf4j.LoggerFactory;
  * @author <a href="http://mina.apache.org">Apache MINA Project</a>
  */
 public class NativeFileSystemFactory implements FileSystemFactory {
-
-    private final Logger LOG = LoggerFactory
-            .getLogger(NativeFileSystemFactory.class);
+    private final Logger LOG = LoggerFactory.getLogger(NativeFileSystemFactory.class);
 
     private boolean createHome;
 
@@ -45,7 +43,8 @@ public class NativeFileSystemFactory implements FileSystemFactory {
 
     /**
      * Should the home directories be created automatically
-     * @return true if the file system will create the home directory if not available
+     *
+     * @return <code>true</code> if the file system will create the home directory if not available
      */
     public boolean isCreateHome() {
         return createHome;
@@ -53,7 +52,8 @@ public class NativeFileSystemFactory implements FileSystemFactory {
 
     /**
      * Set if the home directories be created automatically
-     * @param createHome true if the file system will create the home directory if not available
+     *
+     * @param createHome <code>true</code> if the file system will create the home directory if not available
      */
 
     public void setCreateHome(boolean createHome) {
@@ -63,7 +63,8 @@ public class NativeFileSystemFactory implements FileSystemFactory {
     /**
      * Is this file system case insensitive.
      * Enabling might cause problems when working against case-sensitive file systems, like on Linux
-     * @return true if this file system is case insensitive
+     *
+     * @return <code>true</code> if this file system is case insensitive
      */
     public boolean isCaseInsensitive() {
         return caseInsensitive;
@@ -72,7 +73,8 @@ public class NativeFileSystemFactory implements FileSystemFactory {
     /**
      * Should this file system be case insensitive.
      * Enabling might cause problems when working against case-sensitive file systems, like on Linux
-     * @param caseInsensitive true if this file system should be case insensitive
+     *
+     * @param caseInsensitive <code>true</code> if this file system should be case insensitive
      */
     public void setCaseInsensitive(boolean caseInsensitive) {
         this.caseInsensitive = caseInsensitive;
@@ -89,21 +91,21 @@ public class NativeFileSystemFactory implements FileSystemFactory {
             if (createHome) {
                 String homeDirStr = user.getHomeDirectory();
                 File homeDir = new File(homeDirStr);
+
                 if (homeDir.isFile()) {
-                    LOG.warn("Not a directory :: " + homeDirStr);
+                    LOG.warn("Not a directory :: {}", homeDirStr);
                     throw new FtpException("Not a directory :: " + homeDirStr);
                 }
+
                 if ((!homeDir.exists()) && (!homeDir.mkdirs())) {
-                    LOG.warn("Cannot create user home :: " + homeDirStr);
-                    throw new FtpException("Cannot create user home :: "
-                            + homeDirStr);
+                    LOG.warn("Cannot create user home :: {}", homeDirStr);
+                    throw new FtpException("Cannot create user home :: " + homeDirStr);
                 }
             }
 
-            FileSystemView fsView = new NativeFileSystemView(user,
-                    caseInsensitive);
+            FileSystemView fsView = new NativeFileSystemView(user, caseInsensitive);
+
             return fsView;
         }
     }
-
 }
