@@ -26,7 +26,6 @@ package org.apache.ftpserver.ftplet;
  * @author <a href="http://mina.apache.org">Apache MINA Project</a>
  */
 public class FtpException extends Exception {
-
     private static final long serialVersionUID = -1328383839915898987L;
 
     /**
@@ -39,8 +38,7 @@ public class FtpException extends Exception {
     /**
      * Constructs a <code>FtpException</code> object with a message.
      *
-     * @param msg
-     *            a description of the exception
+     * @param msg a description of the exception
      */
     public FtpException(String msg) {
         super(msg);
@@ -50,8 +48,7 @@ public class FtpException extends Exception {
      * Constructs a <code>FtpException</code> object with a
      * <code>Throwable</code> cause.
      *
-     * @param th
-     *            the original cause
+     * @param th the original cause
      */
     public FtpException(Throwable th) {
         super(th.getMessage());
@@ -60,10 +57,9 @@ public class FtpException extends Exception {
     /**
      * Constructs a <code>BaseException</code> object with a
      * <code>Throwable</code> cause.
-     * @param msg A description of the exception
      *
-     * @param th
-     *            The original cause
+     * @param msg A description of the exception
+     * @param th The original cause
      */
     public FtpException(String msg, Throwable th) {
         super(msg);
@@ -71,6 +67,7 @@ public class FtpException extends Exception {
 
     /**
      * Get the root cause.
+     *
      * @return The root cause
      * @deprecated Use {@link Exception#getCause()} instead
      */

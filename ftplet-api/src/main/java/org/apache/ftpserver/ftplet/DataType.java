@@ -25,7 +25,6 @@ package org.apache.ftpserver.ftplet;
  * @author <a href="http://mina.apache.org">Apache MINA Project</a>
  */
 public enum DataType {
-
     /**
      * Binary data type
      */
@@ -39,22 +38,20 @@ public enum DataType {
     /**
      * Parses the argument value from the TYPE command into the type safe class
      *
-     * @param argument
-     *            The argument value from the TYPE command. Not case sensitive
+     * @param argument The argument value from the TYPE command. Not case sensitive
      * @return The appropriate data type
-     * @throws IllegalArgumentException
-     *             If the data type is unknown
+     * @throws IllegalArgumentException If the data type is unknown
      */
     public static DataType parseArgument(char argument) {
         switch (argument) {
-        case 'A':
-        case 'a':
-            return ASCII;
-        case 'I':
-        case 'i':
-            return BINARY;
-        default:
-            throw new IllegalArgumentException("Unknown data type: " + argument);
+            case 'A':
+            case 'a':
+                return ASCII;
+            case 'I':
+            case 'i':
+                return BINARY;
+            default:
+                throw new IllegalArgumentException("Unknown data type: " + argument);
         }
     }
 }

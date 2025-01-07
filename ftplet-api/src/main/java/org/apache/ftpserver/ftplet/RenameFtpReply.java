@@ -26,9 +26,7 @@ package org.apache.ftpserver.ftplet;
  * @author <a href="http://mina.apache.org">Apache MINA Project</a>
  *
  */
-
 public interface RenameFtpReply extends FtpReply {
-
     /**
      * Returns the file before the rename.
      *

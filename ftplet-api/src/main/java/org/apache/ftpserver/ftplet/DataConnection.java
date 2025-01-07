@@ -29,35 +29,32 @@ import java.io.OutputStream;
  * @author <a href="http://mina.apache.org">Apache MINA Project</a>
  */
 public interface DataConnection {
-
     /**
      * Transfer data from the client (e.g. STOR).
+     *
      * @param session The current {@link FtpSession}
-     * @param out
-     *            The {@link OutputStream} containing the destination of the
+     * @param out The {@link OutputStream} containing the destination of the
      *            data from the client.
      * @return The length of the transferred data
      * @throws IOException If the transfer failed
      */
-    long transferFromClient(FtpSession session, OutputStream out)
-            throws IOException;
+    long transferFromClient(FtpSession session, OutputStream out) throws IOException;
 
     /**
      * Transfer data to the client (e.g. RETR).
+     *
      * @param session The current {@link FtpSession}
-     * @param in
-     *            Data to be transfered to the client
+     * @param in Data to be transfered to the client
      * @return The length of the transferred data
      * @throws IOException If the transfer failed
      */
-    long transferToClient(FtpSession session, InputStream in)
-            throws IOException;
+    long transferToClient(FtpSession session, InputStream in) throws IOException;
 
     /**
      * Transfer a string to the client, e.g. during LIST
+     *
      * @param session The current {@link FtpSession}
-     * @param str
-     *            The string to transfer
+     * @param str The string to transfer
      * @throws IOException If the transfer failed
      */
     void transferToClient(FtpSession session, String str) throws IOException;

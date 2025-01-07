@@ -26,5 +26,4 @@ package org.apache.ftpserver.ftplet;
  * @author <a href="http://mina.apache.org">Apache MINA Project</a>
  */
 public interface Authentication {
-
 }

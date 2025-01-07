@@ -24,11 +24,9 @@ package org.apache.ftpserver.ftplet;
  * single file or directory such as MKD, DELE, RMD etc.
  *
  * @author <a href="http://mina.apache.org">Apache MINA Project</a>
- *
  */
 
 public interface FileActionFtpReply extends FtpReply {
-
     /**
      * Returns the file (or directory) on which the action was taken
      * (e.g. uploaded, created, listed)

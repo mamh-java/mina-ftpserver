@@ -27,7 +27,6 @@ package org.apache.ftpserver.ftplet;
  * @author <a href="http://mina.apache.org">Apache MINA Project</a>
  */
 public enum FtpletResult {
-
     /**
      * This return value indicates that the next ftplet method will be called.
      * If no other ftplet is available, the ftpserver will process the request.

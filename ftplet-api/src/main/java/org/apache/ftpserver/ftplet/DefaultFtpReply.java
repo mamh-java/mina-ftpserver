@@ -26,20 +26,20 @@ package org.apache.ftpserver.ftplet;
  * @author <a href="http://mina.apache.org">Apache MINA Project</a>
  */
 public class DefaultFtpReply implements FtpReply {
-
+    /** The reply code */
     private int code;
 
+    /** The reply message */
     private String message;
 
-    /**
-     * time when this reply was sent.
-     */
+    /** time when this reply was sent. */
     private long sentTime = 0L;
 
     private static final String CRLF = "\r\n";
 
     /**
      * Constructor for single-line messages
+     *
      * @param code The reply code
      * @param message The reply message
      */
@@ -51,17 +51,20 @@ public class DefaultFtpReply implements FtpReply {
 
     /**
      * Constructor for multi-line replies
+     *
      * @param code The reply code
-     * @param message The reply message, one line per String
+     * @param messageLines The reply message, one line per String
      */
-    public DefaultFtpReply(final int code, final String[] message) {
+    public DefaultFtpReply(final int code, final String[] messageLines) {
         this.code = code;
 
         StringBuilder sb = new StringBuilder();
-        for (int i = 0; i < message.length; i++) {
-            sb.append(message[i]);
+
+        for (String line:messageLines) {
+            sb.append(line);
             sb.append('\n');
         }
+
         this.message = sb.toString();
         this.sentTime = System.currentTimeMillis();
     }
@@ -89,7 +92,7 @@ public class DefaultFtpReply implements FtpReply {
     }
 
     private boolean isDigit(char c) {
-        return c >= 48 && c <= 57;
+        return c >= '0' && c <= '9';
     }
 
     /*
@@ -101,6 +104,7 @@ public class DefaultFtpReply implements FtpReply {
     public String toString() {
         int code = getCode();
         String notNullMessage = getMessage();
+
         if (notNullMessage == null) {
             notNullMessage = "";
         }
@@ -124,7 +128,6 @@ public class DefaultFtpReply implements FtpReply {
             sb.append(notNullMessage);
             sb.append(CRLF);
         } else {
-
             sb.append(code);
             sb.append("-");
 
@@ -143,10 +146,10 @@ public class DefaultFtpReply implements FtpReply {
                         && line.length() > 2
                         && isDigit(line.charAt(0))
                         && isDigit(line.charAt(1))
-                        && isDigit(line.charAt(2))
-                    ) {
+                        && isDigit(line.charAt(2))) {
                     sb.append("  ");
                 }
+
                 sb.append(line);
                 sb.append(CRLF);
             }

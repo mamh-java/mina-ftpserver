@@ -47,12 +47,12 @@ import java.io.IOException;
  * @author <a href="http://mina.apache.org">Apache MINA Project</a>
  */
 public interface Ftplet {
-
     /**
      * Called by the ftplet container to indicate to a ftplet that the ftplet is
      * being placed into service. The ftplet container calls the init method
      * exactly once after instantiating the ftplet. The init method must
      * complete successfully before the ftplet can receive any requests.
+     *
      * @param ftpletContext The current {@link FtpletContext}
      * @throws FtpException If the initialization failed
      */
@@ -91,8 +91,7 @@ public interface Ftplet {
      * @throws FtpException If a FTP error occurred
      * @throws IOException If an IO error occurred
      */
-    FtpletResult beforeCommand(FtpSession session, FtpRequest request)
-            throws FtpException, IOException;
+    FtpletResult beforeCommand(FtpSession session, FtpRequest request) throws FtpException, IOException;
 
     /**
      * Called by the ftplet container after a command has been executed by the
@@ -122,6 +121,7 @@ public interface Ftplet {
 
     /**
      * Client connect notification method.
+     *
      * @param session The current {@link FtpSession}
      * @return The desired action to be performed by the server
      * @throws FtpException If a FTP error occurred
@@ -131,11 +131,11 @@ public interface Ftplet {
 
     /**
      * Client disconnect notification method. This is the last callback method.
+     *
      * @param session The current {@link FtpSession}
      * @return The desired action to be performed by the server
      * @throws FtpException If a FTP error occurred
      * @throws IOException If an IO error occurred
      */
-    FtpletResult onDisconnect(FtpSession session) throws FtpException,
-            IOException;
+    FtpletResult onDisconnect(FtpSession session) throws FtpException, IOException;
 }

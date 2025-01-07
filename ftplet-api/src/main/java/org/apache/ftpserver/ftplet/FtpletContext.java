@@ -27,27 +27,30 @@ package org.apache.ftpserver.ftplet;
  * @author <a href="http://mina.apache.org">Apache MINA Project</a>
  */
 public interface FtpletContext {
-
     /**
      * Get the user manager.
+     *
      * @return The {@link UserManager}
      */
     UserManager getUserManager();
 
     /**
      * Get file system manager
+     *
      * @return The {@link FileSystemFactory}
      */
     FileSystemFactory getFileSystemManager();
 
     /**
      * Get ftp statistics.
+     *
      * @return The {@link FtpStatistics}
      */
     FtpStatistics getFtpStatistics();
 
     /**
      * Get Ftplet.
+     *
      * @param name The name identifying the {@link Ftplet}
      * @return The {@link Ftplet} registred with the provided name, or null if none exists
      */

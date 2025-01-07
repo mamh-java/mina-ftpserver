@@ -25,7 +25,6 @@ package org.apache.ftpserver.ftplet;
  * @author <a href="http://mina.apache.org">Apache MINA Project</a>
  */
 public interface DataConnectionFactory {
-
     /**
      * Open an active data connection
      *
@@ -40,7 +39,6 @@ public interface DataConnectionFactory {
      *
      * @return <code>true</code> if the data socket will be secured
      */
-
     boolean isSecure();
 
     /**

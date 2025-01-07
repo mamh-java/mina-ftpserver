@@ -25,7 +25,6 @@ package org.apache.ftpserver.ftplet;
  * etc.
  *
  * @author <a href="http://mina.apache.org">Apache MINA Project</a>
- *
  */
 
 public interface DataTransferFtpReply extends FileActionFtpReply {

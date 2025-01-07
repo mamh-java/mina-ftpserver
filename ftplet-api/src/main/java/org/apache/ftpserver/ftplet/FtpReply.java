@@ -25,7 +25,6 @@ package org.apache.ftpserver.ftplet;
  * @author <a href="http://mina.apache.org">Apache MINA Project</a>
  */
 public interface FtpReply {
-
     /**
      * 110 Restart marker reply. In this case, the text is exact and not left to
      * the particular implementation; it must read: MARK yyyy = mmmm Where yyyy
@@ -264,6 +263,7 @@ public interface FtpReply {
 
     /**
      * Tells whether or not this reply indicates a positive completion.
+     *
      * @return <code>true</code>, if this reply is a positive completion or
      * positive intermediate reply; <code>false</code>, otherwise.
      */

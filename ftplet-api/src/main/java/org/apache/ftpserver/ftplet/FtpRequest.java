@@ -25,21 +25,23 @@ package org.apache.ftpserver.ftplet;
  * @author <a href="http://mina.apache.org">Apache MINA Project</a>
  */
 public interface FtpRequest {
-
     /**
      * Get the client request string.
+     *
      * @return The full request line, e.g. "MKDIR newdir"
      */
     String getRequestLine();
 
     /**
      * Returns the ftp request command.
+     *
      * @return The command part of the request line, e.g. "MKDIR"
      */
     String getCommand();
 
     /**
      * Get the ftp request argument.
+     *
      * @return The argument part of the request line, e.g. "newdir"
      */
     String getArgument();

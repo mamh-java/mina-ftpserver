@@ -26,12 +26,10 @@ package org.apache.ftpserver.ftplet;
  * @author <a href="http://mina.apache.org">Apache MINA Project</a>
  */
 public interface Authority {
-
     /**
      * Indicates weather this Authority can authorize a certain request
      *
-     * @param request
-     *            The request to authorize
+     * @param request The request to authorize
      * @return True if the request can be authorized by this Authority
      */
     boolean canAuthorize(AuthorizationRequest request);
@@ -39,8 +37,7 @@ public interface Authority {
     /**
      * Authorize an {@link AuthorizationRequest}.
      *
-     * @param request
-     *            The {@link AuthorizationRequest}
+     * @param request The {@link AuthorizationRequest}
      * @return Returns a populated AuthorizationRequest as long as If
      *         {@link #canAuthorize(AuthorizationRequest)} returns <code>true</code> for the
      *         AuthorizationRequest, otherwise returns <code>null</code>.

@@ -25,7 +25,6 @@ package org.apache.ftpserver.ftplet;
  * @author <a href="http://mina.apache.org">Apache MINA Project</a>
  */
 public enum Structure {
-
     /**
      * File structure
      */
@@ -34,20 +33,19 @@ public enum Structure {
     /**
      * Parses the argument value from the STRU command into the type safe class
      *
-     * @param argument
-     *            The argument value from the STRU command. Not case sensitive
+     * @param argument The argument value from the STRU command. Not case sensitive
      * @return The appropriate structure
-     * @throws IllegalArgumentException
-     *             If the structure is unknown
+     * @throws IllegalArgumentException If the structure is unknown
      */
 
     public static Structure parseArgument(char argument) {
         switch (argument) {
-        case 'F':
-        case 'f':
-            return FILE;
-        default:
-            throw new IllegalArgumentException("Unknown structure: " + argument);
+            case 'F':
+            case 'f':
+                return FILE;
+
+            default:
+                throw new IllegalArgumentException("Unknown structure: " + argument);
         }
     }
 }
