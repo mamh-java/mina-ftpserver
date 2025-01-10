@@ -39,9 +39,7 @@ import org.slf4j.LoggerFactory;
  * @author <a href="http://mina.apache.org">Apache MINA Project</a>
  */
 public class NativeFileSystemView implements FileSystemView {
-
-    private final Logger LOG = LoggerFactory
-    .getLogger(NativeFileSystemView.class);
+    private final Logger LOG = LoggerFactory.getLogger(NativeFileSystemView.class);
 
 
     // the root directory will always end with '/'.
@@ -69,15 +67,15 @@ public class NativeFileSystemView implements FileSystemView {
      *
      * @param user The current user
      * @param caseInsensitive If the OS FS is case sensitive or not
+     * @throws FtpException Actually, never thrown... To be removed!
      */
-    public NativeFileSystemView(User user, boolean caseInsensitive)
-            throws FtpException {
+    public NativeFileSystemView(User user, boolean caseInsensitive) throws FtpException {
         if (user == null) {
             throw new IllegalArgumentException("user can not be null");
         }
+
         if (user.getHomeDirectory() == null) {
-            throw new IllegalArgumentException(
-                    "User home directory can not be null");
+            throw new IllegalArgumentException("User home directory can not be null");
         }
 
         this.caseInsensitive = caseInsensitive;
@@ -90,7 +88,6 @@ public class NativeFileSystemView implements FileSystemView {
         LOG.debug("Native filesystem view created for user \"{}\" with root \"{}\"", user.getName(), rootDir);
 
         this.rootDir = rootDir;
-
         this.user = user;
 
         currDir = "/";
@@ -111,13 +108,14 @@ public class NativeFileSystemView implements FileSystemView {
      */
     public FtpFile getWorkingDirectory() {
         FtpFile fileObj = null;
+
         if (currDir.equals("/")) {
             fileObj = new NativeFtpFile("/", new File(rootDir), user);
         } else {
             File file = new File(rootDir, currDir.substring(1));
             fileObj = new NativeFtpFile(currDir, file, user);
-
         }
+
         return fileObj;
     }
 
@@ -125,14 +123,13 @@ public class NativeFileSystemView implements FileSystemView {
      * {@inheritDoc}
      */
     public FtpFile getFile(String file) {
-
         // get actual file object
-        String physicalName = getPhysicalName(rootDir,
-                currDir, file, caseInsensitive);
+        String physicalName = getPhysicalName(rootDir, currDir, file, caseInsensitive);
         File fileObj = new File(physicalName);
 
         // strip the root directory and return
         String userFileName = physicalName.substring(rootDir.length() - 1);
+
         return new NativeFtpFile(userFileName, fileObj, user);
     }
 
@@ -304,6 +301,7 @@ public class NativeFileSystemView implements FileSystemView {
     private String normalizeSeparateChar(final String pathName) {
         String normalizedPathName = pathName.replace(File.separatorChar, '/');
         normalizedPathName = normalizedPathName.replace('\\', '/');
+
         return normalizedPathName;
     }
 

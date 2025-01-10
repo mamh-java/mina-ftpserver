@@ -44,8 +44,7 @@ public class FtpResponseEncoder extends ProtocolEncoderAdapter {
         }
     };
 
-    public void encode(IoSession session, Object message,
-            ProtocolEncoderOutput out) throws Exception {
+    public void encode(IoSession session, Object message, ProtocolEncoderOutput out) throws Exception {
         String value = message.toString();
 
         IoBuffer buf = IoBuffer.allocate(value.length()).setAutoExpand(true);

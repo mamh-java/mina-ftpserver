@@ -26,6 +26,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Properties;
 
 import org.apache.ftpserver.FtpServerConfigurationException;
@@ -263,5 +264,71 @@ public class DefaultMessageResource implements MessageResource {
         }
 
         messages.clear();
+    }
+
+    /**
+     * A string representation if the MessageResource instance
+     *
+     * @return The MessageRessource content
+     */
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+
+        sb.append("MessageResource:\n");
+
+        if (languages != null) {
+            sb.append("    Supported languages:\n");
+
+            for (String language:languages) {
+                sb.append("        ").append( language ).append( '\n');
+
+                PropertiesPair properties = messages.get(language);
+
+                sb.append("            Default properties:\n" );
+
+                for (Entry<Object, Object> entry : properties.defaultProperties.entrySet()) {
+                    sb.append("                <");
+                    sb.append(entry.getKey());
+                    sb.append(',');
+                    sb.append(entry.getValue());
+                    sb.append(">\n");
+                }
+
+                sb.append("            Custom properties:\n" );
+
+                for (Entry<Object, Object> entry : properties.customProperties.entrySet()) {
+                    sb.append("                <");
+                    sb.append(entry.getKey());
+                    sb.append(',');
+                    sb.append(entry.getValue());
+                    sb.append(">\n");
+                }
+            }
+        } else {
+            sb.append("    No supported language, using the default file\n");
+            PropertiesPair properties = messages.get(null);
+
+            sb.append("        Default properties:\n");
+
+            for (Entry<Object, Object> entry : properties.defaultProperties.entrySet()) {
+                sb.append("            <");
+                sb.append(entry.getKey());
+                sb.append(',');
+                sb.append(entry.getValue());
+                sb.append(">\n");
+            }
+
+            sb.append("        Custom properties:\n");
+
+            for (Entry<Object, Object> entry : properties.customProperties.entrySet()) {
+                sb.append("            <");
+                sb.append(entry.getKey());
+                sb.append(',');
+                sb.append(entry.getValue());
+                sb.append(">\n");
+            }
+        }
+
+        return sb.toString();
     }
 }

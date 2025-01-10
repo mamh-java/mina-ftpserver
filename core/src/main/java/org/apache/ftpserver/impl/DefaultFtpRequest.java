@@ -54,22 +54,24 @@ public class DefaultFtpRequest implements FtpRequest {
         //going to be accurate and need to look for an alternative solution.
         receivedTime = System.currentTimeMillis();
         line = requestLine.trim();
-        int spInd = line.indexOf(' ');
-        command = parseCmd(line, spInd);
-        argument = parseArg(line, spInd);
+        int spaceIndex = line.indexOf(' ');
+        command = parseCmd(line, spaceIndex);
+        argument = parseArg(line, spaceIndex);
     }
 
     /**
      * Parse the ftp command line.
      */
-    private String parseCmd(final String lineToParse, int spInd) {
+    private String parseCmd(final String lineToParse, int spaceIndex) {
         String cmd = null;
 
-        if (spInd != -1) {
-            cmd = line.substring(0, spInd).toUpperCase();
+        if (spaceIndex != -1) {
+            cmd = line.substring(0, spaceIndex);
         } else {
-            cmd = line.toUpperCase();
+            cmd = line;
         }
+
+        cmd = cmd.toUpperCase();
 
         if ((cmd.length() > 0) && (cmd.charAt(0) == 'X')) {
             cmd = cmd.substring(1);
@@ -78,10 +80,11 @@ public class DefaultFtpRequest implements FtpRequest {
         return cmd;
     }
 
-    private String parseArg(final String lineToParse, int spInd) {
+    private String parseArg(final String lineToParse, int spaceIndex) {
         String arg = null;
-        if (spInd != -1) {
-            arg = line.substring(spInd + 1);
+
+        if (spaceIndex != -1) {
+            arg = line.substring(spaceIndex + 1);
 
             if (arg.isEmpty()) {
                 arg = null;

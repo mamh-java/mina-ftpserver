@@ -39,7 +39,7 @@ public class EncryptUtils {
      *
      * @param source The data to encrypt
      * @param algorithm The algorithm to use
-     * @throws NoSuchAlgorithmException If th algorithm does not exist
+     * @throws NoSuchAlgorithmException If the algorithm does not exist
      * @return The encrypted data
      */
     public static final byte[] encrypt(byte[] source, String algorithm) throws NoSuchAlgorithmException {
@@ -98,7 +98,6 @@ public class EncryptUtils {
         }
     }
 
-
     /**
      * Encrypt string using SHA-256 algorithm
      *
@@ -113,7 +112,6 @@ public class EncryptUtils {
             throw new RuntimeException(ex);
         }
     }
-
 
     /**
      * Encrypt string using SHA-512 algorithm

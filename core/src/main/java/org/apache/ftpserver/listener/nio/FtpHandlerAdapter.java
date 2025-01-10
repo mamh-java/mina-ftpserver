@@ -48,12 +48,18 @@ public class FtpHandlerAdapter extends IoHandlerAdapter {
         this.ftpHandler = ftpHandler;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public void exceptionCaught(IoSession session, Throwable cause)
             throws Exception {
         FtpIoSession ftpSession = new FtpIoSession(session, context);
         ftpHandler.exceptionCaught(ftpSession, cause);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public void messageReceived(IoSession session, Object message)
             throws Exception {
         FtpIoSession ftpSession = new FtpIoSession(session, context);
@@ -62,16 +68,25 @@ public class FtpHandlerAdapter extends IoHandlerAdapter {
         ftpHandler.messageReceived(ftpSession, request);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public void messageSent(IoSession session, Object message) throws Exception {
         FtpIoSession ftpSession = new FtpIoSession(session, context);
         ftpHandler.messageSent(ftpSession, (FtpReply) message);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public void sessionClosed(IoSession session) throws Exception {
         FtpIoSession ftpSession = new FtpIoSession(session, context);
         ftpHandler.sessionClosed(ftpSession);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public void sessionCreated(IoSession session) throws Exception {
         FtpIoSession ftpSession = new FtpIoSession(session, context);
         MdcInjectionFilter.setProperty(session, "session", ftpSession.getSessionId().toString());
@@ -80,12 +95,18 @@ public class FtpHandlerAdapter extends IoHandlerAdapter {
 
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public void sessionIdle(IoSession session, IdleStatus status)
             throws Exception {
         FtpIoSession ftpSession = new FtpIoSession(session, context);
         ftpHandler.sessionIdle(ftpSession, status);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public void sessionOpened(IoSession session) throws Exception {
         FtpIoSession ftpSession = new FtpIoSession(session, context);
         ftpHandler.sessionOpened(ftpSession);

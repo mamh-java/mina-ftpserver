@@ -32,9 +32,10 @@ import org.slf4j.LoggerFactory;
  * @author <a href="http://mina.apache.org">Apache MINA Project</a>
  */
 public class FtpLoggingFilter extends LoggingFilter {
-
+    /** A flag telling of the password should be masked in the logs. obvioulsy SET TO TRUE! */
     private boolean maskPassword = true;
 
+    /** The logger to use */
     private final Logger logger;
 
     /**
@@ -71,23 +72,15 @@ public class FtpLoggingFilter extends LoggingFilter {
      * {@inheritDoc}
      */
     @Override
-    public void messageReceived(NextFilter nextFilter, IoSession session,
-            Object message) throws Exception {
+    public void messageReceived(NextFilter nextFilter, IoSession session, Object message) throws Exception {
         String request = (String) message;
 
-        String logMessage;
-        if (maskPassword) {
-
-            if (request.trim().toUpperCase().startsWith("PASS ")) {
-                logMessage = "PASS *****";
-            } else {
-                logMessage = request;
-            }
+        if (maskPassword && (request.trim().toUpperCase().startsWith("PASS "))) {
+            logger.info("RECEIVED: PASS *****");
         } else {
-            logMessage = request;
+            logger.info("RECEIVED: {}", request);
         }
 
-        logger.info("RECEIVED: {}", logMessage);
         nextFilter.messageReceived(session, message);
     }
 
@@ -109,5 +102,4 @@ public class FtpLoggingFilter extends LoggingFilter {
     public void setMaskPassword(boolean maskPassword) {
         this.maskPassword = maskPassword;
     }
-
 }

@@ -38,8 +38,11 @@ public class PropertiesUserManagerFactory implements UserManagerFactory {
 
     private URL userDataURL;
 
-    /** The default password encryption method*/
-    private PasswordEncryptor passwordEncryptor = new Md5PasswordEncryptor();
+    /**
+     * The default password encryption method. It's a one way mechanism, ie
+     * a password is *never* unencrypted.
+     **/
+    private PasswordEncryptor passwordEncryptor = new Sha512PasswordEncryptor();
 
     /**
      * Creates a {@link PropertiesUserManager} instance based on the provided configuration

@@ -81,7 +81,6 @@ import org.apache.ftpserver.command.impl.USER;
  * @author <a href="http://mina.apache.org">Apache MINA Project</a>
  */
 public class CommandFactoryFactory {
-
     private static final HashMap<String, Command> DEFAULT_COMMAND_MAP = new HashMap<>();
 
     static {
@@ -116,6 +115,7 @@ public class CommandFactoryFactory {
         DEFAULT_COMMAND_MAP.put("MDTM", new MDTM());                    // rfc3659, 3
         // "MFCT, draft-somers-ftp-mfxx, 4
         // "MFF, draft-somers-ftp-mfxx, 5
+        // "MIC,  rfc2228, 3?
         DEFAULT_COMMAND_MAP.put("MFMT", new MFMT());                    // draft-somers-ftp-mfxx, 3
         DEFAULT_COMMAND_MAP.put("MKD", new MKD());                      // rfc959, 4.1.3
         DEFAULT_COMMAND_MAP.put("MLSD", new MLSD());                    // rfc3659, 7
@@ -166,6 +166,7 @@ public class CommandFactoryFactory {
 
     /**
      * Create an {@link CommandFactory} based on the configuration on the factory.
+     *
      * @return The {@link CommandFactory}
      */
     public CommandFactory createCommandFactory() {
@@ -210,6 +211,7 @@ public class CommandFactoryFactory {
 
     /**
      * Add or override a command.
+     *
      * @param commandName The command name, e.g. STOR
      * @param command The command
      */
