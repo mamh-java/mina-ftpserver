@@ -45,7 +45,9 @@ import org.slf4j.LoggerFactory;
 /**
  * <strong>Internal class, do not use directly.</strong>
  *
+ * <p>
  * <code>STOU &lt;CRLF&gt;</code><br>
+ * <p>
  *
  * This command behaves like STOR except that the resultant file is to be
  * created in the current directory under a name unique to that directory. The

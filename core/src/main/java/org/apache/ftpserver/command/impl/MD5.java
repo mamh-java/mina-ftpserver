@@ -39,8 +39,10 @@ import org.slf4j.LoggerFactory;
 /**
  * <strong>Internal class, do not use directly.</strong>
  *
+ * <p>
  * <code>MD5 &lt;SP&gt; &lt;pathname&gt; &lt;CRLF&gt;</code><br>
  * <code>MMD5 &lt;SP&gt; &lt;pathnames&gt; &lt;CRLF&gt;</code><br>
+ * <p>
  *
  * Returns the MD5 value for a file or multiple files according to
  * draft-twine-ftpmd5-00.txt.

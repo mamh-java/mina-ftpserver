@@ -40,7 +40,7 @@ import org.apache.mina.core.session.IoSession;
 
 /**
  * <strong>Internal class, do not use directly.</strong>
- *
+ * <p>
  * Sends the list of all the connected users.
  *
  * @author <a href="http://mina.apache.org">Apache MINA Project</a>

@@ -32,7 +32,9 @@ import org.apache.ftpserver.message.MessageResource;
 /**
  * <strong>Internal class, do not use directly.</strong>
  *
+ * <p>
  * <code>HELP [&lt;SP&gt; &lt;string&gt;] &lt;CRLF&gt;</code><br>
+ * <p>
  *
  * This command shall cause the server to send helpful information regarding its
  * implementation status over the control connection to the user. The command

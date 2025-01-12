@@ -31,7 +31,9 @@ import org.apache.ftpserver.impl.LocalizedFtpReply;
 /**
  * <strong>Internal class, do not use directly.</strong>
  *
+ * <p>
  * <code>ACCT &lt;CRLF&gt;</code><br>
+ * <p>
  *
  * Acknowledges the ACCT (account) command with a 202 reply. The command however
  * is irrelevant to any workings.
@@ -39,7 +41,6 @@ import org.apache.ftpserver.impl.LocalizedFtpReply;
  * @author <a href="http://mina.apache.org">Apache MINA Project</a>
  */
 public class ACCT extends AbstractCommand {
-
     /**
      * Execute command.
      *

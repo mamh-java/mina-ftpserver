@@ -105,7 +105,7 @@ public class DefaultFtpServerContext implements FtpServerContext {
      * Create default users:
      * <ul>
      *  <li>Admin</li>
-     *  <li>Anonymous</ul>
+     *  <li>Anonymous</li>
      * </ul>
      */
     public void createDefaultUsers() throws Exception {

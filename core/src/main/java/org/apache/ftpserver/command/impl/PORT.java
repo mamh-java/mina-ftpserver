@@ -40,7 +40,9 @@ import org.slf4j.LoggerFactory;
 /**
  * <strong>Internal class, do not use directly.</strong>
  *
- * <code>PORT &lt;SP&gt; <host-port> &lt;CRLF&gt;</code><br>
+ * <p>
+ * <code>PORT &lt;SP&gt; &lt;host-port&gt; &lt;CRLF&gt;</code><br>
+ * <p>
  *
  * The argument is a HOST-PORT specification for the data port to be used in
  * data connection. There are defaults for both the user and server data ports,
@@ -51,9 +53,11 @@ import org.slf4j.LoggerFactory;
  * decimal number (in character string representation). The fields are separated
  * by commas. A port command would be:
  *
+ * <pre>
  * PORT h1,h2,h3,h4,p1,p2
+ * </pre>
  *
- * where h1 is the high order 8 bits of the internet host address.
+ * where <code>h1</code> is the high order 8 bits of the internet host address.
  *
  * @author <a href="http://mina.apache.org">Apache MINA Project</a>
  */

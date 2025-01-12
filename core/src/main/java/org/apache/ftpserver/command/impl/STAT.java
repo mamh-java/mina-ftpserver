@@ -39,7 +39,9 @@ import org.apache.ftpserver.impl.LocalizedFtpReply;
 /**
  * <strong>Internal class, do not use directly.</strong>
  *
+ * <p>
  * <code>STAT [&lt;SP&gt; &lt;pathname&gt;] &lt;CRLF&gt;</code><br>
+ * <p>
  *
  * This command shall cause a status response to be sent over the control
  * connection in the form of a reply.

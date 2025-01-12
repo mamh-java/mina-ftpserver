@@ -38,7 +38,7 @@ import org.slf4j.LoggerFactory;
 
 /**
  * <strong>Internal class, do not use directly.</strong>
- *
+ * <p>
  * This SITE command returns the specified user information.
  *
  * @author <a href="http://mina.apache.org">Apache MINA Project</a>

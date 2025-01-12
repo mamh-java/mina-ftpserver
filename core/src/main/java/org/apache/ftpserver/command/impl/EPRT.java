@@ -36,12 +36,15 @@ import org.slf4j.LoggerFactory;
 
 /**
  * <strong>Internal class, do not use directly.</strong>
- *
+ * <p>
  * The EPRT command allows for the specification of an extended address for the
  * data connection. The extended address MUST consist of the network protocol as
  * well as the network and transport addresses. The format of EPRT is:
  *
- * EPRT<space><d><net-prt><d><net-addr><d><tcp-port><d>
+ * <p>
+ * <code>EPRT&lt;space&gt;&lt;d&gt;&lt;net-prt&gt;&lt;d&gt;&lt;net-addr&gt;&lt;d&gt;&lt;tcp-port&gt;&lt;d&gt;</code>
+ * <p>
+ * where &lt;d&gt; is a delimiter, an ASCII char between 33 to 126. Character '|' is recommanded.
  *
  * @author <a href="http://mina.apache.org">Apache MINA Project</a>
  */

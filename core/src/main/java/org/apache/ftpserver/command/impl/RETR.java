@@ -47,7 +47,9 @@ import org.slf4j.LoggerFactory;
 /**
  * <strong>Internal class, do not use directly.</strong>
  *
+ * <p>
  * <code>RETR &lt;SP&gt; &lt;pathname&gt; &lt;CRLF&gt;</code><br>
+ * <p>
  *
  * This command causes the server-DTP to transfer a copy of the file, specified
  * in the pathname, to the server- or user-DTP at the other end of the data

@@ -31,7 +31,7 @@ import org.apache.ftpserver.impl.LocalizedFtpReply;
 
 /**
  * <strong>Internal class, do not use directly.</strong>
- *
+ * <p>
  * Show SITE help message.
  *
  * @author <a href="http://mina.apache.org">Apache MINA Project</a>

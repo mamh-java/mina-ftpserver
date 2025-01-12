@@ -34,7 +34,9 @@ import org.slf4j.LoggerFactory;
 /**
  * <strong>Internal class, do not use directly.</strong>
  *
+ * <p>
  * <code>STRU &lt;SP&gt; &lt;structure-code&gt; &lt;CRLF&gt;</code><br>
+ * <p>
  *
  * The argument is a single Telnet character code specifying file structure.
  *

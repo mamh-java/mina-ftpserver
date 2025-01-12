@@ -46,7 +46,9 @@ import org.slf4j.LoggerFactory;
 /**
  * <strong>Internal class, do not use directly.</strong>
  *
+ * <p>
  * <code>NLST [&lt;SP&gt; &lt;pathname&gt;] &lt;CRLF&gt;</code><br>
+ * <p>
  *
  * This command causes a directory listing to be sent from server to user site.
  * The pathname should specify a directory or other system-specific file group

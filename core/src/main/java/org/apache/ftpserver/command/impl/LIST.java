@@ -46,7 +46,9 @@ import org.slf4j.LoggerFactory;
 /**
  * <strong>Internal class, do not use directly.</strong>
  *
+ * <p>
  * <code>LIST [&lt;SP&gt; &lt;pathname&gt;] &lt;CRLF&gt;</code><br>
+ * <p>
  *
  * This command causes a list to be sent from the server to the passive DTP. If
  * the pathname specifies a directory or other group of files, the server should

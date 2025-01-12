@@ -26,7 +26,7 @@ import org.apache.ftpserver.usermanager.PasswordEncryptor;
 
 /**
  * <strong>Internal class, do not use directly.</strong>
- *
+ * <p>
  * Abstract common base type for {@link UserManager} implementations
  *
  * @author <a href="http://mina.apache.org">Apache MINA Project</a>

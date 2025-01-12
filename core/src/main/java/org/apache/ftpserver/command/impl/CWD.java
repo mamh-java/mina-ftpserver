@@ -36,7 +36,9 @@ import org.slf4j.LoggerFactory;
 /**
  * <strong>Internal class, do not use directly.</strong>
  *
+ * <p>
  * <code>CWD  &lt;SP&gt; &lt;pathname&gt; &lt;CRLF&gt;</code><br>
+ * <p>
  *
  * This command allows the user to work with a different directory for file
  * storage or retrieval without altering his login or accounting information.

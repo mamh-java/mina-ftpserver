@@ -45,7 +45,9 @@ import org.slf4j.LoggerFactory;
 /**
  * <strong>Internal class, do not use directly.</strong>
  *
- * <code>PASS &lt;SP&gt; <password> &lt;CRLF&gt;</code><br>
+ * <p>
+ * <code>PASS &lt;SP&gt; &lt;password&gt; &lt;CRLF&gt;</code><br>
+ * <p>
  *
  * The argument field is a Telnet string specifying the user's password. This
  * command must be immediately preceded by the user name command.

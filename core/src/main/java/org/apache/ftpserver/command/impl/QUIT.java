@@ -33,7 +33,9 @@ import org.slf4j.LoggerFactory;
 /**
  * <strong>Internal class, do not use directly.</strong>
  *
+ * <p>
  * <code>QUIT &lt;CRLF&gt;</code><br>
+ * <p>
  *
  * This command terminates a USER and if file transfer is not in progress, the
  * server closes the control connection.

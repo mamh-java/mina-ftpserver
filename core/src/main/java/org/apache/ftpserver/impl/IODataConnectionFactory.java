@@ -391,7 +391,6 @@ public class IODataConnectionFactory implements ServerDataConnectionFactory {
     }
 
     /**
-     * @see org.apache.ftpserver.DataConnectionFactory#isSecure()
      * {@inheritDoc}
      */
     public boolean isSecure() {
@@ -407,7 +406,6 @@ public class IODataConnectionFactory implements ServerDataConnectionFactory {
     }
 
     /**
-     * @see org.apache.ftpserver.DataConnectionFactory#isZipMode()
      * {@inheritDoc}
      */
     public boolean isZipMode() {

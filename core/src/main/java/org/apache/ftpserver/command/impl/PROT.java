@@ -34,7 +34,7 @@ import org.apache.ftpserver.ssl.SslConfiguration;
 
 /**
  * <strong>Internal class, do not use directly.</strong>
- *
+ * <p>
  * Data channel protection level.
  *
  * @author <a href="http://mina.apache.org">Apache MINA Project</a>

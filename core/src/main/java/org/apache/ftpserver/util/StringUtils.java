@@ -165,9 +165,9 @@ public class StringUtils {
      *
      * @param source the HTML code to be processes
      * @param bReplaceNl if true '\n' will be replaced by <br>
-     * @param bReplaceTag if true '<' will be replaced by &lt; and
-     *                          '>' will be replaced by &gt;
-     * @param bReplaceQuote if true '\"' will be replaced by &quot;
+     * @param bReplaceTag if true '&lt;' will be replaced by &amp;lt; and
+     *                          '&gt;' will be replaced by &amp;gt;
+     * @param bReplaceQuote if true '\"' will be replaced by &amp;quot;
      * @return The HTML formatted string
      */
     public static final String formatHtml(String source, boolean bReplaceNl,

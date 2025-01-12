@@ -36,7 +36,9 @@ import org.slf4j.LoggerFactory;
 /**
  * <strong>Internal class, do not use directly.</strong>
  *
+ * <p>
  * <code>MKD  &lt;SP&gt; &lt;pathname&gt; &lt;CRLF&gt;</code><br>
+ * <p>
  *
  * This command causes the directory specified in the pathname to be created as
  * a directory (if the pathname is absolute) or as a subdirectory of the current

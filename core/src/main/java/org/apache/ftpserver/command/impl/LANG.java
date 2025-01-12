@@ -33,7 +33,7 @@ import org.apache.ftpserver.message.MessageResource;
 
 /**
  * <strong>Internal class, do not use directly.</strong>
- *
+ * <p>
  * A new command "LANG" is added to the FTP command set to allow server-FTP
  * process to determine in which language to present server greetings and the
  * textual part of command responses.

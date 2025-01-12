@@ -42,10 +42,8 @@ public interface Listener {
      * Start the listener, will initiate the listener waiting on the socket. The
      * method should not return until the listener has started accepting socket
      * requests.
-     * @param serverContext The current {@link FtpServerContext}
      *
-     * @throws Exception
-     *             On error during start up
+     * @param serverContext The current {@link FtpServerContext}
      */
     void start(FtpServerContext serverContext);
 
@@ -59,7 +57,7 @@ public interface Listener {
     /**
      * Checks if the listener is currently started.
      *
-     * @return False if the listener is started
+     * @return <code>false</code> if the listener is started
      */
     boolean isStopped();
 
@@ -79,7 +77,7 @@ public interface Listener {
     /**
      * Checks if the listener is currently suspended
      *
-     * @return True if the listener is suspended
+     * @return <code>true</code> if the listener is suspended
      */
     boolean isSuspended();
 
@@ -133,6 +131,7 @@ public interface Listener {
     /**
      * Get the number of seconds during which no network activity
      * is allowed before a session is closed due to inactivity.
+     *
      * @return The idle time out
      */
     int getIdleTimeout();

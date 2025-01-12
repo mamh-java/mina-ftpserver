@@ -35,7 +35,7 @@ import org.apache.ftpserver.util.DateUtils;
 
 /**
  * <strong>Internal class, do not use directly.</strong>
- *
+ * <p>
  * Show all statistics information.
  *
  * @author <a href="http://mina.apache.org">Apache MINA Project</a>

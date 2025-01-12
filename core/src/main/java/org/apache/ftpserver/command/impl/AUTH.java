@@ -41,7 +41,7 @@ import org.slf4j.LoggerFactory;
 
 /**
  * <strong>Internal class, do not use directly.</strong>
- *
+ * <p>
  * This server supports explicit SSL support.
  *
  * @author <a href="http://mina.apache.org">Apache MINA Project</a>

@@ -31,7 +31,9 @@ import org.apache.ftpserver.impl.LocalizedFtpReply;
 /**
  * <strong>Internal class, do not use directly.</strong>
  *
+ * <p>
  * <code>REIN &lt;CRLF&gt;</code><br>
+ * <p>
  *
  * This command flushes a USER, without affecting transfers in progress. The
  * server state should otherwise be as when the user first connects.

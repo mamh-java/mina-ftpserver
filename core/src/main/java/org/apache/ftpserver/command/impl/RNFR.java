@@ -35,7 +35,9 @@ import org.slf4j.LoggerFactory;
 /**
  * <strong>Internal class, do not use directly.</strong>
  *
+ * <p>
  * <code>RNFR &lt;SP&gt; &lt;pathname&gt; &lt;CRLF&gt;</code><br>
+ * <p>
  *
  * This command specifies the old pathname of the file which is to be renamed.
  * This command must be immediately followed by a "rename to" command specifying

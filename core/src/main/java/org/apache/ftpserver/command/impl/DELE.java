@@ -36,7 +36,9 @@ import org.slf4j.LoggerFactory;
 /**
  * <strong>Internal class, do not use directly.</strong>
  *
+ * <p>
  * <code>DELE &lt;SP&gt; &lt;pathname&gt; &lt;CRLF&gt;</code><br>
+ * <p>
  *
  * This command causes the file specified in the pathname to be deleted at the
  * server site.

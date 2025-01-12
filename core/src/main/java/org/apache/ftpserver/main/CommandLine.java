@@ -30,7 +30,6 @@ import org.springframework.context.support.FileSystemXmlApplicationContext;
  * @author <a href="http://mina.apache.org">Apache MINA Project</a>
  */
 public class CommandLine {
-
     /**
      * The purpose of this class is to allow the final user to start the
      * FtpServer application. Because of that it has only <code>static</code>
@@ -102,6 +101,10 @@ public class CommandLine {
 
     /**
      * Get the configuration object.
+     *
+     * @param args The invocation arguments
+     * @return An instance of FtpServer
+     * @throws Exception If we've got an error trying to get the configuration
      */
     protected FtpServer getConfiguration(String[] args) throws Exception {
         switch (args.length) {

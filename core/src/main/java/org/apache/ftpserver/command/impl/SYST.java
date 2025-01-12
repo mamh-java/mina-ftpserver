@@ -31,7 +31,9 @@ import org.apache.ftpserver.impl.LocalizedFtpReply;
 /**
  * <strong>Internal class, do not use directly.</strong>
  *
+ * <p>
  * <code>SYST &lt;CRLF&gt;</code><br>
+ * <p>
  *
  * This command is used to find out the type of operating system at the server.
  *

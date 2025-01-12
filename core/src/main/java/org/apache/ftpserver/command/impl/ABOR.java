@@ -31,7 +31,9 @@ import org.apache.ftpserver.impl.LocalizedFtpReply;
 /**
  * <strong>Internal class, do not use directly.</strong>
  *
+ * <p>
  * <code>ABOR &lt;CRLF&gt;</code><br>
+ * <p>
  *
  * This command tells the server to abort the previous FTP service command and
  * any associated transfer of data. No action is to be taken if the previous
@@ -43,7 +45,6 @@ import org.apache.ftpserver.impl.LocalizedFtpReply;
  * @author <a href="http://mina.apache.org">Apache MINA Project</a>
  */
 public class ABOR extends AbstractCommand {
-
     /**
      * Execute command
      *

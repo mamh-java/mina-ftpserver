@@ -40,7 +40,9 @@ import org.slf4j.LoggerFactory;
 /**
  * <strong>Internal class, do not use directly.</strong>
  *
+ * <p>
  * <code>USER &lt;SP&gt; &lt;username&gt; &lt;CRLF&gt;</code><br>
+ * <p>
  *
  * The argument field is a Telnet string identifying the user. The user
  * identification is that which is required by the server for access to its file

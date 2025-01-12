@@ -32,7 +32,9 @@ import org.apache.ftpserver.impl.LocalizedFtpReply;
 /**
  * <strong>Internal class, do not use directly.</strong>
  *
+ * <p>
  * <code>NOOP &lt;CRLF&gt;</code><br>
+ * <p>
  *
  * This command does not affect any parameters or previously entered commands.
  * It specifies no action other than that the server send an OK reply.

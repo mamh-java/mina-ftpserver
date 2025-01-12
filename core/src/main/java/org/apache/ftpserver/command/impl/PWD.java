@@ -33,7 +33,9 @@ import org.apache.ftpserver.impl.LocalizedFtpReply;
 /**
  * <strong>Internal class, do not use directly.</strong>
  *
+ * <p>
  * <code>PWD  &lt;CRLF&gt;</code><br>
+ * <p>
  *
  * This command causes the name of the current working directory to be returned
  * in the reply.

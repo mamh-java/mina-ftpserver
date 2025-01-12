@@ -115,8 +115,6 @@ public class DefaultSslConfiguration implements SslConfiguration {
     }
 
     /**
-     * @see SslConfiguration#getSSLContext(String)
-     *
      * {@inheritDoc}
      */
     public SSLContext getSSLContext(String enabledProtocol) throws GeneralSecurityException {
@@ -124,8 +122,6 @@ public class DefaultSslConfiguration implements SslConfiguration {
     }
 
     /**
-     * @see SslConfiguration#getEnabledProtocol()
-     *
      * @deprecated Use {@link #getEnabledProtocol()}
      *
      * {@inheritDoc}
@@ -135,8 +131,6 @@ public class DefaultSslConfiguration implements SslConfiguration {
     }
 
     /**
-     * @see SslConfiguration#getEnabledProtocol()
-     *
      * {@inheritDoc}
      */
     public String getEnabledProtocol() {
@@ -149,8 +143,6 @@ public class DefaultSslConfiguration implements SslConfiguration {
     }
 
     /**
-     * @see SslConfiguration#getEnabledProtocols()
-     *
      * {@inheritDoc}
      */
     public String[] getEnabledProtocols() {
@@ -158,8 +150,6 @@ public class DefaultSslConfiguration implements SslConfiguration {
     }
 
     /**
-     * @see SslConfiguration#getClientAuth()
-     *
      * {@inheritDoc}
      */
     public ClientAuth getClientAuth() {
@@ -167,8 +157,6 @@ public class DefaultSslConfiguration implements SslConfiguration {
     }
 
     /**
-     * @see SslConfiguration#getSSLContext()
-     *
      * {@inheritDoc}
      */
     public SSLContext getSSLContext() throws GeneralSecurityException {
@@ -176,8 +164,6 @@ public class DefaultSslConfiguration implements SslConfiguration {
     }
 
     /**
-     * @see SslConfiguration#getEnabledCipherSuites()
-     *
      * {@inheritDoc}
      */
     public String[] getEnabledCipherSuites() {

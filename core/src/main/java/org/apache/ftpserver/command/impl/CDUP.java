@@ -36,7 +36,9 @@ import org.slf4j.LoggerFactory;
 /**
  * <strong>Internal class, do not use directly.</strong>
  *
+ * <p>
  * <code>CDUP &lt;CRLF&gt;</code><br>
+ * <p>
  *
  * This command is a special case of CWD, and is included to simplify the
  * implementation of programs for transferring directory trees between operating

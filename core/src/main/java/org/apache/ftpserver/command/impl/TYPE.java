@@ -36,6 +36,7 @@ import org.slf4j.LoggerFactory;
  *
  * <code>TYPE &lt;SP&gt; &lt;type-code&gt; &lt;CRLF&gt;</code><br>
  *
+ * <p>
  * The argument specifies the representation type.
  *
  * @author <a href="http://mina.apache.org">Apache MINA Project</a>

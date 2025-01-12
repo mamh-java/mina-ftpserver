@@ -48,10 +48,11 @@ import org.slf4j.LoggerFactory;
  * <strong>Internal class, do not use directly.</strong>
  *
  * <p>Properties file based <code>UserManager</code> implementation. We use
- * <code>user.properties</code> file to store user data.</p>
+ * <code>user.properties</code> file to store user data.
  *
- * </p>The file will use the following properties for storing users:</p>
+ * <p>The file will use the following properties for storing users:
  * <table>
+ * <caption>User data properties</caption>
  * <tr>
  *      <th>Property</th>
  *      <th>Documentation</th>
@@ -98,7 +99,7 @@ import org.slf4j.LoggerFactory;
  * </tr>
  * </table>
  *
- * <p>Example:</p>
+ * <p>Example:
  * <pre>
  * ftpserver.user.admin.homedirectory=/ftproot
  * ftpserver.user.admin.userpassword=admin
