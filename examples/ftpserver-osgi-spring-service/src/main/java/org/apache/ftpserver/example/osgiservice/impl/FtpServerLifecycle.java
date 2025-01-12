@@ -23,25 +23,54 @@ package org.apache.ftpserver.example.osgiservice.impl;
 import org.apache.ftpserver.FtpServer;
 
 /**
+ * An OSGi life cycle management class
+ *
  * @author <a href="http://mina.apache.org">Apache MINA Project</a>
  */
 public class FtpServerLifecycle {
-
+    /** The server to manage */
     private FtpServer server;
 
+    /**
+     * A default constructor
+     */
+    public FtpServerLifecycle() {
+        // Do nothing
+    }
+
+    /**
+     * Get the FtpServer instance
+     *
+     * @return The FtpServer instance
+     */
     public FtpServer getServer() {
         return server;
     }
 
+    /**
+     * Set the FtpServer instance
+     *
+     * @param server The FtpServer instance
+     */
     public void setServer(FtpServer server) {
         this.server = server;
     }
 
+    /**
+     * Initialize the FtpServer
+     *
+     * @throws Exception If the server can't be started
+     */
     public void init() throws Exception {
         server.start();
         System.out.println("Server started");
     }
 
+    /**
+     * Stop the server
+     *
+     * @throws Exception If the server can't be stopped
+     */
     public void destroy() throws Exception {
         server.stop();
         System.out.println("Server stopped");

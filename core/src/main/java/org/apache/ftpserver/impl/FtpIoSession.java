@@ -60,48 +60,77 @@ import org.slf4j.LoggerFactory;
  *
  */
 public class FtpIoSession implements IoSession {
+    /// Contains user name between USER and PASS commands
+    /** Prefix for all the attributes*/
+    public static final String ATTRIBUTE_PREFIX = "org.apache.ftpserver.";
+
+    /** User argument attribute */
+    private static final String ATTRIBUTE_USER_ARGUMENT =           ATTRIBUTE_PREFIX + "user-argument";
+
+    /** session ID attribute */
+    private static final String ATTRIBUTE_SESSION_ID =              ATTRIBUTE_PREFIX + "session-id";
+
+    /** User attribute */
+    private static final String ATTRIBUTE_USER =                    ATTRIBUTE_PREFIX + "user";
+
+    /** Language attribute */
+    private static final String ATTRIBUTE_LANGUAGE =                ATTRIBUTE_PREFIX + "language";
+
+    /** Login time attribute */
+    private static final String ATTRIBUTE_LOGIN_TIME =              ATTRIBUTE_PREFIX + "login-time";
+
+    /** Data connection attribute */
+    private static final String ATTRIBUTE_DATA_CONNECTION =         ATTRIBUTE_PREFIX + "data-connection";
+
+    /** File system attribute */
+    private static final String ATTRIBUTE_FILE_SYSTEM =             ATTRIBUTE_PREFIX + "file-system";
+
+    /** Rename from attribute */
+    private static final String ATTRIBUTE_RENAME_FROM =             ATTRIBUTE_PREFIX + "rename-from";
+
+    /** File offset attribute */
+    private static final String ATTRIBUTE_FILE_OFFSET =             ATTRIBUTE_PREFIX + "file-offset";
+
+    /** Data type attribute */
+    private static final String ATTRIBUTE_DATA_TYPE =               ATTRIBUTE_PREFIX + "data-type";
+
+    /** Structure attribute */
+    private static final String ATTRIBUTE_STRUCTURE =               ATTRIBUTE_PREFIX + "structure";
+
+    /** Failed login attribute */
+    private static final String ATTRIBUTE_FAILED_LOGINS =           ATTRIBUTE_PREFIX + "failed-logins";
+
+    /** Listener attribute */
+    private static final String ATTRIBUTE_LISTENER =                ATTRIBUTE_PREFIX + "listener";
+
+    /** Max idle time attribute */
+    private static final String ATTRIBUTE_MAX_IDLE_TIME =           ATTRIBUTE_PREFIX + "max-idle-time";
+
+    /** Last access time attribute */
+    private static final String ATTRIBUTE_LAST_ACCESS_TIME =        ATTRIBUTE_PREFIX + "last-access-time";
+
+    /** Cached remote address attribute */
+    private static final String ATTRIBUTE_CACHED_REMOTE_ADDRESS =   ATTRIBUTE_PREFIX + "cached-remote-address";
+
+    /** The encapsulated IoSession instance */
+    private final IoSession wrappedSession;
+
+    /** The server context instance */
+    private final FtpServerContext context;
+
+    /** Last reply that was sent to the client, if any. */
+    private FtpReply lastReply = null;
 
     /**
-     * Contains user name between USER and PASS commands
+     * Public constructor
+     *
+     * @param wrappedSession The wrapped IoSession
+     * @param context The server cobtext
      */
-    public static final String ATTRIBUTE_PREFIX = "org.apache.ftpserver.";
-    private static final String ATTRIBUTE_USER_ARGUMENT = ATTRIBUTE_PREFIX
-            + "user-argument";
-    private static final String ATTRIBUTE_SESSION_ID = ATTRIBUTE_PREFIX
-            + "session-id";
-    private static final String ATTRIBUTE_USER = ATTRIBUTE_PREFIX + "user";
-    private static final String ATTRIBUTE_LANGUAGE = ATTRIBUTE_PREFIX
-            + "language";
-    private static final String ATTRIBUTE_LOGIN_TIME = ATTRIBUTE_PREFIX
-            + "login-time";
-    private static final String ATTRIBUTE_DATA_CONNECTION = ATTRIBUTE_PREFIX
-            + "data-connection";
-    private static final String ATTRIBUTE_FILE_SYSTEM = ATTRIBUTE_PREFIX
-            + "file-system";
-    private static final String ATTRIBUTE_RENAME_FROM = ATTRIBUTE_PREFIX
-            + "rename-from";
-    private static final String ATTRIBUTE_FILE_OFFSET = ATTRIBUTE_PREFIX
-            + "file-offset";
-    private static final String ATTRIBUTE_DATA_TYPE = ATTRIBUTE_PREFIX
-            + "data-type";
-    private static final String ATTRIBUTE_STRUCTURE = ATTRIBUTE_PREFIX
-            + "structure";
-    private static final String ATTRIBUTE_FAILED_LOGINS = ATTRIBUTE_PREFIX
-            + "failed-logins";
-    private static final String ATTRIBUTE_LISTENER = ATTRIBUTE_PREFIX
-            + "listener";
-    private static final String ATTRIBUTE_MAX_IDLE_TIME = ATTRIBUTE_PREFIX
-            + "max-idle-time";
-    private static final String ATTRIBUTE_LAST_ACCESS_TIME = ATTRIBUTE_PREFIX
-            + "last-access-time";
-    private static final String ATTRIBUTE_CACHED_REMOTE_ADDRESS = ATTRIBUTE_PREFIX
-            + "cached-remote-address";
-    private final IoSession wrappedSession;
-    private final FtpServerContext context;
-    /**
-     * Last reply that was sent to the client, if any.
-     */
-    private FtpReply lastReply = null;
+    public FtpIoSession(IoSession wrappedSession, FtpServerContext context) {
+        this.wrappedSession = wrappedSession;
+        this.context = context;
+    }
 
     /* Begin wrapped IoSession methods */
     /**
@@ -705,31 +734,51 @@ public class FtpIoSession implements IoSession {
         }
     }
 
-    public FtpIoSession(IoSession wrappedSession, FtpServerContext context) {
-        this.wrappedSession = wrappedSession;
-        this.context = context;
-    }
-
+    /**
+     * Get the structure attribute. We support only <code>FILE</code>
+     *
+     * @return The structure attribute
+     */
     public Structure getStructure() {
         return (Structure) getAttribute(ATTRIBUTE_STRUCTURE, Structure.FILE);
     }
 
+    /**
+     * Get the data type (ascii or binary)
+     *
+     * @return The data type
+     */
     public DataType getDataType() {
         return (DataType) getAttribute(ATTRIBUTE_DATA_TYPE, DataType.ASCII);
     }
 
+    /**
+     * Get the login time
+     *
+     * @return The login time
+     */
     public Date getLoginTime() {
         return (Date) getAttribute(ATTRIBUTE_LOGIN_TIME);
     }
 
+    /**
+     * Get the last time the session has been accessed
+     *
+     * @return The last access time
+     */
     public Date getLastAccessTime() {
         return (Date) getAttribute(ATTRIBUTE_LAST_ACCESS_TIME);
     }
 
+    /**
+     * Get an ordered array of peer certificates, with the peer's own certificate first followed
+     * by any certificate authorities.
+     *
+     * @return The client certificates
+     */
     public Certificate[] getClientCertificates() {
         if (getFilterChain().contains(SslFilter.class)) {
-            SslFilter sslFilter = (SslFilter) getFilterChain().get(
-                    SslFilter.class);
+            SslFilter sslFilter = (SslFilter) getFilterChain().get(SslFilter.class);
 
             SSLSession sslSession = SSLSession.class.cast(getAttribute(SslFilter.SSL_SECURED));
 
@@ -748,6 +797,9 @@ public class FtpIoSession implements IoSession {
 
     }
 
+    /**
+     * Update the last-access-time session attribute with the current date
+     */
     public void updateLastAccessTime() {
         setAttribute(ATTRIBUTE_LAST_ACCESS_TIME, new Date());
     }
@@ -799,6 +851,7 @@ public class FtpIoSession implements IoSession {
 
     /**
      * Increase the number of bytes written on the data connection
+     *
      * @param increment The number of bytes written
      */
     public void increaseWrittenDataBytes(int increment) {
@@ -811,6 +864,7 @@ public class FtpIoSession implements IoSession {
 
     /**
      * Increase the number of bytes read on the data connection
+     *
      * @param increment The number of bytes written
      */
     public void increaseReadDataBytes(int increment) {
@@ -822,6 +876,7 @@ public class FtpIoSession implements IoSession {
 
     /**
      * Returns the last reply that was sent to the client.
+     *
      * @return the last reply that was sent to the client.
      */
     public FtpReply getLastReply() {
@@ -863,10 +918,16 @@ public class FtpIoSession implements IoSession {
         wrappedSession.updateThroughput(currentTime, force);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public boolean isSecured() {
         return getFilterChain().contains(SslFilter.class);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean isServer() {
         return (getService() instanceof IoAcceptor);

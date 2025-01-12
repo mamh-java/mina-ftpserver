@@ -26,12 +26,21 @@ import org.apache.ftpserver.FtpServer;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.context.support.WebApplicationContextUtils;
 
-/*
+/**
+ * A servlet listener for the FtpServer
+ *
  * @author <a href="http://mina.apache.org">Apache MINA Project</a>
  */
 public class FtpServerListener implements ServletContextListener {
     /** The context name. */
     public static final String FTPSERVER_CONTEXT_NAME = "org.apache.ftpserver";
+
+    /**
+     * A default constructor
+     */
+    public FtpServerListener() {
+        // Do nothing
+    }
 
     /**
      * {@inheritDoc}

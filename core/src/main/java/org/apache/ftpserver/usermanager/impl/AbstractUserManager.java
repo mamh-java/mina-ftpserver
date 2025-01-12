@@ -32,25 +32,34 @@ import org.apache.ftpserver.usermanager.PasswordEncryptor;
  * @author <a href="http://mina.apache.org">Apache MINA Project</a>
  */
 public abstract class AbstractUserManager implements UserManager {
-
+    /** 'userid' key for the variable to be injected into SQL prepared statement*/
     public static final String ATTR_LOGIN = "userid";
 
+    /** 'userpassword' key for the variable to be injected into SQL prepared statement*/
     public static final String ATTR_PASSWORD = "userpassword";
 
+    /** 'homedirectory' key for the variable to be injected into SQL prepared statement*/
     public static final String ATTR_HOME = "homedirectory";
 
+    /** 'writepermission' key for the variable to be injected into SQL prepared statement*/
     public static final String ATTR_WRITE_PERM = "writepermission";
 
+    /** 'enableflag' key for the variable to be injected into SQL prepared statement*/
     public static final String ATTR_ENABLE = "enableflag";
 
+    /** 'idletime' key for the variable to be injected into SQL prepared statement*/
     public static final String ATTR_MAX_IDLE_TIME = "idletime";
 
+    /** 'uploadrate' key for the variable to be injected into SQL prepared statement*/
     public static final String ATTR_MAX_UPLOAD_RATE = "uploadrate";
 
+    /** 'downloadrate' key for the variable to be injected into SQL prepared statement*/
     public static final String ATTR_MAX_DOWNLOAD_RATE = "downloadrate";
 
+    /** 'maxloginnumber' key for the variable to be injected into SQL prepared statement*/
     public static final String ATTR_MAX_LOGIN_NUMBER = "maxloginnumber";
 
+    /** 'maxloginperip' key for the variable to be injected into SQL prepared statement*/
     public static final String ATTR_MAX_LOGIN_PER_IP = "maxloginperip";
 
     private final String adminName;

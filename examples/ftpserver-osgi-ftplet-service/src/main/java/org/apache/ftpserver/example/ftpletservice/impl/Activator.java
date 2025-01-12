@@ -27,10 +27,19 @@ import org.apache.ftpserver.ftplet.Ftplet;
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
 
-/*
+/**
+ * The OSGi bundle activator for the FtpLet service
+ *
  * @author <a href="http://mina.apache.org">Apache MINA Project</a>
  */
 public class Activator implements BundleActivator {
+    /**
+     * A default constructor
+     */
+    public Activator() {
+        // Do nothing
+    }
+
     /**
      * {@inheritDoc}
      */

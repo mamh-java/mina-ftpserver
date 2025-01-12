@@ -27,10 +27,19 @@ import org.apache.ftpserver.ftplet.FtpException;
 import org.apache.ftpserver.ftplet.FtpSession;
 import org.apache.ftpserver.ftplet.FtpletResult;
 
-/*
+/**
+ * An instance of FtpLet
+ *
  * @author <a href="http://mina.apache.org">Apache MINA Project</a>
  */
 public class MyFtplet extends DefaultFtplet {
+    /**
+     * A default constructor
+     */
+    public MyFtplet() {
+        super();
+    }
+
     /**
      * {@inheritDoc}
      */
