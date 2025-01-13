@@ -47,9 +47,11 @@ public enum DataType {
             case 'A':
             case 'a':
                 return ASCII;
+
             case 'I':
             case 'i':
                 return BINARY;
+
             default:
                 throw new IllegalArgumentException("Unknown data type: " + argument);
         }

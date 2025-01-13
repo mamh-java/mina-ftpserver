@@ -570,6 +570,10 @@ public class FtpIoSession implements IoSession {
     }
 
     /* End wrapped IoSession methods */
+    /**
+     * Reset the session state. It will remove the 'rename-from' and 'file-offset'
+     * attributes from the session
+     */
     public void resetState() {
         removeAttribute(ATTRIBUTE_RENAME_FROM);
         removeAttribute(ATTRIBUTE_FILE_OFFSET);
@@ -588,10 +592,20 @@ public class FtpIoSession implements IoSession {
         }
     }
 
+    /**
+     * Get the 'file-system' attribute
+     *
+     * @return The 'file-system' attribute value
+     */
     public FileSystemView getFileSystemView() {
         return (FileSystemView) getAttribute(ATTRIBUTE_FILE_SYSTEM);
     }
 
+    /**
+     * Get the 'user' attribute
+     *
+     * @return The 'user' attribute value
+     */
     public User getUser() {
         return (User) getAttribute(ATTRIBUTE_USER);
     }
@@ -605,45 +619,95 @@ public class FtpIoSession implements IoSession {
         return containsAttribute(ATTRIBUTE_USER);
     }
 
+    /**
+     * Get the session listener
+     *
+     * @return The session listener
+     */
     public Listener getListener() {
         return (Listener) getAttribute(ATTRIBUTE_LISTENER);
     }
 
+    /**
+     * Set the listener attribute
+     *
+     * @param listener The listener to set
+     */
     public void setListener(Listener listener) {
         setAttribute(ATTRIBUTE_LISTENER, listener);
     }
 
+    /**
+     * Get a Ftp session
+     *
+     * @return a new Ftp session instance
+     */
     public FtpSession getFtpletSession() {
         return new DefaultFtpSession(this);
     }
 
+    /**
+     * Get the session's language
+     *-
+     * @return The session language
+     */
     public String getLanguage() {
         return (String) getAttribute(ATTRIBUTE_LANGUAGE);
     }
 
+    /**
+     * Set the session language
+     *
+     * @param language The language to set
+     */
     public void setLanguage(String language) {
         setAttribute(ATTRIBUTE_LANGUAGE, language);
 
     }
 
-    public String getUserArgument() {
-        return (String) getAttribute(ATTRIBUTE_USER_ARGUMENT);
-    }
-
+    /**
+     * Set the 'user' attribute
+     *
+     * @param user The user for this session
+     */
     public void setUser(User user) {
         setAttribute(ATTRIBUTE_USER, user);
 
     }
 
+    /**
+     * Get the user argument
+     *
+     * @return The user argument to set
+     */
+    public String getUserArgument() {
+        return (String) getAttribute(ATTRIBUTE_USER_ARGUMENT);
+    }
+
+    /**
+     * Set the user argument
+     *
+     * @param userArgument The user argument to set
+     */
     public void setUserArgument(String userArgument) {
         setAttribute(ATTRIBUTE_USER_ARGUMENT, userArgument);
 
     }
 
+    /**
+     * Get the max idle time
+     *
+     * @return The configured max idle time
+     */
     public int getMaxIdleTime() {
         return (Integer) getAttribute(ATTRIBUTE_MAX_IDLE_TIME, 0);
     }
 
+    /**
+     * Set the max idle time for a session
+     *
+     * @param maxIdleTime Maximum time a session can idle
+     */
     public void setMaxIdleTime(int maxIdleTime) {
         setAttribute(ATTRIBUTE_MAX_IDLE_TIME, maxIdleTime);
 
@@ -659,21 +723,40 @@ public class FtpIoSession implements IoSession {
         }
     }
 
+    /**
+     * Increment the number of failed logins
+     */
     public synchronized void increaseFailedLogins() {
         int failedLogins = (Integer) getAttribute(ATTRIBUTE_FAILED_LOGINS, 0);
         failedLogins++;
         setAttribute(ATTRIBUTE_FAILED_LOGINS, failedLogins);
     }
 
+    /**
+     * Get the 'failed-logins' attribute. It contains the number
+     * of failed logins during this session
+     *
+     * @return The number of failed logins
+     */
     public int getFailedLogins() {
         return (Integer) getAttribute(ATTRIBUTE_FAILED_LOGINS, 0);
     }
 
+    /**
+     * Set the login attributes: 'login-time' and 'file-system'
+     *
+     * @param fsview The file system view
+     */
     public void setLogin(FileSystemView fsview) {
         setAttribute(ATTRIBUTE_LOGIN_TIME, new Date());
         setAttribute(ATTRIBUTE_FILE_SYSTEM, fsview);
     }
 
+    /**
+     * Reinitialize the session. It will disconnect the user,
+     * and clear the 'user', 'user-argument', 'login-time', 'file-system',
+     * 'rename-from' and 'file-offset' session attributes
+     */
     public void reinitialize() {
         logoutUser();
         removeAttribute(ATTRIBUTE_USER);
@@ -684,6 +767,9 @@ public class FtpIoSession implements IoSession {
         removeAttribute(ATTRIBUTE_FILE_OFFSET);
     }
 
+    /**
+     * Logout the connected user
+     */
     public void logoutUser() {
         ServerFtpStatistics stats = ((ServerFtpStatistics) context.getFtpStatistics());
         if (stats != null) {
@@ -695,43 +781,42 @@ public class FtpIoSession implements IoSession {
         }
     }
 
+    /**
+     * Get the 'file-offset' attribute value. Default to 0 if none is set
+     *
+     * @return The 'file-offset' attribute value
+     */
+    public long getFileOffset() {
+        return (Long) getAttribute(ATTRIBUTE_FILE_OFFSET, 0L);
+    }
+
+    /**
+     * Set the 'file-offset' attribute value.
+     *
+     * @param fileOffset The 'file-offset' attribute value
+     */
     public void setFileOffset(long fileOffset) {
         setAttribute(ATTRIBUTE_FILE_OFFSET, fileOffset);
 
     }
 
-    public void setRenameFrom(FtpFile renFr) {
-        setAttribute(ATTRIBUTE_RENAME_FROM, renFr);
-
-    }
-
+    /**
+     * Get the 'rename-from' attribute
+     *
+     * @return The 'rename-from' attribute value
+     */
     public FtpFile getRenameFrom() {
         return (FtpFile) getAttribute(ATTRIBUTE_RENAME_FROM);
     }
 
-    public long getFileOffset() {
-        return (Long) getAttribute(ATTRIBUTE_FILE_OFFSET, 0L);
-    }
-
-    public void setStructure(Structure structure) {
-        setAttribute(ATTRIBUTE_STRUCTURE, structure);
-    }
-
-    public void setDataType(DataType dataType) {
-        setAttribute(ATTRIBUTE_DATA_TYPE, dataType);
-
-    }
-
     /**
-     * {@inheritDoc}
+     * Set the 'rename-from' attribute
+     *
+     * @param renFr The 'rename-from' attribute value
      */
-    public UUID getSessionId() {
-        synchronized (wrappedSession) {
-            if (!wrappedSession.containsAttribute(ATTRIBUTE_SESSION_ID)) {
-                wrappedSession.setAttribute(ATTRIBUTE_SESSION_ID, UUID.randomUUID());
-            }
-            return (UUID) wrappedSession.getAttribute(ATTRIBUTE_SESSION_ID);
-        }
+    public void setRenameFrom(FtpFile renFr) {
+        setAttribute(ATTRIBUTE_RENAME_FROM, renFr);
+
     }
 
     /**
@@ -744,12 +829,46 @@ public class FtpIoSession implements IoSession {
     }
 
     /**
+     * Set the transfert structure
+     *
+     * @param structure The structure (only FILE is currently supported)
+     */
+    public void setStructure(Structure structure) {
+        setAttribute(ATTRIBUTE_STRUCTURE, structure);
+    }
+
+    /**
      * Get the data type (ascii or binary)
      *
      * @return The data type
      */
     public DataType getDataType() {
         return (DataType) getAttribute(ATTRIBUTE_DATA_TYPE, DataType.ASCII);
+    }
+
+    /**
+     * Set the data type
+     *
+     * @param dataType The data type to use (ASCII or BINARY)
+     */
+    public void setDataType(DataType dataType) {
+        setAttribute(ATTRIBUTE_DATA_TYPE, dataType);
+
+    }
+
+    /**
+     * Get the 'session-id' attribute. If none is set, and RandomUUID is created.
+     *
+     * @return The 'session-id' attribute value
+     */
+    public UUID getSessionId() {
+        synchronized (wrappedSession) {
+            if (!wrappedSession.containsAttribute(ATTRIBUTE_SESSION_ID)) {
+                wrappedSession.setAttribute(ATTRIBUTE_SESSION_ID, UUID.randomUUID());
+            }
+
+            return (UUID) wrappedSession.getAttribute(ATTRIBUTE_SESSION_ID);
+        }
     }
 
     /**

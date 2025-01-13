@@ -38,79 +38,100 @@ import org.apache.ftpserver.util.DateUtils;
  */
 
 public class FtpReplyTranslator {
-
+    /** Client last access time */
     public static final String CLIENT_ACCESS_TIME = "client.access.time";
 
+    /** Client connection time */
     public static final String CLIENT_CON_TIME = "client.con.time";
 
+    /** Client directory */
     public static final String CLIENT_DIR = "client.dir";
 
+    /** Client home directory */
     public static final String CLIENT_HOME = "client.home";
 
+    /** Client IP */
     public static final String CLIENT_IP = "client.ip";
 
+    /** Client login name */
     public static final String CLIENT_LOGIN_NAME = "client.login.name";
 
+    /** Client login time */
     public static final String CLIENT_LOGIN_TIME = "client.login.time";
 
+    /** Output code */
     public static final String OUTPUT_CODE = "output.code";
 
+    /** Output message */
     public static final String OUTPUT_MSG = "output.msg";
 
+    /** Request argyments */
     public static final String REQUEST_ARG = "request.arg";
 
+    /** Request command */
     public static final String REQUEST_CMD = "request.cmd";
 
+    /** Request line */
     public static final String REQUEST_LINE = "request.line";
 
     // /////////////////////// All Server Vatiables /////////////////////////
+    /** Server IP address */
     public static final String SERVER_IP = "server.ip";
 
+    /** Server port */
     public static final String SERVER_PORT = "server.port";
 
+    /** Current connection number */
     public static final String STAT_CON_CURR = "stat.con.curr";
 
+    /** Total connections number  */
     public static final String STAT_CON_TOTAL = "stat.con.total";
 
+    /** Total directories created */
     public static final String STAT_DIR_CREATE_COUNT = "stat.dir.create.count";
 
+    /** Total directories removed */
     public static final String STAT_DIR_DELETE_COUNT = "stat.dir.delete.count";
 
+    /** Total files deleted */
     public static final String STAT_FILE_DELETE_COUNT = "stat.file.delete.count";
 
+    /** Total bytes donwloaded */
     public static final String STAT_FILE_DOWNLOAD_BYTES = "stat.file.download.bytes";
 
+    /** Total files downloaded */
     public static final String STAT_FILE_DOWNLOAD_COUNT = "stat.file.download.count";
 
+    /** Total bytes uploaded */
     public static final String STAT_FILE_UPLOAD_BYTES = "stat.file.upload.bytes";
 
+    /** Total files uploaded */
     public static final String STAT_FILE_UPLOAD_COUNT = "stat.file.upload.count";
 
+    /** Current anonymous login number */
     public static final String STAT_LOGIN_ANON_CURR = "stat.login.anon.curr";
 
+    /** Total number of aonymous logins */
     public static final String STAT_LOGIN_ANON_TOTAL = "stat.login.anon.total";
 
+    /** Current login number */
     public static final String STAT_LOGIN_CURR = "stat.login.curr";
 
+    /** Total number of logins */
     public static final String STAT_LOGIN_TOTAL = "stat.login.total";
 
+    /** Server starting time */
     public static final String STAT_START_TIME = "stat.start.time";
 
     /**
      * Returns the translated message.
      *
-     * @param session
-     *            the FTP session for which a reply is to be sent
-     * @param request
-     *            the FTP request object
-     * @param context
-     *            the FTP server context
-     * @param code
-     *            the reply code
-     * @param subId
-     *            the ID of the sub message
-     * @param basicMsg
-     *            the basic message
+     * @param session the FTP session for which a reply is to be sent
+     * @param request the FTP request object
+     * @param context the FTP server context
+     * @param code the reply code
+     * @param subId the ID of the sub message
+     * @param basicMsg the basic message
      * @return the translated message
      */
     public static String translateMessage(FtpIoSession session, FtpRequest request, FtpServerContext context,
