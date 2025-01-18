@@ -123,8 +123,9 @@ public class DefaultSslConfiguration implements SslConfiguration {
 
     /**
      * @deprecated Use {@link #getEnabledProtocol()}
+     * Get the enabled protocol
      *
-     * {@inheritDoc}
+     * @return The enabled protocol
      */
     public String getEnabledProtoco() {
         return getEnabledProtocol();

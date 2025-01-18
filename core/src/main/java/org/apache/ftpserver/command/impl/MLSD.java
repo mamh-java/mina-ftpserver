@@ -57,35 +57,39 @@ import org.slf4j.LoggerFactory;
  * @author <a href="http://mina.apache.org">Apache MINA Project</a>
  */
 public class MLSD extends AbstractCommand {
-
+    /** The class logger */
     private final Logger LOG = LoggerFactory.getLogger(MLSD.class);
 
+    /** The directory lister instance */
     private final DirectoryLister directoryLister = new DirectoryLister();
 
+    /** Public constructor */
+    public MLSD() {
+        super();
+    }
+
     /**
-     * Execute command.
-     *
      * {@inheritDoc}
      */
     public void execute(final FtpIoSession session,
             final FtpServerContext context, final FtpRequest request)
             throws IOException, FtpException {
-
         try {
-
             // reset state
             session.resetState();
 
             // 24-10-2007 - added check if PORT or PASV is issued, see
             // https://issues.apache.org/jira/browse/FTPSERVER-110
             DataConnectionFactory connFactory = session.getDataConnection();
+
             if (connFactory instanceof IODataConnectionFactory) {
-                InetAddress address = ((IODataConnectionFactory) connFactory)
-                        .getInetAddress();
+                InetAddress address = ((IODataConnectionFactory) connFactory).getInetAddress();
+
                 if (address == null) {
                     session.write(new DefaultFtpReply(
                             FtpReply.REPLY_503_BAD_SEQUENCE_OF_COMMANDS,
                             "PORT or PASV must be issued first"));
+
                     return;
                 }
             }
@@ -96,6 +100,7 @@ public class MLSD extends AbstractCommand {
 
             // print listing data
             DataConnection dataConnection;
+
             try {
                 dataConnection = session.getDataConnection().openConnection();
             } catch (Exception e) {
@@ -103,17 +108,17 @@ public class MLSD extends AbstractCommand {
                 session.write(LocalizedFtpReply.translate(session, request, context,
                         FtpReply.REPLY_425_CANT_OPEN_DATA_CONNECTION, "MLSD",
                         null));
+
                 return;
             }
 
             boolean failure = false;
+
             try {
                 // parse argument
-                ListArgument parsedArg = ListArgumentParser.parse(request
-                        .getArgument());
+                ListArgument parsedArg = ListArgumentParser.parse(request.getArgument());
 
-                FileFormater formater = new MLSTFileFormater((String[]) session
-                        .getAttribute("MLST.types"));
+                FileFormater formater = new MLSTFileFormater((String[]) session.getAttribute("MLST.types"));
 
                 dataConnection.transferToClient(session.getFtpletSession(), directoryLister.listFiles(
                         parsedArg, session.getFileSystemView(), formater));
@@ -126,25 +131,16 @@ public class MLSD extends AbstractCommand {
             } catch (IOException ex) {
                 LOG.debug("IOException during data transfer", ex);
                 failure = true;
-                session
-                        .write(LocalizedFtpReply
-                                .translate(
-                                        session,
-                                        request,
-                                        context,
+                session.write(LocalizedFtpReply
+                                .translate(session, request, context,
                                         FtpReply.REPLY_551_REQUESTED_ACTION_ABORTED_PAGE_TYPE_UNKNOWN,
                                         "MLSD", null));
             } catch (IllegalArgumentException e) {
-                LOG
-                        .debug("Illegal listing syntax: "
-                                + request.getArgument(), e);
+                LOG.debug("Illegal listing syntax: {}", request.getArgument(), e);
+
                 // if listing syntax error - send message
-                session
-                        .write(LocalizedFtpReply
-                                .translate(
-                                        session,
-                                        request,
-                                        context,
+                session.write(LocalizedFtpReply
+                                .translate(session, request, context,
                                         FtpReply.REPLY_501_SYNTAX_ERROR_IN_PARAMETERS_OR_ARGUMENTS,
                                         "MLSD", null));
             }

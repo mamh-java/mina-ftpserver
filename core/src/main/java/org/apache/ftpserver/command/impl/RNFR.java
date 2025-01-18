@@ -46,32 +46,37 @@ import org.slf4j.LoggerFactory;
  * @author <a href="http://mina.apache.org">Apache MINA Project</a>
  */
 public class RNFR extends AbstractCommand {
-
+    /** Class logger */
     private final Logger LOG = LoggerFactory.getLogger(RNFR.class);
 
+    /** Public constructor */
+    public RNFR() {
+        super();
+    }
+
     /**
-     * Execute command.
-     *
      * {@inheritDoc}
      */
     public void execute(final FtpIoSession session,
             final FtpServerContext context, final FtpRequest request)
             throws IOException, FtpException {
-
         // reset state variable
         session.resetState();
 
         // argument check
         String fileName = request.getArgument();
+
         if (fileName == null) {
             session.write(LocalizedFtpReply.translate(session, request, context,
                     FtpReply.REPLY_501_SYNTAX_ERROR_IN_PARAMETERS_OR_ARGUMENTS,
                     "RNFR", null));
+
             return;
         }
 
         // get filename
         FtpFile renFr = null;
+
         try {
             renFr = session.getFileSystemView().getFile(fileName);
         } catch (Exception ex) {
@@ -86,15 +91,8 @@ public class RNFR extends AbstractCommand {
         } else {
             session.setRenameFrom(renFr);
             fileName = renFr.getAbsolutePath();
-            session
-                    .write(LocalizedFtpReply
-                            .translate(
-                                    session,
-                                    request,
-                                    context,
-                                    FtpReply.REPLY_350_REQUESTED_FILE_ACTION_PENDING_FURTHER_INFORMATION,
-                                    "RNFR", fileName));
+            session.write(LocalizedFtpReply.translate(session, request, context,
+                    FtpReply.REPLY_350_REQUESTED_FILE_ACTION_PENDING_FURTHER_INFORMATION, "RNFR", fileName));
         }
     }
-
 }

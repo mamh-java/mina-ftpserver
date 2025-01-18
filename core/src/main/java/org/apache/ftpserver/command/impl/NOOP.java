@@ -42,16 +42,17 @@ import org.apache.ftpserver.impl.LocalizedFtpReply;
  * @author <a href="http://mina.apache.org">Apache MINA Project</a>
  */
 public class NOOP extends AbstractCommand {
+    /** Public constructor */
+    public NOOP() {
+        super();
+    }
 
     /**
-     * Execute command.
-     *
      * {@inheritDoc}
      */
     public void execute(final FtpIoSession session,
             final FtpServerContext context, final FtpRequest request)
             throws IOException, FtpException {
-
         session.resetState();
         session.write(LocalizedFtpReply.translate(session, request, context,
                 FtpReply.REPLY_200_COMMAND_OKAY, "NOOP", null));

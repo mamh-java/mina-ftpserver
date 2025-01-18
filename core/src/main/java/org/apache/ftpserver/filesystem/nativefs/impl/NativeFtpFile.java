@@ -60,12 +60,17 @@ public class NativeFtpFile implements FtpFile {
 
     /**
      * Constructor, internal do not use directly.
+     *
+     * @param fileName The file name
+     * @param file The file itself
+     * @param user The user
      */
     protected NativeFtpFile(final String fileName, final File file,
             final User user) {
         if (fileName == null) {
             throw new IllegalArgumentException("fileName can not be null");
         }
+
         if (file == null) {
             throw new IllegalArgumentException("file can not be null");
         }

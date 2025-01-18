@@ -24,7 +24,7 @@ import org.apache.ftpserver.ftplet.AuthorizationRequest;
 
 /**
  * <strong>Internal class, do not use directly.</strong>
- *
+ * <p>
  * The max upload rate permission
  *
  * @author <a href="http://mina.apache.org">Apache MINA Project</a>
@@ -35,14 +35,18 @@ public class TransferRatePermission implements Authority {
 
     private int maxUploadRate;
 
+    /**
+     * Create a TransferRatePermission istance
+     *
+     * @param maxDownloadRate Maximum download rate
+     * @param maxUploadRate Maximum upload rate
+     */
     public TransferRatePermission(int maxDownloadRate, int maxUploadRate) {
         this.maxDownloadRate = maxDownloadRate;
         this.maxUploadRate = maxUploadRate;
     }
 
     /**
-     * @see Authority#authorize(AuthorizationRequest)
-     *
      * {@inheritDoc}
      */
     public AuthorizationRequest authorize(AuthorizationRequest request) {
@@ -59,8 +63,6 @@ public class TransferRatePermission implements Authority {
     }
 
     /**
-     * @see Authority#canAuthorize(AuthorizationRequest)
-     *
      * {@inheritDoc}
      */
     public boolean canAuthorize(AuthorizationRequest request) {

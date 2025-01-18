@@ -23,7 +23,7 @@ import org.apache.ftpserver.ftplet.AuthorizationRequest;
 
 /**
  * <strong>Internal class, do not use directly.</strong>
- *
+ * <p>
  * Class representing a request to log in a number of concurrent times
  *
  * @author <a href="http://mina.apache.org">Apache MINA Project</a>
@@ -39,11 +39,12 @@ public class ConcurrentLoginRequest implements AuthorizationRequest {
     private int maxConcurrentLoginsPerIP = 0;
 
     /**
-     * @param concurrentLogins
-     * @param concurrentLoginsFromThisIP
+     * Create a ConcurrentLoginRequest instance
+     *
+     * @param concurrentLogins Number of concurrent logins
+     * @param concurrentLoginsFromThisIP Number of concurrent logins for this IP address
      */
-    public ConcurrentLoginRequest(int concurrentLogins,
-            int concurrentLoginsFromThisIP) {
+    public ConcurrentLoginRequest(int concurrentLogins, int concurrentLoginsFromThisIP) {
         super();
         this.concurrentLogins = concurrentLogins;
         this.concurrentLoginsFromThisIP = concurrentLoginsFromThisIP;
@@ -81,8 +82,7 @@ public class ConcurrentLoginRequest implements AuthorizationRequest {
     /**
      * Set the maximum allowed concurrent logins for this user
      *
-     * @param maxConcurrentLogins
-     *            Set max allowed concurrent connections
+     * @param maxConcurrentLogins Set max allowed concurrent connections
      */
     void setMaxConcurrentLogins(int maxConcurrentLogins) {
         this.maxConcurrentLogins = maxConcurrentLogins;
@@ -102,8 +102,7 @@ public class ConcurrentLoginRequest implements AuthorizationRequest {
     /**
      * Set the maximum allowed concurrent logins per IP for this user
      *
-     * @param maxConcurrentLoginsPerIP
-     *            Set max allowed concurrent connections per IP
+     * @param maxConcurrentLoginsPerIP Set max allowed concurrent connections per IP
      */
     void setMaxConcurrentLoginsPerIP(int maxConcurrentLoginsPerIP) {
         this.maxConcurrentLoginsPerIP = maxConcurrentLoginsPerIP;

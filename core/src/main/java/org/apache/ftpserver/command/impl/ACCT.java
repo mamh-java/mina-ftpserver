@@ -41,15 +41,17 @@ import org.apache.ftpserver.impl.LocalizedFtpReply;
  * @author <a href="http://mina.apache.org">Apache MINA Project</a>
  */
 public class ACCT extends AbstractCommand {
+    /** Public constructor */
+    public ACCT() {
+        super();
+    }
+
     /**
-     * Execute command.
-     *
      * {@inheritDoc}
      */
     public void execute(final FtpIoSession session,
             final FtpServerContext context, final FtpRequest request)
             throws IOException {
-
         // reset state variables
         session.resetState();
 

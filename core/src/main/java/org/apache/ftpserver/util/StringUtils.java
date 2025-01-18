@@ -29,6 +29,9 @@ import java.util.Map;
  * @author <a href="http://mina.apache.org">Apache MINA Project</a>
  */
 public class StringUtils {
+    /** Newline characters */
+    public static final char[] NEWLINE = { '\r', '\n' };
+
     /**
      * @deprecated Do not instantiate.
      */

@@ -124,6 +124,14 @@ public class FtpReplyTranslator {
     public static final String STAT_START_TIME = "stat.start.time";
 
     /**
+     * A private constructor
+     */
+    private FtpReplyTranslator() {
+        // Nothing to do
+    }
+
+
+    /**
      * Returns the translated message.
      *
      * @param session the FTP session for which a reply is to be sent
@@ -163,11 +171,13 @@ public class FtpReplyTranslator {
 
         int startIndex = 0;
         int openIndex = str.indexOf('{', startIndex);
+
         if (openIndex == -1) {
             return str;
         }
 
         int closeIndex = str.indexOf('}', startIndex);
+
         if ((closeIndex == -1) || (openIndex > closeIndex)) {
             return str;
         }
@@ -177,8 +187,7 @@ public class FtpReplyTranslator {
 
         while (true) {
             String varName = str.substring(openIndex + 1, closeIndex);
-            sb.append(getVariableValue(session, request, context, code,
-                basicMsg, varName));
+            sb.append(getVariableValue(session, request, context, code, basicMsg, varName));
 
             startIndex = closeIndex + 1;
             openIndex = str.indexOf('{', startIndex);

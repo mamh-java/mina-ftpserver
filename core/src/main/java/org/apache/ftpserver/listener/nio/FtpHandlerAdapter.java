@@ -43,6 +43,12 @@ public class FtpHandlerAdapter extends IoHandlerAdapter {
 
     private FtpHandler ftpHandler;
 
+    /**
+     * Create a FtpHandlerAdapter instance
+     *
+     * @param context The FTP server context
+     * @param ftpHandler The FtpHandler instance
+     */
     public FtpHandlerAdapter(FtpServerContext context, FtpHandler ftpHandler) {
         this.context = context;
         this.ftpHandler = ftpHandler;
@@ -51,8 +57,7 @@ public class FtpHandlerAdapter extends IoHandlerAdapter {
     /**
      * {@inheritDoc}
      */
-    public void exceptionCaught(IoSession session, Throwable cause)
-            throws Exception {
+    public void exceptionCaught(IoSession session, Throwable cause) throws Exception {
         FtpIoSession ftpSession = new FtpIoSession(session, context);
         ftpHandler.exceptionCaught(ftpSession, cause);
     }
@@ -60,8 +65,7 @@ public class FtpHandlerAdapter extends IoHandlerAdapter {
     /**
      * {@inheritDoc}
      */
-    public void messageReceived(IoSession session, Object message)
-            throws Exception {
+    public void messageReceived(IoSession session, Object message) throws Exception {
         FtpIoSession ftpSession = new FtpIoSession(session, context);
         FtpRequest request = new DefaultFtpRequest(message.toString());
 
@@ -92,14 +96,12 @@ public class FtpHandlerAdapter extends IoHandlerAdapter {
         MdcInjectionFilter.setProperty(session, "session", ftpSession.getSessionId().toString());
 
         ftpHandler.sessionCreated(ftpSession);
-
     }
 
     /**
      * {@inheritDoc}
      */
-    public void sessionIdle(IoSession session, IdleStatus status)
-            throws Exception {
+    public void sessionIdle(IoSession session, IdleStatus status) throws Exception {
         FtpIoSession ftpSession = new FtpIoSession(session, context);
         ftpHandler.sessionIdle(ftpSession, status);
     }
@@ -112,13 +114,22 @@ public class FtpHandlerAdapter extends IoHandlerAdapter {
         ftpHandler.sessionOpened(ftpSession);
     }
 
+    /**
+     * Get the FTPHandler instance
+     *
+     * @return The FTPHandler instance
+     */
     public FtpHandler getFtpHandler() {
         return ftpHandler;
     }
 
+    /**
+     * Set the FTPHandler instance
+     *
+     * @param handler The FTPHandler instance
+     */
     public void setFtpHandler(FtpHandler handler) {
         this.ftpHandler = handler;
 
     }
-
 }

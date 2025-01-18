@@ -41,15 +41,24 @@ public class Daemon {
     private static Object lock = new Object();
 
     /**
-     * Main entry point for the daemon
+     * Create a Daemon instance.
+     */
+    private Daemon() {
+        // Nothing to do
+    }
+
+    /**
+     * Main entry point for the daemon. It can only be started once.
+     *
      * @param args The arguments
-     * @throws Exception
+     * @throws Exception If any error was met during the launch
      */
     public static void main(String[] args) throws Exception {
         try {
             if (server == null) {
                 // get configuration
                 server = getConfiguration(args);
+
                 if (server == null) {
                     LOG.error("No configuration provided");
                     throw new FtpException("No configuration provided");
@@ -66,6 +75,7 @@ public class Daemon {
                 LOG.info("Starting FTP server daemon");
                 server.start();
 
+                // TODO: Should encapsulate the server.start()...
                 synchronized (lock) {
                     lock.wait();
                 }
@@ -73,6 +83,7 @@ public class Daemon {
                 synchronized (lock) {
                     lock.notify();
                 }
+
                 LOG.info("Stopping FTP server daemon");
                 server.stop();
             }
@@ -85,15 +96,14 @@ public class Daemon {
      * Get the configuration object.
      */
     private static FtpServer getConfiguration(String[] args) throws Exception {
-
         FtpServer server = null;
+
         if (args == null || args.length < 2) {
             LOG.info("Using default configuration....");
             server = new FtpServerFactory().createServer();
         } else if ((args.length == 2) && args[1].equals("-default")) {
             // supported for backwards compatibility, but not documented
-            System.out
-                    .println("The -default switch is deprecated, please use --default instead");
+            System.out.println("The -default switch is deprecated, please use --default instead");
             LOG.info("Using default configuration....");
             server = new FtpServerFactory().createServer();
         } else if ((args.length == 2) && args[1].equals("--default")) {
@@ -108,16 +118,14 @@ public class Daemon {
                 server = (FtpServer) ctx.getBean("server");
             } else {
                 String[] beanNames = ctx.getBeanNamesForType(FtpServer.class);
+
                 if (beanNames.length == 1) {
                     server = (FtpServer) ctx.getBean(beanNames[0]);
                 } else if (beanNames.length > 1) {
-                    System.out
-                            .println("Using the first server defined in the configuration, named "
-                                    + beanNames[0]);
+                    System.out.println("Using the first server defined in the configuration, named " + beanNames[0]);
                     server = (FtpServer) ctx.getBean(beanNames[0]);
                 } else {
-                    System.err
-                            .println("XML configuration does not contain a server configuration");
+                    System.err.println("XML configuration does not contain a server configuration");
                 }
             }
         } else {

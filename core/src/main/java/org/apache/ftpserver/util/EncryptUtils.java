@@ -33,6 +33,12 @@ import org.apache.ftpserver.command.impl.MD5;
  * @author <a href="http://mina.apache.org">Apache MINA Project</a>
  */
 public class EncryptUtils {
+    /**
+     * A private constructor
+     */
+    public EncryptUtils() {
+        // Nothing to do
+    }
 
     /**
      * Encrypt byte array.

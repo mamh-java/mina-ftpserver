@@ -64,6 +64,11 @@ public interface ServerDataConnectionFactory extends DataConnectionFactory {
      */
     void setServerControlAddress(InetAddress serverControlAddress);
 
+    /**
+     * Switch to ZIP mode
+     *
+     * @param zip The flag value
+     */
     void setZipMode(boolean zip);
 
     /**

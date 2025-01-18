@@ -29,6 +29,12 @@ import org.apache.ftpserver.util.PasswordUtil;
  * @author <a href="http://mina.apache.org">Apache MINA Project</a>
  */
 public class Md5PasswordEncryptor implements PasswordEncryptor {
+    /**
+     * Create a Md5PasswordEncryptor instance
+     */
+    public Md5PasswordEncryptor() {
+        // Nothing to do
+    }
 
     /**
      * Hashes the password using MD5
@@ -46,6 +52,7 @@ public class Md5PasswordEncryptor implements PasswordEncryptor {
         if (storedPassword == null) {
             throw new NullPointerException("storedPassword can not be null");
         }
+
         if (passwordToCheck == null) {
             throw new NullPointerException("passwordToCheck can not be null");
         }

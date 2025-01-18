@@ -46,62 +46,53 @@ import org.slf4j.LoggerFactory;
  * @author <a href="http://mina.apache.org">Apache MINA Project</a>
  */
 public class REST extends AbstractCommand {
-
+    /** Class logger */
     private final Logger LOG = LoggerFactory.getLogger(REST.class);
 
+    /** Public constructor */
+    public REST() {
+        super();
+    }
+
     /**
-     * Execute command.
-     *
      * {@inheritDoc}
      */
     public void execute(final FtpIoSession session,
             final FtpServerContext context, final FtpRequest request)
             throws IOException {
-
         // argument check
         String argument = request.getArgument();
+
         if (argument == null) {
             session.write(LocalizedFtpReply.translate(session, request, context,
                     FtpReply.REPLY_501_SYNTAX_ERROR_IN_PARAMETERS_OR_ARGUMENTS,
                     "REST", null));
+
             return;
         }
 
         // get offset number
         session.resetState();
         long skipLen = 0L;
+
         try {
             skipLen = Long.parseLong(argument);
 
             // check offset number
             if (skipLen < 0L) {
                 skipLen = 0L;
-                session
-                        .write(LocalizedFtpReply
-                                .translate(
-                                        session,
-                                        request,
-                                        context,
-                                        FtpReply.REPLY_501_SYNTAX_ERROR_IN_PARAMETERS_OR_ARGUMENTS,
-                                        "REST.negetive", null));
+                session.write(LocalizedFtpReply.translate(session, request, context,
+                        FtpReply.REPLY_501_SYNTAX_ERROR_IN_PARAMETERS_OR_ARGUMENTS, "REST.negetive", null));
             } else {
-                session
-                        .write(LocalizedFtpReply
-                                .translate(
-                                        session,
-                                        request,
-                                        context,
-                                        FtpReply.REPLY_350_REQUESTED_FILE_ACTION_PENDING_FURTHER_INFORMATION,
-                                        "REST", null));
+                session.write(LocalizedFtpReply.translate(session, request, context,
+                        FtpReply.REPLY_350_REQUESTED_FILE_ACTION_PENDING_FURTHER_INFORMATION, "REST", null));
             }
         } catch (NumberFormatException ex) {
             LOG.debug("Invalid restart position: {}", argument, ex);
             session.write(LocalizedFtpReply.translate(session, request, context,
-                    FtpReply.REPLY_501_SYNTAX_ERROR_IN_PARAMETERS_OR_ARGUMENTS,
-                    "REST.invalid", null));
+                    FtpReply.REPLY_501_SYNTAX_ERROR_IN_PARAMETERS_OR_ARGUMENTS, "REST.invalid", null));
         }
 
         session.setFileOffset(skipLen);
     }
-
 }

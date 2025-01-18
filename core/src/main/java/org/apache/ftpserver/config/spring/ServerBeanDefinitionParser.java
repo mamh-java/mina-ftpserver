@@ -44,8 +44,13 @@ import org.w3c.dom.Element;
  *
  * @author <a href="http://mina.apache.org">Apache MINA Project</a>
  */
-public class ServerBeanDefinitionParser extends
-        AbstractSingleBeanDefinitionParser {
+public class ServerBeanDefinitionParser extends AbstractSingleBeanDefinitionParser {
+    /**
+     * Create a ServerBeanDefinitionParser instance
+     */
+    public ServerBeanDefinitionParser() {
+        super();
+    }
 
     /**
      * {@inheritDoc}
@@ -66,50 +71,61 @@ public class ServerBeanDefinitionParser extends
         BeanDefinitionBuilder factoryBuilder = BeanDefinitionBuilder.genericBeanDefinition(FtpServerFactory.class);
 
         List<Element> childs = SpringUtil.getChildElements(element);
+
         for (Element childElm : childs) {
             String childName = childElm.getLocalName();
 
-            if ("listeners".equals(childName)) {
-                Map<?, ?> listeners = parseListeners(childElm, parserContext, builder);
+            switch (childName) {
+                case "listeners":
+                    Map<?, ?> listeners = parseListeners(childElm, parserContext, builder);
 
-                if (listeners.size() > 0) {
-                    factoryBuilder.addPropertyValue("listeners", listeners);
-                }
-            } else if ("ftplets".equals(childName)) {
-                Map<?, ?> ftplets = parseFtplets(childElm, parserContext, builder);
-                factoryBuilder.addPropertyValue("ftplets", ftplets);
-            } else if ("file-user-manager".equals(childName)
-                    || "db-user-manager".equals(childName)) {
-                Object userManager = parserContext.getDelegate()
-                        .parseCustomElement(childElm,
-                                builder.getBeanDefinition());
-                factoryBuilder.addPropertyValue("userManager", userManager);
-            } else if ("user-manager".equals(childName)) {
-                factoryBuilder.addPropertyValue("userManager", SpringUtil
-                        .parseSpringChildElement(childElm, parserContext,
-                                builder));
-            } else if ("native-filesystem".equals(childName)) {
-                Object fileSystem = parserContext.getDelegate()
-                        .parseCustomElement(childElm,
-                                builder.getBeanDefinition());
-                factoryBuilder.addPropertyValue("fileSystem", fileSystem);
-            } else if ("filesystem".equals(childName)) {
-                factoryBuilder.addPropertyValue("fileSystem", SpringUtil
-                        .parseSpringChildElement(childElm, parserContext,
-                                builder));
-            } else if ("commands".equals(childName)) {
-                Object commandFactory = parserContext.getDelegate()
-                        .parseCustomElement(childElm,
-                                builder.getBeanDefinition());
-                factoryBuilder.addPropertyValue("commandFactory", commandFactory);
-            } else if ("messages".equals(childName)) {
-                MessageResource mr = parseMessageResource(childElm,
-                        parserContext, builder);
-                factoryBuilder.addPropertyValue("messageResource", mr);
+                    if (listeners.size() > 0) {
+                        factoryBuilder.addPropertyValue("listeners", listeners);
+                    }
 
-            } else {
-                throw new FtpServerConfigurationException(
-                        "Unknown configuration name: " + childName);
+                    break;
+
+                case "ftplets":
+                    Map<?, ?> ftplets = parseFtplets(childElm, parserContext, builder);
+                    factoryBuilder.addPropertyValue("ftplets", ftplets);
+                    break;
+
+                case "file-user-manager":
+                case "db-user-manager":
+                    Object userManager = parserContext.getDelegate().parseCustomElement(childElm,
+                            builder.getBeanDefinition());
+                    factoryBuilder.addPropertyValue("userManager", userManager);
+                    break;
+
+                case "user-manager":
+                    factoryBuilder.addPropertyValue("userManager", SpringUtil
+                        .parseSpringChildElement(childElm, parserContext, builder));
+                    break;
+
+                case "native-filesystem":
+                    Object fileSystem = parserContext.getDelegate().parseCustomElement(childElm,
+                            builder.getBeanDefinition());
+                    factoryBuilder.addPropertyValue("fileSystem", fileSystem);
+                    break;
+
+                case "filesystem":
+                    factoryBuilder.addPropertyValue("fileSystem", SpringUtil
+                        .parseSpringChildElement(childElm, parserContext, builder));
+                    break;
+
+                case "commands":
+                    Object commandFactory = parserContext.getDelegate().parseCustomElement(childElm,
+                            builder.getBeanDefinition());
+                    factoryBuilder.addPropertyValue("commandFactory", commandFactory);
+                    break;
+
+                case "messages":
+                    MessageResource mr = parseMessageResource(childElm, parserContext, builder);
+                    factoryBuilder.addPropertyValue("messageResource", mr);
+                    break;
+
+                default:
+                    throw new FtpServerConfigurationException( "Unknown configuration name: " + childName);
             }
         }
 
@@ -119,22 +135,27 @@ public class ServerBeanDefinitionParser extends
             connectionConfig.setMaxLogins(SpringUtil.parseInt(element,
                     "max-logins"));
         }
+
         if (StringUtils.hasText(element.getAttribute("max-threads"))) {
             connectionConfig.setMaxThreads(SpringUtil.parseInt(element,
                     "max-threads"));
         }
+
         if (StringUtils.hasText(element.getAttribute("max-anon-logins"))) {
             connectionConfig.setMaxAnonymousLogins(SpringUtil.parseInt(element,
                     "max-anon-logins"));
         }
+
         if (StringUtils.hasText(element.getAttribute("anon-enabled"))) {
             connectionConfig.setAnonymousLoginEnabled(SpringUtil.parseBoolean(
                     element, "anon-enabled", true));
         }
+
         if (StringUtils.hasText(element.getAttribute("max-login-failures"))) {
             connectionConfig.setMaxLoginFailures(SpringUtil.parseInt(element,
                     "max-login-failures"));
         }
+
         if (StringUtils.hasText(element.getAttribute("login-failure-delay"))) {
             connectionConfig.setLoginFailureDelay(SpringUtil.parseInt(element,
                     "login-failure-delay"));
@@ -142,12 +163,10 @@ public class ServerBeanDefinitionParser extends
 
         factoryBuilder.addPropertyValue("connectionConfig", connectionConfig.createConnectionConfig());
 
-
         BeanDefinition factoryDefinition = factoryBuilder.getBeanDefinition();
-
         String factoryName = parserContext.getReaderContext().generateBeanName(factoryDefinition);
-
         BeanDefinitionHolder factoryHolder = new BeanDefinitionHolder(factoryDefinition, factoryName);
+
         registerBeanDefinition(factoryHolder, parserContext.getRegistry());
 
         // set the factory on the listener bean
@@ -162,20 +181,17 @@ public class ServerBeanDefinitionParser extends
     private MessageResource parseMessageResource(final Element childElm,
             final ParserContext parserContext,
             final BeanDefinitionBuilder builder) {
-
         MessageResourceFactory mr = new MessageResourceFactory();
 
         if (StringUtils.hasText(childElm.getAttribute("languages"))) {
             String langString = childElm.getAttribute("languages");
-
             String[] languages = langString.split("[\\s,]+");
 
             mr.setLanguages(Arrays.asList(languages));
         }
 
         if (StringUtils.hasText(childElm.getAttribute("directory"))) {
-            mr.setCustomMessageDirectory(new File(childElm
-                    .getAttribute("directory")));
+            mr.setCustomMessageDirectory(new File(childElm.getAttribute("directory")));
 
         }
 
@@ -198,6 +214,7 @@ public class ServerBeanDefinitionParser extends
                     builder.getBeanDefinition());
         } else {
             ManagedMap ftplets = new ManagedMap();
+
             for (Element ftpletElm : childs) {
                 ftplets.put(ftpletElm.getAttribute("name"), SpringUtil
                                 .parseSpringChildElement(ftpletElm, parserContext,
@@ -222,19 +239,22 @@ public class ServerBeanDefinitionParser extends
         for (Element listenerElm : childs) {
             Object listener = null;
             String ln = listenerElm.getLocalName();
-            if ("nio-listener".equals(ln)) {
-                listener = parserContext.getDelegate().parseCustomElement(
-                        listenerElm, builder.getBeanDefinition());
-            } else if ("listener".equals(ln)) {
-                listener = SpringUtil.parseSpringChildElement(listenerElm,
-                        parserContext, builder);
-            } else {
-                throw new FtpServerConfigurationException(
-                        "Unknown listener element " + ln);
+
+            switch (ln) {
+                case "nio-listener":
+                    listener = parserContext.getDelegate().parseCustomElement(
+                            listenerElm, builder.getBeanDefinition());
+                    break;
+
+                case "listener":
+                    listener = SpringUtil.parseSpringChildElement(listenerElm, parserContext, builder);
+                    break;
+
+                default:
+                    throw new FtpServerConfigurationException("Unknown listener element " + ln);
             }
 
             String name = listenerElm.getAttribute("name");
-
             listeners.put(name, listener);
         }
 

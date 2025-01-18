@@ -32,17 +32,31 @@ import org.springframework.beans.factory.FactoryBean;
  * @see DataConnectionConfigurationFactory
  */
 public class DataConnectionConfigurationFactoryBean extends DataConnectionConfigurationFactory implements FactoryBean {
+    /**
+     * Create a DataConnectionConfigurationFactoryBean
+     */
+    public DataConnectionConfigurationFactoryBean() {
+        // Nothing to do
+    }
 
+    /**
+     * {@inheritDoc}
+     */
     public Object getObject() throws Exception {
         return createDataConnectionConfiguration();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public Class<?> getObjectType() {
         return DataConnectionConfiguration.class;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public boolean isSingleton() {
         return false;
     }
-
 }

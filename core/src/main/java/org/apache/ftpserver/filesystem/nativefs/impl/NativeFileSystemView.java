@@ -32,7 +32,7 @@ import org.slf4j.LoggerFactory;
 
 /**
  * <strong>Internal class, do not use directly.</strong>
- *
+ * <p>
  * File system view based on native file system. Here the root directory will be
  * user virtual root (/).
  *
@@ -40,7 +40,6 @@ import org.slf4j.LoggerFactory;
  */
 public class NativeFileSystemView implements FileSystemView {
     private final Logger LOG = LoggerFactory.getLogger(NativeFileSystemView.class);
-
 
     // the root directory will always end with '/'.
     private String rootDir;
@@ -57,6 +56,9 @@ public class NativeFileSystemView implements FileSystemView {
 
     /**
      * Constructor - internal do not use directly, use {@link NativeFileSystemFactory} instead
+     *
+     * @param user The current user
+     * @throws FtpException Actually, never thrown... To be removed!
      */
     protected NativeFileSystemView(User user) throws FtpException {
         this(user, false);
@@ -139,20 +141,22 @@ public class NativeFileSystemView implements FileSystemView {
     public boolean changeWorkingDirectory(String dir) {
 
         // not a directory - return false
-        dir = getPhysicalName(rootDir, currDir, dir,
-                caseInsensitive);
+        dir = getPhysicalName(rootDir, currDir, dir, caseInsensitive);
         File dirObj = new File(dir);
+
         if (!dirObj.isDirectory()) {
             return false;
         }
 
         // strip user root and add last '/' if necessary
         dir = dir.substring(rootDir.length() - 1);
+
         if (dir.charAt(dir.length() - 1) != '/') {
             dir = dir + '/';
         }
 
         currDir = dir;
+
         return true;
     }
 
@@ -173,20 +177,15 @@ public class NativeFileSystemView implements FileSystemView {
      * Get the physical canonical file name. It works like
      * File.getCanonicalPath().
      *
-     * @param rootDir
-     *            The root directory.
-     * @param currDir
-     *            The current directory. It will always be with respect to the
-     *            root directory.
-     * @param fileName
-     *            The input file name.
-     * @return The return string will always begin with the root directory. It
-     *         will never be null.
+     * @param rootDir The root directory.
+     * @param currDir The current directory. It will always be with respect to the root directory.
+     * @param fileName The input file name.
+     * @param caseInsensitive Tells if the file name case sensitivity should be considered or not
+     * @return The return string will always begin with the root directory. It will never be null.
      */
     protected String getPhysicalName(final String rootDir,
             final String currDir, final String fileName,
             final boolean caseInsensitive) {
-
         // normalize root dir
         String normalizedRootDir = normalizeSeparateChar(rootDir);
         normalizedRootDir = appendSlash(normalizedRootDir);
@@ -212,6 +211,7 @@ public class NativeFileSystemView implements FileSystemView {
         // replace ., ~ and ..
         // in this loop resArg will never end with '/'
         StringTokenizer st = new StringTokenizer(normalizedFileName, "/");
+
         while (st.hasMoreTokens()) {
             String tok = st.nextToken();
 
@@ -222,6 +222,7 @@ public class NativeFileSystemView implements FileSystemView {
                 // .. => parent directory (if not root)
                 if (result.startsWith(normalizedRootDir)) {
                     int slashIndex = result.lastIndexOf('/');
+
                     if (slashIndex != -1) {
                         result = result.substring(0, slashIndex);
                     }
@@ -235,8 +236,7 @@ public class NativeFileSystemView implements FileSystemView {
 
                 if (caseInsensitive) {
                     // we're case insensitive, find a directory with the name, ignoring casing
-                    File[] matches = new File(result)
-                            .listFiles(new NameEqualsFileFilter(tok, true));
+                    File[] matches = new File(result).listFiles(new NameEqualsFileFilter(tok, true));
 
                     if (matches != null && matches.length > 0) {
                         // found a file matching tok, replace tok for get the right casing
@@ -316,6 +316,7 @@ public class NativeFileSystemView implements FileSystemView {
 
         path = normalizeSeparateChar(path);
         path = prependSlash(appendSlash(path));
+
         return path;
     }
 }

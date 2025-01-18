@@ -165,12 +165,18 @@ public class CommandFactoryFactory {
     private boolean useDefaultCommands = true;
 
     /**
+     * Create a CommandFactoryFactory instance
+     */
+    public CommandFactoryFactory() {
+        // Nothing to do
+    }
+
+    /**
      * Create an {@link CommandFactory} based on the configuration on the factory.
      *
      * @return The {@link CommandFactory}
      */
     public CommandFactory createCommandFactory() {
-
         Map<String, Command> mergedCommands = new HashMap<>();
 
         if (useDefaultCommands) {

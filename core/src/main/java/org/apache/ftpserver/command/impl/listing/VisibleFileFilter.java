@@ -28,7 +28,7 @@ import org.apache.ftpserver.ftplet.FtpFile;
  * @author <a href="http://mina.apache.org">Apache MINA Project</a>
  */
 public class VisibleFileFilter implements FileFilter {
-
+    /** The wrapped filter */
     private final FileFilter wrappedFilter;
 
     /**
@@ -41,16 +41,13 @@ public class VisibleFileFilter implements FileFilter {
     /**
      * Constructor with a wrapped filter, allows for chaining filters
      *
-     * @param wrappedFilter
-     *            The {@link FileFilter} to wrap
+     * @param wrappedFilter The {@link FileFilter} to wrap
      */
     public VisibleFileFilter(FileFilter wrappedFilter) {
         this.wrappedFilter = wrappedFilter;
     }
 
     /**
-     * @see FileFilter#accept(FtpFile)
-     *
      * {@inheritDoc}
      */
     public boolean accept(FtpFile file) {

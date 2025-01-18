@@ -46,8 +46,13 @@ import org.slf4j.LoggerFactory;
  * @author <a href="http://mina.apache.org">Apache MINA Project</a>
  */
 public class DELE extends AbstractCommand {
-
+    /** Class logger */
     private final Logger LOG = LoggerFactory.getLogger(DELE.class);
+
+    /** Public constructor */
+    public DELE() {
+        super();
+    }
 
     /**
      * Execute command.
@@ -67,6 +72,7 @@ public class DELE extends AbstractCommand {
             session.write(LocalizedFileActionFtpReply.translate(session, request, context,
                     FtpReply.REPLY_501_SYNTAX_ERROR_IN_PARAMETERS_OR_ARGUMENTS,
                     "DELE", null, null));
+
             return;
         }
 
@@ -78,10 +84,12 @@ public class DELE extends AbstractCommand {
         } catch (Exception ex) {
             LOG.debug("Could not get file {}", fileName, ex);
         }
+
         if (file == null) {
             session.write(LocalizedFileActionFtpReply.translate(session, request, context,
                     FtpReply.REPLY_550_REQUESTED_ACTION_NOT_TAKEN,
                     "DELE.invalid", fileName, null));
+
             return;
         }
 
@@ -92,6 +100,7 @@ public class DELE extends AbstractCommand {
             session.write(LocalizedFileActionFtpReply.translate(session, request, context,
                     FtpReply.REPLY_550_REQUESTED_ACTION_NOT_TAKEN,
                     "DELE.invalid", fileName, file));
+
             return;
         }
 
@@ -99,6 +108,7 @@ public class DELE extends AbstractCommand {
             session.write(LocalizedFileActionFtpReply.translate(session, request, context,
                     FtpReply.REPLY_450_REQUESTED_FILE_ACTION_NOT_TAKEN,
                     "DELE.permission", fileName, file));
+
             return;
         }
 
@@ -114,8 +124,7 @@ public class DELE extends AbstractCommand {
             LOG.info("File delete : " + userName + " - " + fileName);
 
             // notify statistics object
-            ServerFtpStatistics ftpStat = (ServerFtpStatistics) context
-                    .getFtpStatistics();
+            ServerFtpStatistics ftpStat = (ServerFtpStatistics) context.getFtpStatistics();
             ftpStat.setDelete(session, file);
         } else {
             session.write(LocalizedFileActionFtpReply.translate(session, request, context,
@@ -123,5 +132,4 @@ public class DELE extends AbstractCommand {
                     fileName, file));
         }
     }
-
 }

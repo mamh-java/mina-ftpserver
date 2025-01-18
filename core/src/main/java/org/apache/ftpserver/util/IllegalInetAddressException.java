@@ -28,13 +28,21 @@ package org.apache.ftpserver.util;
  * @author <a href="http://mina.apache.org">Apache MINA Project</a>
  */
 public class IllegalInetAddressException extends IllegalArgumentException {
-
+    /** The serial version UID */
     private static final long serialVersionUID = -7771719692741419933L;
 
+    /**
+     * Create a IllegalInetAddressException instance
+     */
     public IllegalInetAddressException() {
         super();
     }
 
+    /**
+     * Create a IllegalInetAddressException instance with an error message
+     +
+     * @param s The message to pass
+     */
     public IllegalInetAddressException(String s) {
         super(s);
     }

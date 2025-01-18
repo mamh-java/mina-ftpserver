@@ -46,40 +46,41 @@ import org.apache.mina.core.session.IoSession;
  * @author <a href="http://mina.apache.org">Apache MINA Project</a>
  */
 public class SITE_WHO extends AbstractCommand {
+    /** SITE_WHO constructor */
+    public SITE_WHO() {
+        super();
+    }
 
     /**
-     * Execute command.
-     *
      * {@inheritDoc}
      */
     public void execute(final FtpIoSession session,
             final FtpServerContext context, final FtpRequest request)
             throws IOException, FtpException {
-
         // reset state variables
         session.resetState();
 
         // only administrator can execute this
         UserManager userManager = context.getUserManager();
         boolean isAdmin = userManager.isAdmin(session.getUser().getName());
+
         if (!isAdmin) {
             session.write(LocalizedFtpReply.translate(session, request, context,
                     FtpReply.REPLY_530_NOT_LOGGED_IN, "SITE", null));
+
             return;
         }
 
         // print all the connected user information
         StringBuilder sb = new StringBuilder();
 
-        Map<Long, IoSession> sessions = session.getService()
-                .getManagedSessions();
+        Map<Long, IoSession> sessions = session.getService().getManagedSessions();
 
         sb.append('\n');
         Iterator<IoSession> sessionIterator = sessions.values().iterator();
 
         while (sessionIterator.hasNext()) {
-            FtpIoSession managedSession = new FtpIoSession(sessionIterator
-                    .next(), context);
+            FtpIoSession managedSession = new FtpIoSession(sessionIterator.next(), context);
 
             if (!managedSession.isLoggedIn()) {
                 continue;
@@ -93,15 +94,15 @@ public class SITE_WHO extends AbstractCommand {
                         .getRemoteAddress()).getAddress().getHostAddress(),
                         ' ', true, 16));
             }
+
             sb.append(StringUtils.pad(DateUtils.getISO8601Date(managedSession
                     .getLoginTime().getTime()), ' ', true, 20));
             sb.append(StringUtils.pad(DateUtils.getISO8601Date(managedSession
                     .getLastAccessTime().getTime()), ' ', true, 20));
             sb.append('\n');
         }
-        sb.append('\n');
-        session.write(new DefaultFtpReply(FtpReply.REPLY_200_COMMAND_OKAY, sb
-                .toString()));
-    }
 
+        sb.append('\n');
+        session.write(new DefaultFtpReply(FtpReply.REPLY_200_COMMAND_OKAY, sb.toString()));
+    }
 }

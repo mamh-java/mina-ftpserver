@@ -28,7 +28,6 @@ import org.apache.ftpserver.impl.DefaultConnectionConfig;
  *
  */
 public class ConnectionConfigFactory {
-
     private int maxLogins = 10;
 
     private boolean anonymousLoginEnabled = true;
@@ -40,6 +39,13 @@ public class ConnectionConfigFactory {
     private int loginFailureDelay = 500;
 
     private int maxThreads = 0;
+
+    /**
+     * Create a ConnectionConfigFactory instance
+     */
+    public ConnectionConfigFactory() {
+        // Nothing to do
+    }
 
     /**
      * Create a connection configuration instances based on the configuration on this factory

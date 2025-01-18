@@ -31,7 +31,6 @@ import org.apache.ftpserver.usermanager.impl.DbUserManager;
  * @author <a href="http://mina.apache.org">Apache MINA Project</a>
  */
 public class DbUserManagerFactory implements UserManagerFactory {
-
     private String adminName = "admin";
 
     private String insertUserStmt;
@@ -51,6 +50,13 @@ public class DbUserManagerFactory implements UserManagerFactory {
     private DataSource dataSource;
 
     private PasswordEncryptor passwordEncryptor = new Md5PasswordEncryptor();
+
+    /**
+     * Create a DbUserManagerFactory instance
+     */
+    public DbUserManagerFactory() {
+        // Nothing to do
+    }
 
     public UserManager createUserManager() {
         if (dataSource == null) {

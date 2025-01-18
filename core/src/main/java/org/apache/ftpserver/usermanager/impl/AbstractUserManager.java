@@ -66,6 +66,9 @@ public abstract class AbstractUserManager implements UserManager {
 
     private final PasswordEncryptor passwordEncryptor;
 
+    /**
+     * An AbstractUserManager constructor. The default password encryptor is using MD5
+     */
     public AbstractUserManager() {
         this(null,  new Md5PasswordEncryptor());
     }

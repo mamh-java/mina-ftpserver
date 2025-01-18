@@ -42,18 +42,20 @@ import org.apache.ftpserver.impl.LocalizedFtpReply;
  * @author <a href="http://mina.apache.org">Apache MINA Project</a>
  */
 public class OPTS_MLST extends AbstractCommand {
-
+    /** The existing types */
     private static final String[] AVAILABLE_TYPES = { "Size", "Modify", "Type", "Perm" };
 
+    /** Public constructor */
+    public OPTS_MLST() {
+        super();
+    }
+
     /**
-     * Execute command.
-     *
      * {@inheritDoc}
      */
     public void execute(final FtpIoSession session,
             final FtpServerContext context, final FtpRequest request)
             throws IOException, FtpException {
-
         // reset state
         session.resetState();
 
@@ -82,19 +84,18 @@ public class OPTS_MLST extends AbstractCommand {
         // set the list types
         String[] validatedTypes = validateSelectedTypes(types);
 
-        //if (validatedTypes.length != 0) {
-            session.setAttribute("MLST.types", validatedTypes);
-            session.write(LocalizedFtpReply.translate(session, request, context,
-                    FtpReply.REPLY_200_COMMAND_OKAY, "OPTS.MLST", listTypes));
-        /*} else {
-            session.write(LocalizedFtpReply.translate(session, request, context,
-                    FtpReply.REPLY_501_SYNTAX_ERROR_IN_PARAMETERS_OR_ARGUMENTS,
-                    "OPTS.MLST", listTypes));
-        }*/
+        session.setAttribute("MLST.types", validatedTypes);
+        session.write(LocalizedFtpReply.translate(session, request, context,
+                FtpReply.REPLY_200_COMMAND_OKAY, "OPTS.MLST", listTypes));
     }
 
+    /**
+     * Get the valid selected types
+     *
+     * @param types The types
+     * @return The selected types
+     */
     private String[] validateSelectedTypes(String... types) {
-
         // ignore null types
         if (types == null) {
             return new String[0];

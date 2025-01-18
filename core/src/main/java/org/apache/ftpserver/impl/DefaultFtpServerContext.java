@@ -65,14 +65,19 @@ public class DefaultFtpServerContext implements FtpServerContext {
     /** The FTP messages per language */
     private MessageResource messageResource = new MessageResourceFactory().createMessageResource();
 
+    /** The user manager */
     private UserManager userManager = new PropertiesUserManagerFactory().createUserManager();
 
+    /** The file system factory */
     private FileSystemFactory fileSystemManager = new NativeFileSystemFactory();
 
+    /** The FtpLet container */
     private FtpletContainer ftpletContainer = new DefaultFtpletContainer();
 
+    /** The FTP statistics */
     private FtpStatistics statistics = new DefaultFtpStatistics();
 
+    /** The comand factory */
     private CommandFactory commandFactory = new CommandFactoryFactory().createCommandFactory();
 
     /** The connection configuration */
@@ -81,7 +86,10 @@ public class DefaultFtpServerContext implements FtpServerContext {
     /** The declared listeners for this context */
     private Map<String, Listener> listeners = new HashMap<>();
 
+    /** Thelist of admin authorities */
     private static final List<Authority> ADMIN_AUTHORITIES = new ArrayList<>();
+
+    /** The list of anonymous authorities */
     private static final List<Authority> ANON_AUTHORITIES = new ArrayList<>();
 
     /**
@@ -95,7 +103,9 @@ public class DefaultFtpServerContext implements FtpServerContext {
         ANON_AUTHORITIES.add(new TransferRatePermission(4800, 4800));
     }
 
-
+    /**
+     * Create an instance
+     */
     public DefaultFtpServerContext() {
         // create the default listener
         listeners.put("default", new ListenerFactory().createListener());
@@ -107,6 +117,8 @@ public class DefaultFtpServerContext implements FtpServerContext {
      *  <li>Admin</li>
      *  <li>Anonymous</li>
      * </ul>
+     *
+     * @throws Exception If the users creation failed
      */
     public void createDefaultUsers() throws Exception {
         UserManager userManager = getUserManager();
@@ -175,12 +187,16 @@ public class DefaultFtpServerContext implements FtpServerContext {
         return statistics;
     }
 
+    /**
+     * Set the FTP server statistics
+     *
+     * @param statistics The FTP server statistics
+     */
     public void setFtpStatistics(FtpStatistics statistics) {
         this.statistics = statistics;
     }
 
     /**
-     * Get ftplet handler.
      * {@inheritDoc}
      */
     public FtpletContainer getFtpletContainer() {
@@ -188,7 +204,6 @@ public class DefaultFtpServerContext implements FtpServerContext {
     }
 
     /**
-     * Get the command factory.
      * {@inheritDoc}
      */
     public CommandFactory getCommandFactory() {
@@ -196,15 +211,14 @@ public class DefaultFtpServerContext implements FtpServerContext {
     }
 
     /**
-     * Get Ftplet.
      * {@inheritDoc}
      */
+    @Override
     public Ftplet getFtplet(String name) {
         return ftpletContainer.getFtplet(name);
     }
 
     /**
-     * Close all the components.
      * {@inheritDoc}
      */
     public void dispose() {
@@ -231,6 +245,12 @@ public class DefaultFtpServerContext implements FtpServerContext {
         return listeners.get(name);
     }
 
+    /**
+     * Set a listener. It does pretty much what addListener does.
+     *
+     * @param name The listener's name
+     * @param listener The listener
+     */
     public void setListener(String name, Listener listener) {
         listeners.put(name, listener);
     }
@@ -242,34 +262,76 @@ public class DefaultFtpServerContext implements FtpServerContext {
         return listeners;
     }
 
+    /**
+     * Set the listeners
+     *
+     * @param listeners The listeners
+     */
     public void setListeners(Map<String, Listener> listeners) {
         this.listeners = listeners;
     }
 
+    /**
+     * Add a listener
+     *
+     * @param name The added listener's name
+     * @param listener The added listener
+     */
     public void addListener(String name, Listener listener) {
         listeners.put(name, listener);
     }
 
+    /**
+     * Remove a listener
+     *
+     * @param name The listener name
+     * @return The removed listener
+     */
     public Listener removeListener(String name) {
         return listeners.remove(name);
     }
 
+    /**
+     * Set the command factory
+     *
+     * @param commandFactory The command factory
+     */
     public void setCommandFactory(CommandFactory commandFactory) {
         this.commandFactory = commandFactory;
     }
 
+    /**
+     * Set the file system manager
+     *
+     * @param fileSystemManager The file system manager
+     */
     public void setFileSystemManager(FileSystemFactory fileSystemManager) {
         this.fileSystemManager = fileSystemManager;
     }
 
+    /**
+     * Set the FtpLet container
+     *
+     * @param ftpletContainer The FtpLet container
+     */
     public void setFtpletContainer(FtpletContainer ftpletContainer) {
         this.ftpletContainer = ftpletContainer;
     }
 
+    /**
+     * Set the message resource
+     *
+     * @param messageResource The message resource
+     */
     public void setMessageResource(MessageResource messageResource) {
         this.messageResource = messageResource;
     }
 
+    /**
+     * Set the user manager
+     *
+     * @param userManager The user manager
+     */
     public void setUserManager(UserManager userManager) {
         this.userManager = userManager;
     }
@@ -281,10 +343,21 @@ public class DefaultFtpServerContext implements FtpServerContext {
         return connectionConfig;
     }
 
+    /**
+     * Set the connection configuration
+     *
+     * @param connectionConfig The connection configuration
+     */
     public void setConnectionConfig(ConnectionConfig connectionConfig) {
         this.connectionConfig = connectionConfig;
     }
 
+    /**
+     * Get the ThreadPool executor configured with the maxThreads parameter,
+     * or the maxLogins parameter if maxThreads isn't defined, or 16 threads.
+     *
+     * @return An Ordered Thread Pool executor
+     */
     public synchronized ThreadPoolExecutor getThreadPoolExecutor() {
         if (threadPoolExecutor == null) {
             int maxThreads = connectionConfig.getMaxThreads();

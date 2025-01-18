@@ -32,17 +32,38 @@ import org.springframework.beans.factory.FactoryBean;
  * @see ConnectionConfigFactory
  */
 public class ConnectionConfigFactoryBean extends ConnectionConfigFactory implements FactoryBean {
+    /**
+     * Create a ConnectionConfigFactoryBean instance
+     */
+    public ConnectionConfigFactoryBean() {
+        // Nothing to do
+    }
 
+    /**
+     * Create a ConnectionConfig instance
+     *
+     * @return An instance of ConnectionConfig
+     * @throws Exception Never thrown, but the interface requires this declaration
+     */
     public Object getObject() throws Exception {
         return createConnectionConfig();
     }
 
+    /**
+     * Get the ConnectionConfig instance type
+     *
+     * @return The ConnectionConfig instance type
+     */
     public Class<?> getObjectType() {
         return ConnectionConfig.class;
     }
 
+    /**
+     * This instance is not a singleton
+     *
+     * @return Always <code>false</code>
+     */
     public boolean isSingleton() {
         return false;
     }
-
 }

@@ -37,24 +37,32 @@ import org.slf4j.LoggerFactory;
 
 /**
  * <strong>Internal class, do not use directly.</strong>
- *
+ * <p>
  * This ftplet calls other ftplet methods and returns appropriate return value.
- *
+ * <p>
  * <strong><strong>Internal class, do not use directly.</strong></strong>
  *
  * @author <a href="http://mina.apache.org">Apache MINA Project</a>
  */
 public class DefaultFtpletContainer implements FtpletContainer {
+    /** The class logger */
+    private final Logger LOG = LoggerFactory.getLogger(DefaultFtpletContainer.class);
 
-    private final Logger LOG = LoggerFactory
-            .getLogger(DefaultFtpletContainer.class);
-
+    /** The contained FtpLets */
     private final Map<String, Ftplet> ftplets;
 
+    /**
+     * Create a DefaultFtpletContainer instance
+     */
     public DefaultFtpletContainer() {
         this(new ConcurrentHashMap<>());
     }
 
+    /**
+     * Create a DefaultFtpletContainer instance
+     *
+     * @param ftplets The set of FtpLets to store
+     */
     public DefaultFtpletContainer(Map<String, Ftplet> ftplets) {
         this.ftplets = ftplets;
     }
@@ -70,6 +78,12 @@ public class DefaultFtpletContainer implements FtpletContainer {
         return ftplets.get(name);
     }
 
+    /**
+     * Initialize teh container
+     *
+     * @param ftpletContext The context to use
+     * @throws FtpException If the initialization failed
+     */
     public synchronized void init(FtpletContext ftpletContext) throws FtpException {
         for (Entry<String, Ftplet> entry : ftplets.entrySet()) {
             entry.getValue().init(ftpletContext);
@@ -77,8 +91,6 @@ public class DefaultFtpletContainer implements FtpletContainer {
     }
 
     /**
-     * @see FtpletContainer#getFtplets()
-     *
      * {@inheritDoc}
      */
     public synchronized Map<String, Ftplet> getFtplets() {
@@ -101,11 +113,12 @@ public class DefaultFtpletContainer implements FtpletContainer {
     /**
      * {@inheritDoc}
      */
-    public FtpletResult onConnect(FtpSession session) throws FtpException,
-            IOException {
+    public FtpletResult onConnect(FtpSession session) throws FtpException, IOException {
         FtpletResult retVal = FtpletResult.DEFAULT;
+
         for (Entry<String, Ftplet> entry : ftplets.entrySet()) {
             retVal = entry.getValue().onConnect(session);
+
             if (retVal == null) {
                 retVal = FtpletResult.DEFAULT;
             }
@@ -115,18 +128,19 @@ public class DefaultFtpletContainer implements FtpletContainer {
                 break;
             }
         }
+
         return retVal;
     }
 
     /**
      * {@inheritDoc}
      */
-    public FtpletResult onDisconnect(FtpSession session) throws FtpException,
-            IOException {
+    public FtpletResult onDisconnect(FtpSession session) throws FtpException, IOException {
         FtpletResult retVal = FtpletResult.DEFAULT;
-        for (Entry<String, Ftplet> entry : ftplets.entrySet()) {
 
+        for (Entry<String, Ftplet> entry : ftplets.entrySet()) {
             retVal = entry.getValue().onDisconnect(session);
+
             if (retVal == null) {
                 retVal = FtpletResult.DEFAULT;
             }
@@ -136,6 +150,7 @@ public class DefaultFtpletContainer implements FtpletContainer {
                 break;
             }
         }
+
         return retVal;
     }
 
@@ -145,9 +160,10 @@ public class DefaultFtpletContainer implements FtpletContainer {
     public FtpletResult afterCommand(FtpSession session, FtpRequest request, FtpReply reply)
             throws FtpException, IOException {
         FtpletResult retVal = FtpletResult.DEFAULT;
-        for (Entry<String, Ftplet> entry : ftplets.entrySet()) {
 
+        for (Entry<String, Ftplet> entry : ftplets.entrySet()) {
             retVal = entry.getValue().afterCommand(session, request, reply);
+
             if (retVal == null) {
                 retVal = FtpletResult.DEFAULT;
             }
@@ -157,18 +173,19 @@ public class DefaultFtpletContainer implements FtpletContainer {
                 break;
             }
         }
+
         return retVal;
     }
 
     /**
      * {@inheritDoc}
      */
-    public FtpletResult beforeCommand(FtpSession session, FtpRequest request)
-            throws FtpException, IOException {
+    public FtpletResult beforeCommand(FtpSession session, FtpRequest request) throws FtpException, IOException {
         FtpletResult retVal = FtpletResult.DEFAULT;
-        for (Entry<String, Ftplet> entry : ftplets.entrySet()) {
 
+        for (Entry<String, Ftplet> entry : ftplets.entrySet()) {
             retVal = entry.getValue().beforeCommand(session, request);
+
             if (retVal == null) {
                 retVal = FtpletResult.DEFAULT;
             }
@@ -178,7 +195,7 @@ public class DefaultFtpletContainer implements FtpletContainer {
                 break;
             }
         }
+
         return retVal;
     }
-
 }

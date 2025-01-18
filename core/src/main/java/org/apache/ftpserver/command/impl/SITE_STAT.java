@@ -41,25 +41,28 @@ import org.apache.ftpserver.util.DateUtils;
  * @author <a href="http://mina.apache.org">Apache MINA Project</a>
  */
 public class SITE_STAT extends AbstractCommand {
+    /** SITE_STAT constructor */
+    public SITE_STAT() {
+        super();
+    }
 
     /**
-     * Execute command.
-     *
      * {@inheritDoc}
      */
     public void execute(final FtpIoSession session,
             final FtpServerContext context, final FtpRequest request)
             throws IOException, FtpException {
-
         // reset state variables
         session.resetState();
 
         // only administrator can execute this
         UserManager userManager = context.getUserManager();
         boolean isAdmin = userManager.isAdmin(session.getUser().getName());
+
         if (!isAdmin) {
             session.write(LocalizedFtpReply.translate(session, request, context,
                     FtpReply.REPLY_530_NOT_LOGGED_IN, "SITE", null));
+
             return;
         }
 
@@ -97,8 +100,6 @@ public class SITE_STAT extends AbstractCommand {
         sb.append("Total Connections        : ").append(
                 stat.getTotalConnectionNumber()).append('\n');
         sb.append('\n');
-        session.write(new DefaultFtpReply(FtpReply.REPLY_200_COMMAND_OKAY, sb
-                .toString()));
+        session.write(new DefaultFtpReply(FtpReply.REPLY_200_COMMAND_OKAY, sb.toString()));
     }
-
 }

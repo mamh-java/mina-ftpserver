@@ -43,10 +43,12 @@ import org.apache.ftpserver.impl.LocalizedFtpReply;
  * @author <a href="http://mina.apache.org">Apache MINA Project</a>
  */
 public class PWD extends AbstractCommand {
+    /** Public constructor */
+    public PWD() {
+        super();
+    }
 
     /**
-     * Execute command.
-     *
      * {@inheritDoc}
      */
     public void execute(final FtpIoSession session,
@@ -58,5 +60,4 @@ public class PWD extends AbstractCommand {
         session.write(LocalizedFtpReply.translate(session, request, context,
                 FtpReply.REPLY_257_PATHNAME_CREATED, "PWD", currDir));
     }
-
 }

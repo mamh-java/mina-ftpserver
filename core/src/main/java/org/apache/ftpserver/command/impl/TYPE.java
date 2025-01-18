@@ -42,35 +42,32 @@ import org.slf4j.LoggerFactory;
  * @author <a href="http://mina.apache.org">Apache MINA Project</a>
  */
 public class TYPE extends AbstractCommand {
-
+    /** Cass logger */
     private final Logger LOG = LoggerFactory.getLogger(TYPE.class);
 
+    /** TYPE constructor */
+    public TYPE() {
+        super();
+    }
+
     /**
-     * Execute command.
-     *
      * {@inheritDoc}
      */
-    public void execute(final FtpIoSession session,
-            final FtpServerContext context, final FtpRequest request)
+    public void execute(final FtpIoSession session, final FtpServerContext context, final FtpRequest request)
             throws IOException {
-
         // reset state variables
         session.resetState();
 
         // get type from argument
         char type;
+
         if (request.hasArgument()) {
             type = request.getArgument().charAt(0);
         } else {
             // no type specified
-            session
-            .write(LocalizedFtpReply
-                    .translate(
-                            session,
-                            request,
-                            context,
-                            FtpReply.REPLY_501_SYNTAX_ERROR_IN_PARAMETERS_OR_ARGUMENTS,
-                            "TYPE", null));
+            session.write(LocalizedFtpReply.translate(session, request, context,
+                    FtpReply.REPLY_501_SYNTAX_ERROR_IN_PARAMETERS_OR_ARGUMENTS, "TYPE", null));
+
             return;
         }
 
@@ -81,15 +78,8 @@ public class TYPE extends AbstractCommand {
                     FtpReply.REPLY_200_COMMAND_OKAY, "TYPE", null));
         } catch (IllegalArgumentException e) {
             LOG.debug("Illegal type argument: {}", request.getArgument(), e);
-            session
-                    .write(LocalizedFtpReply
-                            .translate(
-                                    session,
-                                    request,
-                                    context,
-                                    FtpReply.REPLY_504_COMMAND_NOT_IMPLEMENTED_FOR_THAT_PARAMETER,
-                                    "TYPE", null));
+            session.write(LocalizedFtpReply.translate(session, request, context,
+                    FtpReply.REPLY_504_COMMAND_NOT_IMPLEMENTED_FOR_THAT_PARAMETER, "TYPE", null));
         }
     }
-
 }

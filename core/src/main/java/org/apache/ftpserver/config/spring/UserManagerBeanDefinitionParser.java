@@ -38,26 +38,37 @@ import org.w3c.dom.Element;
  *
  * @author <a href="http://mina.apache.org">Apache MINA Project</a>
  */
-public class UserManagerBeanDefinitionParser extends
-        AbstractSingleBeanDefinitionParser {
+public class UserManagerBeanDefinitionParser extends AbstractSingleBeanDefinitionParser {
+    /**
+     * Public constructor
+     */
+    public UserManagerBeanDefinitionParser() {
+        super();
+    }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected Class<?> getBeanClass(final Element element) {
         return null;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected void doParse(final Element element,
             final ParserContext parserContext,
             final BeanDefinitionBuilder builder) {
-
-
         Class<?> factoryClass;
+
         if (element.getLocalName().equals("file-user-manager")) {
             factoryClass = PropertiesUserManagerFactory.class;
         } else {
             factoryClass = DbUserManagerFactory.class;
         }
+
         BeanDefinitionBuilder factoryBuilder = BeanDefinitionBuilder.genericBeanDefinition(factoryClass);
 
 
@@ -88,6 +99,7 @@ public class UserManagerBeanDefinitionParser extends
             // schema ensure we get the right type of element
             Element springElm = SpringUtil.getChildElement(dsElm, null, null);
             Object o;
+
             if ("bean".equals(springElm.getLocalName())) {
                 o = parserContext.getDelegate().parseBeanDefinitionElement(
                         springElm, builder.getBeanDefinition());
@@ -97,22 +109,15 @@ public class UserManagerBeanDefinitionParser extends
                         springElm, builder.getBeanDefinition());
 
             }
-            factoryBuilder.addPropertyValue("dataSource", o);
 
-            factoryBuilder.addPropertyValue("sqlUserInsert", getSql(element,
-                    "insert-user"));
-            factoryBuilder.addPropertyValue("sqlUserUpdate", getSql(element,
-                    "update-user"));
-            factoryBuilder.addPropertyValue("sqlUserDelete", getSql(element,
-                    "delete-user"));
-            factoryBuilder.addPropertyValue("sqlUserSelect", getSql(element,
-                    "select-user"));
-            factoryBuilder.addPropertyValue("sqlUserSelectAll", getSql(element,
-                    "select-all-users"));
-            factoryBuilder.addPropertyValue("sqlUserAdmin",
-                    getSql(element, "is-admin"));
-            factoryBuilder.addPropertyValue("sqlUserAuthenticate", getSql(element,
-                    "authenticate"));
+            factoryBuilder.addPropertyValue("dataSource", o);
+            factoryBuilder.addPropertyValue("sqlUserInsert", getSql(element, "insert-user"));
+            factoryBuilder.addPropertyValue("sqlUserUpdate", getSql(element, "update-user"));
+            factoryBuilder.addPropertyValue("sqlUserDelete", getSql(element, "delete-user"));
+            factoryBuilder.addPropertyValue("sqlUserSelect", getSql(element, "select-user"));
+            factoryBuilder.addPropertyValue("sqlUserSelectAll", getSql(element, "select-all-users"));
+            factoryBuilder.addPropertyValue("sqlUserAdmin", getSql(element, "is-admin"));
+            factoryBuilder.addPropertyValue("sqlUserAuthenticate", getSql(element, "authenticate"));
         }
 
         BeanDefinition factoryDefinition = factoryBuilder.getBeanDefinition();

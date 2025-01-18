@@ -47,50 +47,59 @@ import org.slf4j.LoggerFactory;
  * @author <a href="http://mina.apache.org">Apache MINA Project</a>
  */
 public class MKD extends AbstractCommand {
-
+    /** Class logger */
     private final Logger LOG = LoggerFactory.getLogger(MKD.class);
 
+    /** Public constructor */
+    public MKD() {
+        super();
+    }
+
     /**
-     * Execute command.
-     *
      * {@inheritDoc}
      */
     public void execute(final FtpIoSession session,
             final FtpServerContext context, final FtpRequest request)
             throws IOException, FtpException {
-
         // reset state
         session.resetState();
 
         // argument check
         String fileName = request.getArgument();
+
         if (fileName == null) {
             session.write(LocalizedFileActionFtpReply.translate(session, request, context,
                     FtpReply.REPLY_501_SYNTAX_ERROR_IN_PARAMETERS_OR_ARGUMENTS,
                     "MKD", null, null));
+
             return;
         }
 
         // get file object
         FtpFile file = null;
+
         try {
             file = session.getFileSystemView().getFile(fileName);
         } catch (Exception ex) {
             LOG.debug("Exception getting file object", ex);
         }
+
         if (file == null) {
             session.write(LocalizedFileActionFtpReply.translate(session, request, context,
                     FtpReply.REPLY_550_REQUESTED_ACTION_NOT_TAKEN,
                     "MKD.invalid", fileName, file));
+
             return;
         }
 
         // check permission
         fileName = file.getAbsolutePath();
+
         if (!file.isWritable()) {
             session.write(LocalizedFileActionFtpReply.translate(session, request, context,
                     FtpReply.REPLY_550_REQUESTED_ACTION_NOT_TAKEN,
                     "MKD.permission", fileName, file));
+
             return;
         }
 
@@ -99,6 +108,7 @@ public class MKD extends AbstractCommand {
             session.write(LocalizedFileActionFtpReply.translate(session, request, context,
                     FtpReply.REPLY_550_REQUESTED_ACTION_NOT_TAKEN,
                     "MKD.exists", fileName, file));
+
             return;
         }
 
@@ -112,8 +122,7 @@ public class MKD extends AbstractCommand {
             LOG.info("Directory create : " + userName + " - " + fileName);
 
             // notify statistics object
-            ServerFtpStatistics ftpStat = (ServerFtpStatistics) context
-                    .getFtpStatistics();
+            ServerFtpStatistics ftpStat = (ServerFtpStatistics) context.getFtpStatistics();
             ftpStat.setMkdir(session, file);
 
         } else {

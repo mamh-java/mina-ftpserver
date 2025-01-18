@@ -19,7 +19,19 @@
 
 package org.apache.ftpserver.util;
 
+/**
+ * Utility class for password management
+ *
+ * @author <a href="http://mina.apache.org">Apache MINA Project</a>
+ */
 public class PasswordUtil {
+    /**
+     * A private constructor
+     */
+    private PasswordUtil() {
+        // Nothing to do
+    }
+
     /**
      * Securely compares two strings up to a maximum number of characters in a way
      * that obscures the password length from timing attacks

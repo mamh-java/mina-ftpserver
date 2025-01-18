@@ -77,6 +77,7 @@ public class PassivePorts {
         boolean inRange = false;
         Integer lastPort = Integer.valueOf(1);
         StringTokenizer st = new StringTokenizer(portsString, ",;-", true);
+
         while (st.hasMoreTokens()) {
             String token = st.nextToken().trim();
 
@@ -144,12 +145,26 @@ public class PassivePorts {
         }
     }
 
+    /**
+     * Create an instance with a port and the flag that tells
+     * if the port should be checked before being used
+     *
+     * @param passivePorts The port
+     * @param checkIfBound The check for port bound flag
+     */
     public PassivePorts(final String passivePorts, boolean checkIfBound) {
         this(parse(passivePorts), checkIfBound);
 
         this.passivePortsString = passivePorts;
     }
 
+    /**
+     * Create an instance with a set of ports and the flag that tells
+     * if the ports should be checked before being used
+     *
+     * @param passivePorts The set of ports
+     * @param checkIfBound The check for ports bound flag
+     */
     public PassivePorts(Set<Integer> passivePorts, boolean checkIfBound) {
         if (passivePorts == null) {
             throw new NullPointerException("passivePorts can not be null");
@@ -198,6 +213,11 @@ public class PassivePorts {
         }
     }
 
+    /**
+     * Reserve the next port
+     *
+     * @return The reserved port
+     */
     public synchronized int reserveNextPort() {
         // create a copy of the free ports, so that we can keep track of the tested ports
         List<Integer> freeCopy = new ArrayList<>(freeList);
@@ -229,6 +249,11 @@ public class PassivePorts {
         return -1;
     }
 
+    /**
+     * Release a port
+     *
+     * @param port The port to release
+     */
     public synchronized void releasePort(final int port) {
         if (port == 0) {
             // Ignore port 0 being released,

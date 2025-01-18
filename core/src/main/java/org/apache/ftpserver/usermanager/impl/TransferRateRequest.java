@@ -24,17 +24,28 @@ import org.apache.ftpserver.ftplet.AuthorizationRequest;
 /**
  * <strong>Internal class, do not use directly.</strong>
  *
+ * <p>
  * Request for getting the maximum allowed transfer rates for a user
  *
  * @author <a href="http://mina.apache.org">Apache MINA Project</a>
  */
 public class TransferRateRequest implements AuthorizationRequest {
-
+    /** Max download rate for a user */
     private int maxDownloadRate = 0;
 
+    /** Max upload rate for a user */
     private int maxUploadRate = 0;
 
     /**
+     * Public constructor
+     */
+    public TransferRateRequest() {
+        // Nothing to do
+    }
+
+    /**
+     * Get the user maximum download rate
+     *
      * @return the maxDownloadRate
      */
     public int getMaxDownloadRate() {
@@ -42,14 +53,17 @@ public class TransferRateRequest implements AuthorizationRequest {
     }
 
     /**
-     * @param maxDownloadRate
-     *            the maxDownloadRate to set
+     * Set the user maximum download rate
+     *
+     * @param maxDownloadRate the maxDownloadRate to set
      */
     public void setMaxDownloadRate(int maxDownloadRate) {
         this.maxDownloadRate = maxDownloadRate;
     }
 
     /**
+     * Get the user maximum upload rate
+     *
      * @return the maxUploadRate
      */
     public int getMaxUploadRate() {
@@ -57,11 +71,11 @@ public class TransferRateRequest implements AuthorizationRequest {
     }
 
     /**
-     * @param maxUploadRate
-     *            the maxUploadRate to set
+     * Set the user maximum upload rate
+     *
+     * @param maxUploadRate the maxUploadRate to set
      */
     public void setMaxUploadRate(int maxUploadRate) {
         this.maxUploadRate = maxUploadRate;
     }
-
 }

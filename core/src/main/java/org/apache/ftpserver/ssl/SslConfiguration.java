@@ -30,14 +30,14 @@ import javax.net.ssl.SSLSocketFactory;
  * @author <a href="http://mina.apache.org">Apache MINA Project</a>
  */
 public interface SslConfiguration {
+    /** The default TLS enabled protocol */
     String DEFAULT_ENABLED_PROTOCOL = "TLSv1.2";
 
     /**
      * Returns the socket factory that can be used to create sockets using this <code>SslConfiguration</code>.
      *
      * @return the socket factory that can be used to create sockets using this <code>SslConfiguration</code>.
-     * @throws GeneralSecurityException
-     *             if any error occurs while creating the socket factory.
+     * @throws GeneralSecurityException if any error occurs while creating the socket factory.
      *
      */
     SSLSocketFactory getSocketFactory() throws GeneralSecurityException;
@@ -46,7 +46,7 @@ public interface SslConfiguration {
      * Return the SSL context for this configuration
      *
      * @return The {@link SSLContext}
-     * @throws GeneralSecurityException
+     * @throws GeneralSecurityException If we got an error trying to get the SSL context
      */
     SSLContext getSSLContext() throws GeneralSecurityException;
 
@@ -56,7 +56,7 @@ public interface SslConfiguration {
      * @param protocol
      *            The protocol, SSL or TLS must be supported
      * @return The {@link SSLContext}
-     * @throws GeneralSecurityException
+     * @throws GeneralSecurityException If we got an error trying to get the SSL context
      */
     SSLContext getSSLContext(String protocol) throws GeneralSecurityException;
 

@@ -55,11 +55,15 @@ import org.slf4j.LoggerFactory;
  * @author <a href="http://mina.apache.org">Apache MINA Project</a>
  */
 public class PASS extends AbstractCommand {
+    /** Class logger */
     private final Logger LOG = LoggerFactory.getLogger(PASS.class);
 
+    /** Public constructor */
+    public PASS() {
+        super();
+    }
+
     /**
-     * Execute command.
-     *
      * {@inheritDoc}
      */
     public void execute(final FtpIoSession session,

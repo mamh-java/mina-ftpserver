@@ -61,6 +61,13 @@ public class IODataConnection implements DataConnection {
 
     private final ServerDataConnectionFactory factory;
 
+    /**
+     * Create a IODataConnection instance
+     *
+     * @param socket The connection socket
+     * @param session The FTP session
+     * @param factory The DataConnection factory to use
+     */
     public IODataConnection(final Socket socket, final FtpIoSession session,
             final ServerDataConnectionFactory factory) {
         this.session = session;
@@ -132,11 +139,8 @@ public class IODataConnection implements DataConnection {
             maxRate = transferRateRequest.getMaxUploadRate();
         }
 
-        InputStream is = getDataInputStream();
-        try {
+        try(InputStream is = getDataInputStream()) {
             return transfer(session, false, is, out, maxRate);
-        } finally {
-            IoUtils.close(is);
         }
     }
 
@@ -157,11 +161,8 @@ public class IODataConnection implements DataConnection {
             maxRate = transferRateRequest.getMaxDownloadRate();
         }
 
-        OutputStream out = getDataOutputStream();
-        try {
+        try (OutputStream out = getDataOutputStream()) {
             return transfer(session, true, in, out, maxRate);
-        } finally {
-            IoUtils.close(out);
         }
     }
 
@@ -172,26 +173,20 @@ public class IODataConnection implements DataConnection {
      * org.apache.ftpserver.FtpDataConnection2#transferToClient(java.lang.String
      * )
      */
-    public final void transferToClient(FtpSession session, final String str)
-            throws IOException {
+    public final void transferToClient(FtpSession session, final String str) throws IOException {
         OutputStream out = getDataOutputStream();
-        Writer writer = null;
-        try {
-            writer = new OutputStreamWriter(out, StandardCharsets.UTF_8);
+        //Writer writer = null;
+
+        try (Writer writer = new OutputStreamWriter(out, StandardCharsets.UTF_8)){
             writer.write(str);
 
             // update session
             if (session instanceof DefaultFtpSession) {
-                ((DefaultFtpSession) session).increaseWrittenDataBytes(str
-                        .getBytes(StandardCharsets.UTF_8).length);
+                ((DefaultFtpSession) session).increaseWrittenDataBytes(str.getBytes(StandardCharsets.UTF_8).length);
             }
-        } finally {
-            if (writer != null) {
-                writer.flush();
-            }
-            IoUtils.close(writer);
-        }
 
+            writer.flush();
+        }
     }
 
     private long transfer(FtpSession session, boolean isWrite,

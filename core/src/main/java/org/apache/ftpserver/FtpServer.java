@@ -30,10 +30,10 @@ import org.apache.ftpserver.ftplet.FtpException;
  * @author <a href="http://mina.apache.org">Apache MINA Project</a>
  */
 public interface FtpServer {
-
     /**
      * Start the server. Open a new listener thread.
-     * @throws FtpException
+     *
+     * @throws FtpException If the server failed to start
      */
     void start() throws FtpException;
 
@@ -44,6 +44,7 @@ public interface FtpServer {
 
     /**
      * Get the server status.
+     *
      * @return <code>true</code> if the server is stopped
      */
     boolean isStopped();
@@ -60,8 +61,8 @@ public interface FtpServer {
 
     /**
      * Is the server suspended
+     *
      * @return <code>true</code> if the server is suspended
      */
     boolean isSuspended();
-
 }

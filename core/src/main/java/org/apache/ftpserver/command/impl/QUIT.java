@@ -43,17 +43,19 @@ import org.slf4j.LoggerFactory;
  * @author <a href="http://mina.apache.org">Apache MINA Project</a>
  */
 public class QUIT extends AbstractCommand {
-
+    /** The class logger */
     private final Logger LOG = LoggerFactory.getLogger(QUIT.class);
 
+    /** Public constructor */
+    public QUIT() {
+        super();
+    }
+
     /**
-     * Execute command.
-     *
      * {@inheritDoc}
      */
     public void execute(final FtpIoSession session,
-            final FtpServerContext context, final FtpRequest request)
-            throws IOException {
+            final FtpServerContext context, final FtpRequest request) throws IOException {
         session.resetState();
         session.write(LocalizedFtpReply.translate(session, request, context,
                 FtpReply.REPLY_221_CLOSING_CONTROL_CONNECTION, "QUIT", null));
@@ -62,5 +64,4 @@ public class QUIT extends AbstractCommand {
         session.close(false).awaitUninterruptibly(10000);
         session.getDataConnection().closeDataConnection();
     }
-
 }

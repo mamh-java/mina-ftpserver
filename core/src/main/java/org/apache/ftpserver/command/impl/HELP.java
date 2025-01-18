@@ -46,15 +46,17 @@ import org.apache.ftpserver.message.MessageResource;
  * @author <a href="http://mina.apache.org">Apache MINA Project</a>
  */
 public class HELP extends AbstractCommand {
+    /** Public constructor */
+    public HELP() {
+        super();
+    }
+
     /**
-     * Execute command.
-     *
      * {@inheritDoc}
      */
     public void execute(final FtpIoSession session,
             final FtpServerContext context, final FtpRequest request)
             throws IOException {
-
         // reset state variables
         session.resetState();
 
@@ -62,6 +64,7 @@ public class HELP extends AbstractCommand {
         if (!request.hasArgument()) {
             session.write(LocalizedFtpReply.translate(session, request, context,
                     FtpReply.REPLY_214_HELP_MESSAGE, null, null));
+
             return;
         }
 

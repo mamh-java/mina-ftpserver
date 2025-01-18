@@ -29,9 +29,16 @@ import org.apache.ftpserver.util.PasswordUtil;
  * @author <a href="http://mina.apache.org">Apache MINA Project</a>
  */
 public class Sha512PasswordEncryptor implements PasswordEncryptor {
+    /**
+     * Create a Sha512PasswordEncryptor instance
+     */
+    public Sha512PasswordEncryptor() {
+        // Nothing to do
+    }
 
     /**
      * Hashes the password using SHA-512
+     *
      * @param password The password to encrypt
      * @return The encrypted password
      */
@@ -46,6 +53,7 @@ public class Sha512PasswordEncryptor implements PasswordEncryptor {
         if (storedPassword == null) {
             throw new NullPointerException("storedPassword can not be null");
         }
+
         if (passwordToCheck == null) {
             throw new NullPointerException("passwordToCheck can not be null");
         }

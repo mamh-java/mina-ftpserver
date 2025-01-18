@@ -32,15 +32,19 @@ import org.w3c.dom.Element;
  *
  * @author <a href="http://mina.apache.org">Apache MINA Project</a>
  */
-public class FileSystemBeanDefinitionParser extends
-        AbstractSingleBeanDefinitionParser {
+public class FileSystemBeanDefinitionParser extends AbstractSingleBeanDefinitionParser {
+    /**
+     * Create a FileSystemBeanDefinitionParser instance
+     */
+    public FileSystemBeanDefinitionParser() {
+        super();
+    }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    protected Class<? extends FileSystemFactory> getBeanClass(
-            final Element element) {
+    protected Class<? extends FileSystemFactory> getBeanClass(final Element element) {
         return NativeFileSystemFactory.class;
     }
 
@@ -48,16 +52,14 @@ public class FileSystemBeanDefinitionParser extends
      * {@inheritDoc}
      */
     @Override
-    protected void doParse(final Element element,
-            final ParserContext parserContext,
+    protected void doParse(final Element element, final ParserContext parserContext,
             final BeanDefinitionBuilder builder) {
         if (StringUtils.hasText(element.getAttribute("case-insensitive"))) {
-            builder.addPropertyValue("caseInsensitive", Boolean
-                    .valueOf(element.getAttribute("case-insensitive")));
+            builder.addPropertyValue("caseInsensitive", Boolean.valueOf(element.getAttribute("case-insensitive")));
         }
+
         if (StringUtils.hasText(element.getAttribute("create-home"))) {
-            builder.addPropertyValue("createHome", Boolean
-                    .valueOf(element.getAttribute("create-home")));
+            builder.addPropertyValue("createHome", Boolean.valueOf(element.getAttribute("create-home")));
         }
     }
 }

@@ -53,6 +53,15 @@ public class DefaultFtpHandler implements FtpHandler {
 
     private Listener listener;
 
+    /**
+     * Create a DefaultFtpHandler instance
+     */
+    public DefaultFtpHandler() {
+        // Nothing to do
+    }
+
+    /**
+     * {@inheritDoc}     */
     public void init(final FtpServerContext context, final Listener listener) {
         this.context = context;
         this.listener = listener;

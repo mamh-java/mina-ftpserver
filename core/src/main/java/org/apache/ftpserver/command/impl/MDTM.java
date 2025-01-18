@@ -45,46 +45,54 @@ import org.slf4j.LoggerFactory;
  * @author <a href="http://mina.apache.org">Apache MINA Project</a>
  */
 public class MDTM extends AbstractCommand {
-
+    /** Class logger */
     private final Logger LOG = LoggerFactory.getLogger(MDTM.class);
 
+    /** MDTM constructor */
+    public MDTM() {
+        super();
+    }
+
     /**
-     * Execute command.
-     *
      * {@inheritDoc}
      */
     public void execute(final FtpIoSession session,
             final FtpServerContext context, final FtpRequest request)
             throws IOException, FtpException {
-
         // reset state
         session.resetState();
 
         // argument check
         String fileName = request.getArgument();
+
         if (fileName == null) {
             session.write(LocalizedFtpReply.translate(session, request, context,
                     FtpReply.REPLY_501_SYNTAX_ERROR_IN_PARAMETERS_OR_ARGUMENTS,
                     "MDTM", null));
+
             return;
         }
 
         // get file object
         FtpFile file = null;
+
         try {
             file = session.getFileSystemView().getFile(fileName);
         } catch (Exception ex) {
             LOG.debug("Exception getting file object", ex);
         }
+
         if (file == null) {
             session.write(LocalizedFtpReply.translate(session, request, context,
                     FtpReply.REPLY_550_REQUESTED_ACTION_NOT_TAKEN, "MDTM",
                     fileName));
+
             return;
         }
 
         // now print date
         fileName = file.getAbsolutePath();
+
         if (file.doesExist()) {
             String dateStr = DateUtils.getFtpDate(file.getLastModified());
             session.write(LocalizedFtpReply.translate(session, request, context,

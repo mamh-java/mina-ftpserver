@@ -38,11 +38,23 @@ public class FtpServerProtocolCodecFactory implements ProtocolCodecFactory {
     private final ProtocolDecoder decoder = new TextLineDecoder(StandardCharsets.UTF_8);
 
     private final ProtocolEncoder encoder = new FtpResponseEncoder();
+    /**
+     * Create a FtpServerProtocolCodecFactory instance
+     */
+    public FtpServerProtocolCodecFactory() {
+        // Nothing to do
+    }
 
+    /**
+     * {@inheritDoc}
+     */
     public ProtocolDecoder getDecoder(IoSession session) throws Exception {
         return decoder;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public ProtocolEncoder getEncoder(IoSession session) throws Exception {
         return encoder;
     }

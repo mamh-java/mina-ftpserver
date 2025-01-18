@@ -24,7 +24,7 @@ import org.apache.ftpserver.ftplet.AuthorizationRequest;
 
 /**
  * <strong>Internal class, do not use directly.</strong>
- *
+ * <p>
  * The max upload rate permission
  *
  * @author <a href="http://mina.apache.org">Apache MINA Project</a>
@@ -35,34 +35,32 @@ public class ConcurrentLoginPermission implements Authority {
 
     private final int maxConcurrentLoginsPerIP;
 
-    public ConcurrentLoginPermission(int maxConcurrentLogins,
-            int maxConcurrentLoginsPerIP) {
+    /**
+     * Create an instance
+     *
+     * @param maxConcurrentLogins The maximum number of concurren logins
+     * @param maxConcurrentLoginsPerIP The maximum number of concurren logins per IP
+     */
+    public ConcurrentLoginPermission(int maxConcurrentLogins, int maxConcurrentLoginsPerIP) {
         this.maxConcurrentLogins = maxConcurrentLogins;
         this.maxConcurrentLoginsPerIP = maxConcurrentLoginsPerIP;
     }
 
     /**
-     * @see Authority#authorize(AuthorizationRequest)
-     *
      * {@inheritDoc}
      */
     public AuthorizationRequest authorize(AuthorizationRequest request) {
         if (request instanceof ConcurrentLoginRequest) {
             ConcurrentLoginRequest concurrentLoginRequest = (ConcurrentLoginRequest) request;
 
-            if (maxConcurrentLogins != 0
-                    && maxConcurrentLogins < concurrentLoginRequest
-                            .getConcurrentLogins()) {
+            if (maxConcurrentLogins != 0 && maxConcurrentLogins < concurrentLoginRequest.getConcurrentLogins()) {
                 return null;
             } else if (maxConcurrentLoginsPerIP != 0
-                    && maxConcurrentLoginsPerIP < concurrentLoginRequest
-                            .getConcurrentLoginsFromThisIP()) {
+                    && maxConcurrentLoginsPerIP < concurrentLoginRequest.getConcurrentLoginsFromThisIP()) {
                 return null;
             } else {
-                concurrentLoginRequest
-                        .setMaxConcurrentLogins(maxConcurrentLogins);
-                concurrentLoginRequest
-                        .setMaxConcurrentLoginsPerIP(maxConcurrentLoginsPerIP);
+                concurrentLoginRequest.setMaxConcurrentLogins(maxConcurrentLogins);
+                concurrentLoginRequest.setMaxConcurrentLoginsPerIP(maxConcurrentLoginsPerIP);
 
                 return concurrentLoginRequest;
             }
@@ -72,8 +70,6 @@ public class ConcurrentLoginPermission implements Authority {
     }
 
     /**
-     * @see Authority#canAuthorize(AuthorizationRequest)
-     *
      * {@inheritDoc}
      */
     public boolean canAuthorize(AuthorizationRequest request) {

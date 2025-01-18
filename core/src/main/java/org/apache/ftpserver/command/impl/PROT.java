@@ -40,10 +40,13 @@ import org.apache.ftpserver.ssl.SslConfiguration;
  * @author <a href="http://mina.apache.org">Apache MINA Project</a>
  */
 public class PROT extends AbstractCommand {
+    /** Public constructor */
+    public PROT() {
+        super();
+    }
 
     private SslConfiguration getSslConfiguration(final FtpIoSession session) {
         DataConnectionConfiguration dataCfg = session.getListener().getDataConnectionConfiguration();
-
         SslConfiguration configuration = dataCfg.getSslConfiguration();
 
         // fall back if no configuration has been provided on the data connection config
@@ -55,14 +58,11 @@ public class PROT extends AbstractCommand {
     }
 
     /**
-     * Execute command.
-     *
      * {@inheritDoc}
      */
     public void execute(final FtpIoSession session,
             final FtpServerContext context, final FtpRequest request)
             throws IOException, FtpException {
-
         // reset state variables
         session.resetState();
 
@@ -72,12 +72,14 @@ public class PROT extends AbstractCommand {
             session.write(LocalizedFtpReply.translate(session, request, context,
                     FtpReply.REPLY_501_SYNTAX_ERROR_IN_PARAMETERS_OR_ARGUMENTS,
                     "PROT", null));
+
             return;
         }
 
         // check argument
         arg = arg.toUpperCase();
         ServerDataConnectionFactory dcon = session.getDataConnection();
+
         if (arg.equals("C")) {
             dcon.setSecure(false);
             session.write(LocalizedFtpReply.translate(session, request, context,
@@ -92,15 +94,8 @@ public class PROT extends AbstractCommand {
                         FtpReply.REPLY_200_COMMAND_OKAY, "PROT", null));
             }
         } else {
-            session
-                    .write(LocalizedFtpReply
-                            .translate(
-                                    session,
-                                    request,
-                                    context,
-                                    FtpReply.REPLY_504_COMMAND_NOT_IMPLEMENTED_FOR_THAT_PARAMETER,
-                                    "PROT", null));
+            session.write(LocalizedFtpReply.translate(session, request, context,
+                    FtpReply.REPLY_504_COMMAND_NOT_IMPLEMENTED_FOR_THAT_PARAMETER, "PROT", null));
         }
     }
-
 }

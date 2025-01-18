@@ -39,8 +39,14 @@ import org.apache.ftpserver.impl.FtpServerContext;
  * @author <a href="http://mina.apache.org">Apache MINA Project</a>
  */
 public class SITE_ZONE extends AbstractCommand {
+    /** The date formatter for the time zone. We confine it in a thread local to avoid concurrency troubles */
+    private final ThreadLocal<SimpleDateFormat> formatter = ThreadLocal.withInitial(() ->
+        new SimpleDateFormat("Z"));
 
-    private static final SimpleDateFormat TIMEZONE_FMT = new SimpleDateFormat("Z");
+    /** SITE_ZONE constructor */
+    public SITE_ZONE() {
+        super();
+    }
 
     /**
      * Execute command.
@@ -50,13 +56,12 @@ public class SITE_ZONE extends AbstractCommand {
     public void execute(final FtpIoSession session,
             final FtpServerContext context, final FtpRequest request)
             throws IOException, FtpException {
-
         // reset state variables
         session.resetState();
 
         // send timezone data
-        String timezone = TIMEZONE_FMT.format(new Date());
-        session.write(new DefaultFtpReply(FtpReply.REPLY_200_COMMAND_OKAY,
-                timezone));
+        String timezone = formatter.get().format(new Date());
+
+        session.write(new DefaultFtpReply(FtpReply.REPLY_200_COMMAND_OKAY, timezone));
     }
 }

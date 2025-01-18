@@ -58,14 +58,22 @@ import org.slf4j.LoggerFactory;
  * @author <a href="http://mina.apache.org">Apache MINA Project</a>
  */
 public class NLST extends AbstractCommand {
-
+    /** The class logger */
     private final Logger LOG = LoggerFactory.getLogger(NLST.class);
 
+    /** The NLST formatter */
     private static final NLSTFileFormater NLST_FILE_FORMATER = new NLSTFileFormater();
 
+    /** The LIST formatter */
     private static final LISTFileFormater LIST_FILE_FORMATER = new LISTFileFormater();
 
+    /** The directory lister */
     private final DirectoryLister directoryLister = new DirectoryLister();
+
+    /** Public constructor */
+    public NLST() {
+        super();
+    }
 
     /**
      * Execute command
@@ -75,22 +83,21 @@ public class NLST extends AbstractCommand {
     public void execute(final FtpIoSession session,
             final FtpServerContext context, final FtpRequest request)
             throws IOException, FtpException {
-
         try {
-
             // reset state
             session.resetState();
 
             // 24-10-2007 - added check if PORT or PASV is issued, see
             // https://issues.apache.org/jira/browse/FTPSERVER-110
             DataConnectionFactory connFactory = session.getDataConnection();
+
             if (connFactory instanceof IODataConnectionFactory) {
-                InetAddress address = ((IODataConnectionFactory) connFactory)
-                        .getInetAddress();
+                InetAddress address = ((IODataConnectionFactory) connFactory).getInetAddress();
+
                 if (address == null) {
                     session.write(new DefaultFtpReply(
-                            FtpReply.REPLY_503_BAD_SEQUENCE_OF_COMMANDS,
-                            "PORT or PASV must be issued first"));
+                            FtpReply.REPLY_503_BAD_SEQUENCE_OF_COMMANDS, "PORT or PASV must be issued first"));
+
                     return;
                 }
             }
@@ -101,23 +108,25 @@ public class NLST extends AbstractCommand {
 
             // print listing data
             DataConnection dataConnection;
+
             try {
                 dataConnection = session.getDataConnection().openConnection();
             } catch (Exception e) {
                 LOG.debug("Exception getting the output data stream", e);
                 session.write(LocalizedFtpReply.translate(session, request, context,
-                        FtpReply.REPLY_425_CANT_OPEN_DATA_CONNECTION, "NLST",
-                        null));
+                        FtpReply.REPLY_425_CANT_OPEN_DATA_CONNECTION, "NLST", null));
+
                 return;
             }
 
             boolean failure = false;
+
             try {
                 // parse argument
-                ListArgument parsedArg = ListArgumentParser.parse(request
-                        .getArgument());
+                ListArgument parsedArg = ListArgumentParser.parse(request.getArgument());
 
                 FileFormater formater;
+
                 if (parsedArg.hasOption('l')) {
                     formater = LIST_FILE_FORMATER;
                 } else {
@@ -130,39 +139,24 @@ public class NLST extends AbstractCommand {
                 LOG.debug("Socket exception during data transfer", ex);
                 failure = true;
                 session.write(LocalizedFtpReply.translate(session, request, context,
-                        FtpReply.REPLY_426_CONNECTION_CLOSED_TRANSFER_ABORTED,
-                        "NLST", null));
+                        FtpReply.REPLY_426_CONNECTION_CLOSED_TRANSFER_ABORTED, "NLST", null));
             } catch (IOException ex) {
                 LOG.debug("IOException during data transfer", ex);
                 failure = true;
-                session
-                        .write(LocalizedFtpReply
-                                .translate(
-                                        session,
-                                        request,
-                                        context,
-                                        FtpReply.REPLY_551_REQUESTED_ACTION_ABORTED_PAGE_TYPE_UNKNOWN,
-                                        "NLST", null));
+                session.write(LocalizedFtpReply.translate(session, request, context,
+                        FtpReply.REPLY_551_REQUESTED_ACTION_ABORTED_PAGE_TYPE_UNKNOWN, "NLST", null));
             } catch (IllegalArgumentException e) {
-                LOG
-                        .debug("Illegal listing syntax: "
+                LOG.debug("Illegal listing syntax: "
                                 + request.getArgument(), e);
                 // if listing syntax error - send message
-                session
-                        .write(LocalizedFtpReply
-                                .translate(
-                                        session,
-                                        request,
-                                        context,
-                                        FtpReply.REPLY_501_SYNTAX_ERROR_IN_PARAMETERS_OR_ARGUMENTS,
-                                        "LIST", null));
+                session.write(LocalizedFtpReply.translate(session, request, context,
+                        FtpReply.REPLY_501_SYNTAX_ERROR_IN_PARAMETERS_OR_ARGUMENTS, "LIST", null));
             }
 
             // if data transfer ok - send transfer complete message
             if (!failure) {
                 session.write(LocalizedFtpReply.translate(session, request, context,
-                        FtpReply.REPLY_226_CLOSING_DATA_CONNECTION, "NLST",
-                        null));
+                        FtpReply.REPLY_226_CLOSING_DATA_CONNECTION, "NLST", null));
             }
         } finally {
             session.getDataConnection().closeDataConnection();

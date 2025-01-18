@@ -44,11 +44,16 @@ import org.w3c.dom.Element;
  *
  * @author <a href="http://mina.apache.org">Apache MINA Project</a>
  */
-public class ListenerBeanDefinitionParser extends
-        AbstractSingleBeanDefinitionParser {
+public class ListenerBeanDefinitionParser extends AbstractSingleBeanDefinitionParser {
+    /** Class logger */
+    private final Logger LOG = LoggerFactory.getLogger(ListenerBeanDefinitionParser.class);
 
-    private final Logger LOG = LoggerFactory
-            .getLogger(ListenerBeanDefinitionParser.class);
+    /**
+     * Create a ListenerBeanDefinitionParser instance
+     */
+    public ListenerBeanDefinitionParser() {
+        super();
+    }
 
     /**
      * {@inheritDoc}
@@ -65,15 +70,14 @@ public class ListenerBeanDefinitionParser extends
     protected void doParse(final Element element,
             final ParserContext parserContext,
             final BeanDefinitionBuilder builder) {
-
         BeanDefinitionBuilder factoryBuilder = BeanDefinitionBuilder.genericBeanDefinition(ListenerFactory.class);
 
         if (StringUtils.hasText(element.getAttribute("port"))) {
-            factoryBuilder.addPropertyValue("port", Integer.valueOf(element
-                    .getAttribute("port")));
+            factoryBuilder.addPropertyValue("port", Integer.valueOf(element.getAttribute("port")));
         }
 
         SslConfiguration ssl = parseSsl(element);
+
         if (ssl != null) {
             factoryBuilder.addPropertyValue("sslConfiguration", ssl);
         }
@@ -84,23 +88,24 @@ public class ListenerBeanDefinitionParser extends
         factoryBuilder.addPropertyValue("dataConnectionConfiguration", dc);
 
         if (StringUtils.hasText(element.getAttribute("idle-timeout"))) {
-            factoryBuilder.addPropertyValue("idleTimeout", SpringUtil.parseInt(
-                    element, "idle-timeout", 300));
+            factoryBuilder.addPropertyValue("idleTimeout", SpringUtil.parseInt(element, "idle-timeout", 300));
         }
 
-        String localAddress = SpringUtil.parseStringFromInetAddress(element,
-                "local-address");
+        String localAddress = SpringUtil.parseStringFromInetAddress(element, "local-address");
+
         if (localAddress != null) {
             factoryBuilder.addPropertyValue("serverAddress", localAddress);
         }
-        factoryBuilder.addPropertyValue("implicitSsl", SpringUtil.parseBoolean(
-                element, "implicit-ssl", false));
+
+        factoryBuilder.addPropertyValue("implicitSsl", SpringUtil.parseBoolean( element, "implicit-ssl", false));
 
         Element blacklistElm = SpringUtil.getChildElement(element,
                 FtpServerNamespaceHandler.FTPSERVER_NS, "blacklist");
+
         if (blacklistElm != null) {
             LOG.warn("Element 'blacklist' is deprecated, and may be removed in a future release. "
                 + "Please use 'remote-ip-filter' instead. ");
+
             try {
                 RemoteIpFilter remoteIpFilter = new RemoteIpFilter(IpFilterType.DENY,
                         blacklistElm.getTextContent());
@@ -114,18 +119,20 @@ public class ListenerBeanDefinitionParser extends
 
         Element remoteIpFilterElement = SpringUtil.getChildElement(element,
                 FtpServerNamespaceHandler.FTPSERVER_NS, "remote-ip-filter");
+
         if (remoteIpFilterElement != null) {
             if (blacklistElm != null) {
                 throw new FtpServerConfigurationException(
                         "Element 'remote-ip-filter' may not be used when 'blacklist' element is specified. ");
             }
+
             String filterType = remoteIpFilterElement.getAttribute("type");
+
             try {
                 RemoteIpFilter remoteIpFilter = new RemoteIpFilter(IpFilterType
                         .parse(filterType), remoteIpFilterElement
                         .getTextContent());
-                factoryBuilder
-                        .addPropertyValue("sessionFilter", remoteIpFilter);
+                factoryBuilder.addPropertyValue("sessionFilter", remoteIpFilter);
             } catch (UnknownHostException e) {
                 throw new IllegalArgumentException(
                         "Invalid IP address or subnet in the 'remote-ip-filter' element");
@@ -145,38 +152,38 @@ public class ListenerBeanDefinitionParser extends
     }
 
     private SslConfiguration parseSsl(final Element parent) {
-        Element sslElm = SpringUtil.getChildElement(parent,
-                FtpServerNamespaceHandler.FTPSERVER_NS, "ssl");
+        Element sslElm = SpringUtil.getChildElement(parent, FtpServerNamespaceHandler.FTPSERVER_NS, "ssl");
 
         if (sslElm != null) {
             SslConfigurationFactory ssl = new SslConfigurationFactory();
 
             Element keyStoreElm = SpringUtil.getChildElement(sslElm,
                     FtpServerNamespaceHandler.FTPSERVER_NS, "keystore");
+
             if (keyStoreElm != null) {
                 ssl.setKeystoreFile(SpringUtil.parseFile(keyStoreElm, "file"));
-                ssl.setKeystorePassword(SpringUtil.parseString(keyStoreElm,
-                        "password"));
+                ssl.setKeystorePassword(SpringUtil.parseString(keyStoreElm, "password"));
 
                 String type = SpringUtil.parseString(keyStoreElm, "type");
+
                 if (type != null) {
                     ssl.setKeystoreType(type);
                 }
 
-                String keyAlias = SpringUtil.parseString(keyStoreElm,
-                        "key-alias");
+                String keyAlias = SpringUtil.parseString(keyStoreElm, "key-alias");
+
                 if (keyAlias != null) {
                     ssl.setKeyAlias(keyAlias);
                 }
 
-                String keyPassword = SpringUtil.parseString(keyStoreElm,
-                        "key-password");
+                String keyPassword = SpringUtil.parseString(keyStoreElm, "key-password");
+
                 if (keyPassword != null) {
                     ssl.setKeyPassword(keyPassword);
                 }
 
-                String algorithm = SpringUtil.parseString(keyStoreElm,
-                        "algorithm");
+                String algorithm = SpringUtil.parseString(keyStoreElm, "algorithm");
+
                 if (algorithm != null) {
                     ssl.setKeystoreAlgorithm(algorithm);
                 }
@@ -184,32 +191,32 @@ public class ListenerBeanDefinitionParser extends
 
             Element trustStoreElm = SpringUtil.getChildElement(sslElm,
                     FtpServerNamespaceHandler.FTPSERVER_NS, "truststore");
+
             if (trustStoreElm != null) {
-                ssl.setTruststoreFile(SpringUtil.parseFile(trustStoreElm,
-                        "file"));
-                ssl.setTruststorePassword(SpringUtil.parseString(trustStoreElm,
-                        "password"));
+                ssl.setTruststoreFile(SpringUtil.parseFile(trustStoreElm, "file"));
+                ssl.setTruststorePassword(SpringUtil.parseString(trustStoreElm, "password"));
 
                 String type = SpringUtil.parseString(trustStoreElm, "type");
+
                 if (type != null) {
                     ssl.setTruststoreType(type);
                 }
 
-                String algorithm = SpringUtil.parseString(trustStoreElm,
-                        "algorithm");
+                String algorithm = SpringUtil.parseString(trustStoreElm, "algorithm");
+
                 if (algorithm != null) {
                     ssl.setTruststoreAlgorithm(algorithm);
                 }
             }
 
-            String clientAuthStr = SpringUtil.parseString(sslElm,
-                    "client-authentication");
+            String clientAuthStr = SpringUtil.parseString(sslElm, "client-authentication");
+
             if (clientAuthStr != null) {
                 ssl.setClientAuthentication(clientAuthStr);
             }
 
-            String enabledCiphersuites = SpringUtil.parseString(sslElm,
-                    "enabled-ciphersuites");
+            String enabledCiphersuites = SpringUtil.parseString(sslElm, "enabled-ciphersuites");
+
             if (enabledCiphersuites != null) {
                 ssl.setEnabledCipherSuites(enabledCiphersuites.split(" "));
             }
@@ -224,7 +231,6 @@ public class ListenerBeanDefinitionParser extends
         } else {
             return null;
         }
-
     }
 
     private DataConnectionConfiguration parseDataConnection(
@@ -233,7 +239,6 @@ public class ListenerBeanDefinitionParser extends
         DataConnectionConfigurationFactory dc = new DataConnectionConfigurationFactory();
 
         if (element != null) {
-
             dc.setImplicitSsl(SpringUtil.parseBoolean(element, "implicit-ssl", false));
 
             // data con config element available
@@ -248,16 +253,14 @@ public class ListenerBeanDefinitionParser extends
 
             Element activeElm = SpringUtil.getChildElement(element,
                     FtpServerNamespaceHandler.FTPSERVER_NS, "active");
-            if (activeElm != null) {
-                dc.setActiveEnabled(SpringUtil.parseBoolean(activeElm, "enabled",
-                        true));
-                dc.setActiveIpCheck(SpringUtil.parseBoolean(activeElm,
-                        "ip-check", false));
-                dc.setActiveLocalPort(SpringUtil.parseInt(activeElm,
-                        "local-port", 0));
 
-                String localAddress = SpringUtil.parseStringFromInetAddress(
-                        activeElm, "local-address");
+            if (activeElm != null) {
+                dc.setActiveEnabled(SpringUtil.parseBoolean(activeElm, "enabled", true));
+                dc.setActiveIpCheck(SpringUtil.parseBoolean(activeElm, "ip-check", false));
+                dc.setActiveLocalPort(SpringUtil.parseInt(activeElm, "local-port", 0));
+
+                String localAddress = SpringUtil.parseStringFromInetAddress( activeElm, "local-address");
+
                 if (localAddress != null) {
                     dc.setActiveLocalAddress(localAddress);
                 }
@@ -265,25 +268,27 @@ public class ListenerBeanDefinitionParser extends
 
             Element passiveElm = SpringUtil.getChildElement(element,
                     FtpServerNamespaceHandler.FTPSERVER_NS, "passive");
+
             if (passiveElm != null) {
-                String address = SpringUtil.parseStringFromInetAddress(passiveElm,
-                        "address");
+                String address = SpringUtil.parseStringFromInetAddress(passiveElm, "address");
+
                 if (address != null) {
                     dc.setPassiveAddress(address);
                 }
 
-                String externalAddress = SpringUtil.parseStringFromInetAddress(
-                        passiveElm, "external-address");
+                String externalAddress = SpringUtil.parseStringFromInetAddress( passiveElm, "external-address");
+
                 if (externalAddress != null) {
                     dc.setPassiveExternalAddress(externalAddress);
                 }
 
                 String ports = SpringUtil.parseString(passiveElm, "ports");
+
                 if (ports != null) {
                     dc.setPassivePorts(ports);
                 }
-                dc.setPassiveIpCheck(SpringUtil.parseBoolean(passiveElm,
-                    "ip-check", false));
+
+                dc.setPassiveIpCheck(SpringUtil.parseBoolean(passiveElm, "ip-check", false));
             }
         } else {
             // no data conn config element, do we still have SSL config from the
@@ -296,5 +301,4 @@ public class ListenerBeanDefinitionParser extends
 
         return dc.createDataConnectionConfiguration();
     }
-
 }

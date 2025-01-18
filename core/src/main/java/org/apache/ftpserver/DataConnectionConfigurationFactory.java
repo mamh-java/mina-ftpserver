@@ -35,7 +35,7 @@ import org.slf4j.LoggerFactory;
  * @author <a href="http://mina.apache.org">Apache MINA Project</a>
  */
 public class DataConnectionConfigurationFactory {
-
+    /** The class logger */
     private Logger log = LoggerFactory.getLogger(DataConnectionConfigurationFactory.class);
 
     // maximum idle time in seconds
@@ -53,6 +53,12 @@ public class DataConnectionConfigurationFactory {
     private boolean passiveIpCheck = false;
     private boolean implicitSsl;
 
+    /**
+     * Public constructor for DataConnectionConfigurationFactory
+     */
+    public DataConnectionConfigurationFactory() {
+        // Nothing to do
+    }
     /**
      * Create a {@link DataConnectionConfiguration} instance based on the
      * configuration on this factory
@@ -308,6 +314,8 @@ public class DataConnectionConfigurationFactory {
     }
 
     /**
+     * Tells if the connection is implicitely scured or not
+     *
      * @return True if ssl is mandatory for the data connection
      */
     public boolean isImplicitSsl() {

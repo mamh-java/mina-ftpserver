@@ -30,10 +30,18 @@ public class IllegalPortException extends IllegalArgumentException {
 
     private static final long serialVersionUID = -7771719692741419931L;
 
+    /**
+     * Public constructor
+     */
     public IllegalPortException() {
         super();
     }
 
+    /**
+     * Public constructor with a default message
+     *
+     * @param s The exception message
+     */
     public IllegalPortException(String s) {
         super(s);
     }

@@ -28,8 +28,14 @@ import org.apache.ftpserver.util.PasswordUtil;
  * @author <a href="http://mina.apache.org">Apache MINA Project</a>
  */
 public class ClearTextPasswordEncryptor implements PasswordEncryptor {
+    /** A ClearTextPasswordEncryptor constructor */
+    public ClearTextPasswordEncryptor() {
+        // Nothing to do
+    }
+
     /**
      * Returns the clear text password
+     *
      * @param password The password to encrypt
      * @return The encrypted password
      */

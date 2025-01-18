@@ -24,31 +24,33 @@ import java.io.InputStream;
 import java.io.UncheckedIOException;
 import java.util.Properties;
 
-import org.apache.ftpserver.util.IoUtils;
-
 /**
  * Provides the version of this release of FtpServer
  *
  * @author <a href="http://mina.apache.org">Apache MINA Project</a>
  */
 public class Version {
+    /**
+     * A private constructor: this class should not be instanciated
+     */
+    private Version() {
+        // Nothing to do
+    }
 
     /**
      * Get the version of this FtpServer
+     *
      * @return The current version
      */
     public static String getVersion() {
-        Properties props = new Properties();
-        InputStream in = null;
-
-        try {
-            in = Version.class.getClassLoader().getResourceAsStream("org/apache/ftpserver/ftpserver.properties");
+        try (InputStream in = Version.class.getClassLoader().
+            getResourceAsStream("org/apache/ftpserver/ftpserver.properties")) {
+            Properties props = new Properties();
             props.load(in);
+
             return props.getProperty("ftpserver.version");
         } catch (IOException e) {
             throw new UncheckedIOException("Failed to read version", e);
-        } finally {
-            IoUtils.close(in);
         }
     }
 }

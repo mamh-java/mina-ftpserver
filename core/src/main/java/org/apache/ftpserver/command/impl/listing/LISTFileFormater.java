@@ -22,23 +22,26 @@ import java.util.Arrays;
 
 import org.apache.ftpserver.ftplet.FtpFile;
 import org.apache.ftpserver.util.DateUtils;
+import org.apache.ftpserver.util.StringUtils;
 
 /**
  * <strong>Internal class, do not use directly.</strong>
- *
+ * <p>
  * Formats files according to the LIST specification
  *
  * @author <a href="http://mina.apache.org">Apache MINA Project</a>
  */
 public class LISTFileFormater implements FileFormater {
-
+    /** The delimiter, default to space */
     private static final char DELIM = ' ';
 
-    private static final char[] NEWLINE = { '\r', '\n' };
-
     /**
-     * @see FileFormater#format(FtpFile)
-     *
+     * Create a LISTFileFormater insance
+     */
+    public LISTFileFormater() {
+        // Nothing to do
+    }
+    /**
      * {@inheritDoc}
      */
     public String format(FtpFile file) {
@@ -58,7 +61,7 @@ public class LISTFileFormater implements FileFormater {
         sb.append(getLastModified(file));
         sb.append(DELIM);
         sb.append(file.getName());
-        sb.append(NEWLINE);
+        sb.append(StringUtils.NEWLINE);
 
         return sb.toString();
     }
@@ -69,13 +72,17 @@ public class LISTFileFormater implements FileFormater {
     private String getLength(FtpFile file) {
         String initStr = "            ";
         long sz = 0;
+
         if (file.isFile()) {
             sz = file.getSize();
         }
+
         String szStr = String.valueOf(sz);
+
         if (szStr.length() > initStr.length()) {
             return szStr;
         }
+
         return initStr.substring(0, initStr.length() - szStr.length()) + szStr;
     }
 
@@ -97,6 +104,7 @@ public class LISTFileFormater implements FileFormater {
         permission[1] = file.isReadable() ? 'r' : '-';
         permission[2] = file.isWritable() ? 'w' : '-';
         permission[3] = file.isDirectory() ? 'x' : '-';
+
         return permission;
     }
 }

@@ -37,6 +37,13 @@ public class MessageResourceFactory {
     private File customMessageDirectory;
 
     /**
+     * Create a MessageResourceFactory instance
+     */
+    public MessageResourceFactory() {
+        // Nothing to do
+    }
+
+    /**
      * Create an {@link MessageResource} based on the configuration on this factory
      *
      * @return The {@link MessageResource} instance

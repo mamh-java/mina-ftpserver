@@ -52,21 +52,22 @@ import org.slf4j.LoggerFactory;
  * @author <a href="http://mina.apache.org">Apache MINA Project</a>
  */
 public class USER extends AbstractCommand {
-
+    /** Class logger */
     private final Logger LOG = LoggerFactory.getLogger(USER.class);
 
+    /** USER constructor */
+    public USER() {
+        super();
+    }
+
     /**
-     * Execute command.
-     *
      * {@inheritDoc}
      */
     public void execute(final FtpIoSession session,
             final FtpServerContext context, final FtpRequest request)
             throws IOException, FtpException {
-
         boolean success = false;
-        ServerFtpStatistics stat = (ServerFtpStatistics) context
-                .getFtpStatistics();
+        ServerFtpStatistics stat = (ServerFtpStatistics) context.getFtpStatistics();
         try {
 
             // reset state variables
@@ -75,14 +76,9 @@ public class USER extends AbstractCommand {
             // argument check
             String userName = request.getArgument();
             if (userName == null) {
-                session
-                        .write(LocalizedFtpReply
-                                .translate(
-                                        session,
-                                        request,
-                                        context,
-                                        FtpReply.REPLY_501_SYNTAX_ERROR_IN_PARAMETERS_OR_ARGUMENTS,
-                                        "USER", null));
+                session.write(LocalizedFtpReply.translate(session, request, context,
+                        FtpReply.REPLY_501_SYNTAX_ERROR_IN_PARAMETERS_OR_ARGUMENTS, "USER", null));
+
                 return;
             }
 
@@ -91,6 +87,7 @@ public class USER extends AbstractCommand {
 
             // already logged-in
             User user = session.getUser();
+
             if (session.isLoggedIn()) {
                 if (userName.equals(user.getName())) {
                     session.write(LocalizedFtpReply.translate(session, request,
@@ -101,40 +98,37 @@ public class USER extends AbstractCommand {
                     session.write(LocalizedFtpReply.translate(session, request,
                             context, 530, "USER.invalid", null));
                 }
+
                 return;
             }
 
             // anonymous login is not enabled
             boolean anonymous = userName.equals("anonymous");
-            if (anonymous
-                    && (!context.getConnectionConfig()
-                            .isAnonymousLoginEnabled())) {
+
+            if (anonymous && (!context.getConnectionConfig().isAnonymousLoginEnabled())) {
                 session.write(LocalizedFtpReply.translate(session, request, context,
                         FtpReply.REPLY_530_NOT_LOGGED_IN, "USER.anonymous",
                         null));
+
                 return;
             }
 
             // anonymous login limit check
             int currAnonLogin = stat.getCurrentAnonymousLoginNumber();
-            int maxAnonLogin = context.getConnectionConfig()
-                    .getMaxAnonymousLogins();
+            int maxAnonLogin = context.getConnectionConfig().getMaxAnonymousLogins();
+
             if (maxAnonLogin == 0) {
                 LOG.debug("Currently {} anonymous users logged in, unlimited allowed", currAnonLogin);
             } else {
                 LOG.debug("Currently {} out of {} anonymous users logged in", currAnonLogin, maxAnonLogin);
             }
+
             if (anonymous && (currAnonLogin >= maxAnonLogin)) {
                 LOG.debug("Too many anonymous users logged in, user will be disconnected");
 
-                session
-                        .write(LocalizedFtpReply
-                                .translate(
-                                        session,
-                                        request,
-                                        context,
-                                        FtpReply.REPLY_421_SERVICE_NOT_AVAILABLE_CLOSING_CONTROL_CONNECTION,
-                                        "USER.anonymous", null));
+                session.write(LocalizedFtpReply.translate(session, request, context,
+                        FtpReply.REPLY_421_SERVICE_NOT_AVAILABLE_CLOSING_CONTROL_CONNECTION, "USER.anonymous", null));
+
                 return;
             }
 
@@ -151,25 +145,19 @@ public class USER extends AbstractCommand {
             if (maxLogin != 0 && currLogin >= maxLogin) {
                 LOG.debug("Too many users logged in, user will be disconnected");
 
-                session
-                        .write(LocalizedFtpReply
-                                .translate(
-                                        session,
-                                        request,
-                                        context,
-                                        FtpReply.REPLY_421_SERVICE_NOT_AVAILABLE_CLOSING_CONTROL_CONNECTION,
-                                        "USER.login", null));
+                session.write(LocalizedFtpReply.translate(session, request, context,
+                        FtpReply.REPLY_421_SERVICE_NOT_AVAILABLE_CLOSING_CONTROL_CONNECTION, "USER.login", null));
                 return;
             }
 
             User configUser = context.getUserManager().getUserByName(userName);
+
             if (configUser != null) {
                 // user login limit check
-
                 InetAddress address = null;
+
                 if (session.getRemoteAddress() instanceof InetSocketAddress) {
-                    address = ((InetSocketAddress) session.getRemoteAddress())
-                            .getAddress();
+                    address = ((InetSocketAddress) session.getRemoteAddress()).getAddress();
                 }
 
                 ConcurrentLoginRequest loginRequest = new ConcurrentLoginRequest(
@@ -178,14 +166,9 @@ public class USER extends AbstractCommand {
 
                 if (configUser.authorize(loginRequest) == null) {
                     LOG.debug("User logged in too many sessions, user will be disconnected");
-                    session
-                            .write(LocalizedFtpReply
-                                    .translate(
-                                            session,
-                                            request,
-                                            context,
-                                            FtpReply.REPLY_421_SERVICE_NOT_AVAILABLE_CLOSING_CONTROL_CONNECTION,
-                                            "USER.login", null));
+                    session.write(LocalizedFtpReply.translate(session, request, context,
+                            FtpReply.REPLY_421_SERVICE_NOT_AVAILABLE_CLOSING_CONTROL_CONNECTION, "USER.login", null));
+
                     return;
                 }
             }
@@ -193,6 +176,7 @@ public class USER extends AbstractCommand {
             // finally set the user name
             success = true;
             session.setUserArgument(userName);
+
             if (anonymous) {
                 session.write(LocalizedFtpReply.translate(session, request, context,
                         FtpReply.REPLY_331_USER_NAME_OKAY_NEED_PASSWORD,
@@ -203,7 +187,6 @@ public class USER extends AbstractCommand {
                         "USER", userName));
             }
         } finally {
-
             // if not ok - close connection
             if (!success) {
                 LOG.debug("User failed to login, session will be closed");

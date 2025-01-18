@@ -32,7 +32,6 @@ import org.apache.ftpserver.ftplet.FtpRequest;
 import org.apache.ftpserver.impl.FtpIoSession;
 import org.apache.ftpserver.impl.FtpServerContext;
 import org.apache.ftpserver.impl.LocalizedFtpReply;
-import org.apache.ftpserver.util.IoUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -56,11 +55,15 @@ public class MD5 extends AbstractCommand {
     /** The MMD5 String constant */
     public static final String MMD5 = "MMD5";
 
+    /** The class logger */
     private final Logger LOG = LoggerFactory.getLogger(MD5.class);
 
+    /** Public constructor */
+    public MD5() {
+        super();
+    }
+
     /**
-     * Execute command.
-     *
      * {@inheritDoc}
      */
     public void execute(final FtpIoSession session,
@@ -88,6 +91,7 @@ public class MD5 extends AbstractCommand {
         }
 
         String[] fileNames = null;
+
         if (isMMD5) {
             fileNames = argument.split(",");
         } else {
@@ -95,6 +99,7 @@ public class MD5 extends AbstractCommand {
         }
 
         StringBuilder sb = new StringBuilder();
+
         for (int i = 0; i < fileNames.length; i++) {
             String fileName = fileNames[i].trim();
 
@@ -108,46 +113,45 @@ public class MD5 extends AbstractCommand {
             }
 
             if (file == null) {
-                session
-                        .write(LocalizedFtpReply
+                session.write(LocalizedFtpReply
                                 .translate(
                                         session,
                                         request,
                                         context,
                                         FtpReply.REPLY_504_COMMAND_NOT_IMPLEMENTED_FOR_THAT_PARAMETER,
                                         "MD5.invalid", fileName));
+
                 return;
             }
 
             // check file
             if (!file.isFile()) {
-                session
-                        .write(LocalizedFtpReply
+                session.write(LocalizedFtpReply
                                 .translate(
                                         session,
                                         request,
                                         context,
                                         FtpReply.REPLY_504_COMMAND_NOT_IMPLEMENTED_FOR_THAT_PARAMETER,
                                         "MD5.invalid", fileName));
+
                 return;
             }
 
-            InputStream is = null;
-            try {
-                is = file.createInputStream(0);
+            try (InputStream is = file.createInputStream(0)) {
                 String md5Hash = md5(is);
 
                 if (i > 0) {
                     sb.append(", ");
                 }
-                boolean nameHasSpaces = fileName.indexOf(' ') >= 0;
-                if (nameHasSpaces) {
+
+                if (fileName.indexOf(' ') >= 0) {
                     sb.append('"');
-                }
-                sb.append(fileName);
-                if (nameHasSpaces) {
+                    sb.append(fileName);
                     sb.append('"');
+                } else {
+                    sb.append(fileName);
                 }
+
                 sb.append(' ');
                 sb.append(md5Hash);
 
@@ -156,10 +160,9 @@ public class MD5 extends AbstractCommand {
                 session.write(LocalizedFtpReply.translate(session, request, context,
                         FtpReply.REPLY_502_COMMAND_NOT_IMPLEMENTED,
                         "MD5.notimplemened", null));
-            } finally {
-                IoUtils.close(is);
             }
         }
+
         if (isMMD5) {
             session.write(LocalizedFtpReply.translate(session, request, context,
                     252, MMD5, sb.toString()));
@@ -170,8 +173,9 @@ public class MD5 extends AbstractCommand {
     }
 
     /**
-     * @param is
-     *            InputStream for which the MD5 hash is calculated
+     * Encode a Stream using the MD5 algorithm
+     *
+     * @param is InputStream for which the MD5 hash is calculated
      * @return The hash of the content in the input stream
      * @throws IOException
      * @throws NoSuchAlgorithmException
@@ -184,6 +188,7 @@ public class MD5 extends AbstractCommand {
         byte[] buffer = new byte[1024];
 
         int read = dis.read(buffer);
+
         while (read > -1) {
             read = dis.read(buffer);
         }
@@ -197,18 +202,16 @@ public class MD5 extends AbstractCommand {
      * double the length of the passed array, as it takes two characters to
      * represent any given byte.
      *
-     * @param data
-     *            a byte[] to convert to Hex characters
+     * @param data a byte[] to convert to Hex characters
      * @return A char[] containing hexidecimal characters
      */
     public static char[] encodeHex(byte[] data) {
+        int len = data.length;
 
-        int l = data.length;
-
-        char[] out = new char[l << 1];
+        char[] out = new char[len << 1];
 
         // two characters form the hex value.
-        for (int i = 0, j = 0; i < l; i++) {
+        for (int i = 0, j = 0; i < len; i++) {
             out[j++] = DIGITS[(0xF0 & data[i]) >>> 4];
             out[j++] = DIGITS[0x0F & data[i]];
         }

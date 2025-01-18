@@ -62,18 +62,20 @@ import org.slf4j.LoggerFactory;
  * @author <a href="http://mina.apache.org">Apache MINA Project</a>
  */
 public class PORT extends AbstractCommand {
-
+    /** Class logger */
     private final Logger LOG = LoggerFactory.getLogger(PORT.class);
 
+    /** Public constructor */
+    public PORT() {
+        super();
+    }
+
     /**
-     * Execute command.
-     *
      * {@inheritDoc}
      */
     public void execute(final FtpIoSession session,
             final FtpServerContext context, final FtpRequest request)
             throws IOException {
-
         // reset state variables
         session.resetState();
 
@@ -82,19 +84,22 @@ public class PORT extends AbstractCommand {
             session.write(LocalizedFtpReply.translate(session, request, context,
                     FtpReply.REPLY_501_SYNTAX_ERROR_IN_PARAMETERS_OR_ARGUMENTS,
                     "PORT", null));
+
             return;
         }
 
         // is port enabled
-        DataConnectionConfiguration dataCfg = session.getListener()
-                .getDataConnectionConfiguration();
+        DataConnectionConfiguration dataCfg = session.getListener().getDataConnectionConfiguration();
+
         if (!dataCfg.isActiveEnabled()) {
             session.write(LocalizedFtpReply.translate(session, request, context,
                     FtpReply.REPLY_501_SYNTAX_ERROR_IN_PARAMETERS_OR_ARGUMENTS, "PORT.disabled", null));
+
             return;
         }
 
         InetSocketAddress address;
+
         try {
             address = SocketAddressEncoder.decode(request.getArgument());
 
@@ -105,40 +110,31 @@ public class PORT extends AbstractCommand {
         } catch (IllegalInetAddressException e) {
             session.write(LocalizedFtpReply.translate(session, request, context,
                     FtpReply.REPLY_501_SYNTAX_ERROR_IN_PARAMETERS_OR_ARGUMENTS, "PORT", null));
+
             return;
         } catch (IllegalPortException e) {
             LOG.debug("Invalid data port: {}", request.getArgument(), e);
-            session
-                    .write(LocalizedFtpReply
-                            .translate(
-                                    session,
-                                    request,
-                                    context,
-                                    FtpReply.REPLY_501_SYNTAX_ERROR_IN_PARAMETERS_OR_ARGUMENTS,
-                                    "PORT.invalid", null));
+            session.write(LocalizedFtpReply.translate(session, request, context,
+                    FtpReply.REPLY_501_SYNTAX_ERROR_IN_PARAMETERS_OR_ARGUMENTS, "PORT.invalid", null));
+
             return;
         } catch (UnknownHostException e) {
             LOG.debug("Unknown host", e);
-            session
-                    .write(LocalizedFtpReply
-                            .translate(
-                                    session,
-                                    request,
-                                    context,
-                                    FtpReply.REPLY_501_SYNTAX_ERROR_IN_PARAMETERS_OR_ARGUMENTS,
-                                    "PORT.host", null));
+            session.write(LocalizedFtpReply.translate(session, request, context,
+                    FtpReply.REPLY_501_SYNTAX_ERROR_IN_PARAMETERS_OR_ARGUMENTS, "PORT.host", null));
+
             return;
         }
 
         // check IP
         if (dataCfg.isActiveIpCheck()) {
             if (session.getRemoteAddress() instanceof InetSocketAddress) {
-                InetAddress clientAddr = ((InetSocketAddress) session
-                        .getRemoteAddress()).getAddress();
+                InetAddress clientAddr = ((InetSocketAddress) session .getRemoteAddress()).getAddress();
+
                 if (!address.getAddress().equals(clientAddr)) {
-                    session.write(LocalizedFtpReply.translate(session, request,
-                            context, FtpReply.REPLY_501_SYNTAX_ERROR_IN_PARAMETERS_OR_ARGUMENTS,
-                            "PORT.mismatch", null));
+                    session.write(LocalizedFtpReply.translate(session, request, context,
+                            FtpReply.REPLY_501_SYNTAX_ERROR_IN_PARAMETERS_OR_ARGUMENTS, "PORT.mismatch", null));
+
                     return;
                 }
             }
@@ -148,5 +144,4 @@ public class PORT extends AbstractCommand {
         session.write(LocalizedFtpReply.translate(session, request, context,
                 FtpReply.REPLY_200_COMMAND_OKAY, "PORT", null));
     }
-
 }

@@ -30,7 +30,17 @@ import org.apache.ftpserver.ftplet.FtpRequest;
  * @author <a href="http://mina.apache.org">Apache MINA Project</a>
  */
 public class LocalizedFtpReply extends DefaultFtpReply {
-
+    /**
+     * Provide a localized message
+     *
+     * @param session the FTP session for which a reply is to be sent
+     * @param request the FTP request object
+     * @param context the FTP server context
+     * @param code the reply code
+     * @param subId the ID of the sub message
+     * @param basicMsg the basic message
+     * @return the translated message
+     */
     public static LocalizedFtpReply translate(FtpIoSession session, FtpRequest request,
             FtpServerContext context, int code, String subId, String basicMsg) {
         String msg = FtpReplyTranslator.translateMessage(session, request, context, code, subId,
@@ -42,10 +52,8 @@ public class LocalizedFtpReply extends DefaultFtpReply {
     /**
      * Creates a new instance of <code>LocalizedFtpReply</code>.
      *
-     * @param code
-     *            the reply code
-     * @param message
-     *            the reply text
+     * @param code the reply code
+     * @param message the reply text
      */
     public LocalizedFtpReply(int code, String message) {
         super(code, message);

@@ -35,26 +35,31 @@ import java.util.TimeZone;
  * @author <a href="http://mina.apache.org">Apache MINA Project</a>
  */
 public class DateUtils {
-
     private static final TimeZone TIME_ZONE_UTC = TimeZone.getTimeZone("UTC");
 
     private static final String[] MONTHS = { "Jan", "Feb", "Mar", "Apr", "May",
             "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec" };
+
+    /**
+     * A private constructor
+     */
+    private DateUtils() {
+        // Nothing to do
+    }
 
     /*
      * Creates the DateFormat object used to parse/format
      * dates in FTP format.
      */
     private static final ThreadLocal<DateFormat> FTP_DATE_FORMAT = new ThreadLocal<DateFormat>() {
-
         @Override
         protected DateFormat initialValue() {
-            DateFormat df=new SimpleDateFormat("yyyyMMddHHmmss");
+            DateFormat df = new SimpleDateFormat("yyyyMMddHHmmss");
             df.setLenient(false);
             df.setTimeZone(TimeZone.getTimeZone("GMT"));
+
             return df;
         }
-
     };
 
     /**
@@ -234,12 +239,15 @@ public class DateUtils {
         return sb.toString();
     }
 
-    /*
-     *  Parses a date in the format used by the FTP commands
-     *  involving dates(MFMT, MDTM)
+    /**
+     * Parses a date in the format used by the FTP commands
+     * involving dates(MFMT, MDTM)
+     *
+     * @param dateStr The date to parse
+     * @return The parsed date
+     * @throws ParseException If teh date is invalid
      */
     public static final Date parseFTPDate(String dateStr) throws ParseException {
         return FTP_DATE_FORMAT.get().parse(dateStr);
-
     }
 }

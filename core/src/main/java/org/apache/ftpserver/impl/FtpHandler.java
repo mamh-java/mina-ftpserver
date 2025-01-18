@@ -35,7 +35,12 @@ import org.apache.mina.core.session.IoSession;
  *
  */
 public interface FtpHandler {
-
+    /**
+     * Initialize the FTP handler
+     *
+     * @param context The FTP server context
+     * @param listener The listener
+     */
     void init(FtpServerContext context, Listener listener);
 
     /**

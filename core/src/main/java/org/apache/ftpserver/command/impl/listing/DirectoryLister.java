@@ -35,6 +35,13 @@ import org.apache.ftpserver.ftplet.FtpFile;
  * @author <a href="http://mina.apache.org">Apache MINA Project</a>
  */
 public class DirectoryLister {
+    /**
+     * Create a DirectoryLister instance
+     */
+    public DirectoryLister() {
+        // Nothing to do
+    }
+
 
     private String traverseFiles(final List<? extends FtpFile> files,
             final FileFilter filter, final FileFormater formater) {
@@ -50,6 +57,7 @@ public class DirectoryLister {
             final FileFilter filter, final FileFormater formater,
             boolean matchDirs) {
         StringBuilder sb = new StringBuilder();
+
         for (FtpFile file : files) {
             if (file == null) {
                 continue;
@@ -65,19 +73,30 @@ public class DirectoryLister {
         return sb.toString();
     }
 
+    /**
+     * Get the list of existing files in the directory
+     *
+     * @param argument The command arguments
+     * @param fileSystemView The underlaying file system
+     * @param formater The formatter to use to represent the found list
+     * @return A list of found files
+     * @throws IOException Not actually thrown... To be removed
+     */
     public String listFiles(final ListArgument argument,
             final FileSystemView fileSystemView, final FileFormater formater)
             throws IOException {
-
         StringBuilder sb = new StringBuilder();
 
         // get all the file objects
         List<? extends FtpFile> files = listFiles(fileSystemView, argument.getFile());
+
         if (files != null) {
             FileFilter filter = null;
+
             if (!argument.hasOption('a')) {
                 filter = new VisibleFileFilter();
             }
+
             if (argument.getPattern() != null) {
                 filter = new RegexFileFilter(argument.getPattern(), filter);
             }
@@ -97,7 +116,9 @@ public class DirectoryLister {
      */
     private List<? extends FtpFile> listFiles(FileSystemView fileSystemView, String file) {
         List<? extends FtpFile> files = null;
+
         try {
+
             FtpFile virtualFile = fileSystemView.getFile(file);
             if (virtualFile.isFile()) {
                 List<FtpFile> auxFiles = new ArrayList<>();
@@ -108,6 +129,7 @@ public class DirectoryLister {
             }
         } catch (FtpException ex) {
         }
+
         return files;
     }
 }

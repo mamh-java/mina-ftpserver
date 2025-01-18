@@ -47,41 +47,48 @@ import org.slf4j.LoggerFactory;
  * @author <a href="http://mina.apache.org">Apache MINA Project</a>
  */
 public class RMD extends AbstractCommand {
-
+    /** Class logger */
     private final Logger LOG = LoggerFactory.getLogger(RMD.class);
 
+    /** Public constructor */
+    public RMD() {
+        super();
+    }
+
     /**
-     * Execute command.
-     *
      * {@inheritDoc}
      */
     public void execute(final FtpIoSession session,
             final FtpServerContext context, final FtpRequest request)
             throws IOException, FtpException {
-
         // reset state variables
         session.resetState();
 
         // argument check
         String fileName = request.getArgument();
+
         if (fileName == null) {
             session.write(LocalizedFileActionFtpReply.translate(session, request, context,
                     FtpReply.REPLY_501_SYNTAX_ERROR_IN_PARAMETERS_OR_ARGUMENTS,
                     "RMD", null, null));
+
             return;
         }
 
         // get file object
         FtpFile file = null;
+
         try {
             file = session.getFileSystemView().getFile(fileName);
         } catch (Exception ex) {
             LOG.debug("Exception getting file object", ex);
         }
+
         if (file == null) {
             session.write(LocalizedFileActionFtpReply.translate(session, request, context,
                     FtpReply.REPLY_550_REQUESTED_ACTION_NOT_TAKEN,
                     "RMD.permission", fileName, file));
+
             return;
         }
 
@@ -92,16 +99,19 @@ public class RMD extends AbstractCommand {
             session.write(LocalizedFileActionFtpReply.translate(session, request, context,
                     FtpReply.REPLY_550_REQUESTED_ACTION_NOT_TAKEN,
                     "RMD.invalid", fileName, file));
+
             return;
         }
 
         // then make sure that the client did not request the deletion of
         // current working directory.
         FtpFile cwd = session.getFileSystemView().getWorkingDirectory();
+
         if (file.equals(cwd)) {
             session.write(LocalizedFileActionFtpReply.translate(session, request, context,
                 FtpReply.REPLY_450_REQUESTED_FILE_ACTION_NOT_TAKEN, "RMD.busy",
                 fileName, file));
+
             return;
         }
 
@@ -110,6 +120,7 @@ public class RMD extends AbstractCommand {
             session.write(LocalizedFileActionFtpReply.translate(session, request, context,
                     FtpReply.REPLY_550_REQUESTED_ACTION_NOT_TAKEN,
                     "RMD.permission", fileName, file));
+
             return;
         }
 
@@ -124,12 +135,10 @@ public class RMD extends AbstractCommand {
             LOG.info("Directory remove : " + userName + " - " + fileName);
 
             // notify statistics object
-            ServerFtpStatistics ftpStat = (ServerFtpStatistics) context
-                    .getFtpStatistics();
+            ServerFtpStatistics ftpStat = (ServerFtpStatistics) context.getFtpStatistics();
             ftpStat.setRmdir(session, file);
 
         } else {
-
             session.write(LocalizedFileActionFtpReply.translate(session, request, context,
                     FtpReply.REPLY_450_REQUESTED_FILE_ACTION_NOT_TAKEN, "RMD",
                     fileName, file));

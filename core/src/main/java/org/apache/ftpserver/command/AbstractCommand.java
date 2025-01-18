@@ -26,5 +26,8 @@ package org.apache.ftpserver.command;
  * @author <a href="http://mina.apache.org">Apache MINA Project</a>
  */
 public abstract class AbstractCommand implements Command {
-
+    /** potected constructor */
+    protected AbstractCommand() {
+        // Nothing to do
+    }
 }

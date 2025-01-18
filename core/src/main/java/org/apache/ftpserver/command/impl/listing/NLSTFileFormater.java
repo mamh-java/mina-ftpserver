@@ -19,27 +19,28 @@
 package org.apache.ftpserver.command.impl.listing;
 
 import org.apache.ftpserver.ftplet.FtpFile;
+import org.apache.ftpserver.util.StringUtils;
 
 /**
  * <strong>Internal class, do not use directly.</strong>
- *
+ * <p>
  * Formats files according to the NLST specification
  *
  * @author <a href="http://mina.apache.org">Apache MINA Project</a>
  */
 public class NLSTFileFormater implements FileFormater {
-
-    private static final char[] NEWLINE = { '\r', '\n' };
+    /** Public constructor */
+    public NLSTFileFormater() {
+        // Nothing to do
+    }
 
     /**
-     * @see FileFormater#format(FtpFile)
-     *
      * {@inheritDoc}
      */
     public String format(FtpFile file) {
         StringBuilder sb = new StringBuilder();
         sb.append(file.getName());
-        sb.append(NEWLINE);
+        sb.append(StringUtils.NEWLINE);
 
         return sb.toString();
     }

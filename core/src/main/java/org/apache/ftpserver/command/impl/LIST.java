@@ -60,16 +60,21 @@ import org.slf4j.LoggerFactory;
  * @author <a href="http://mina.apache.org">Apache MINA Project</a>
  */
 public class LIST extends AbstractCommand {
-
+    /** The class logger */
     private final Logger LOG = LoggerFactory.getLogger(LIST.class);
 
+    /** The list formatter instance */
     private static final LISTFileFormater LIST_FILE_FORMATER = new LISTFileFormater();
 
+    /** The directory lister instance */
     private final DirectoryLister directoryLister = new DirectoryLister();
 
+    /** Public constructor */
+    public LIST() {
+        super();
+    }
+
     /**
-     * Execute command.
-     *
      * {@inheritDoc}
      */
     public void execute(final FtpIoSession session,
@@ -77,13 +82,11 @@ public class LIST extends AbstractCommand {
             throws IOException, FtpException {
 
         try {
-
             // reset state variables
             session.resetState();
 
             // parse argument
-            ListArgument parsedArg = ListArgumentParser.parse(request
-                    .getArgument());
+            ListArgument parsedArg = ListArgumentParser.parse(request.getArgument());
 
             // checl that the directory or file exists
             FtpFile file = session.getFileSystemView().getFile(parsedArg.getFile());
@@ -99,13 +102,15 @@ public class LIST extends AbstractCommand {
             // 24-10-2007 - added check if PORT or PASV is issued, see
             // https://issues.apache.org/jira/browse/FTPSERVER-110
             DataConnectionFactory connFactory = session.getDataConnection();
+
             if (connFactory instanceof IODataConnectionFactory) {
-                InetAddress address = ((IODataConnectionFactory) connFactory)
-                        .getInetAddress();
+                InetAddress address = ((IODataConnectionFactory) connFactory).getInetAddress();
+
                 if (address == null) {
                     session.write(new DefaultFtpReply(
                             FtpReply.REPLY_503_BAD_SEQUENCE_OF_COMMANDS,
                             "PORT or PASV must be issued first"));
+
                     return;
                 }
             }
@@ -115,6 +120,7 @@ public class LIST extends AbstractCommand {
                     FtpReply.REPLY_150_FILE_STATUS_OKAY, "LIST", null));
 
             DataConnection dataConnection;
+
             try {
                 dataConnection = session.getDataConnection().openConnection();
             } catch (Exception e) {
@@ -122,11 +128,13 @@ public class LIST extends AbstractCommand {
                 session.write(LocalizedDataTransferFtpReply.translate(session, request, context,
                         FtpReply.REPLY_425_CANT_OPEN_DATA_CONNECTION, "LIST",
                         null, file));
+
                 return;
             }
 
             // transfer listing data
             boolean failure = false;
+
             String dirList = directoryLister.listFiles(parsedArg,
                 session.getFileSystemView(), LIST_FILE_FORMATER);
             try {
@@ -140,23 +148,15 @@ public class LIST extends AbstractCommand {
             } catch (IOException ex) {
                 LOG.debug("IOException during list transfer", ex);
                 failure = true;
-                session
-                        .write(LocalizedDataTransferFtpReply
-                                .translate(
-                                        session,
-                                        request,
-                                        context,
+                session.write(LocalizedDataTransferFtpReply
+                                .translate(session, request, context,
                                         FtpReply.REPLY_551_REQUESTED_ACTION_ABORTED_PAGE_TYPE_UNKNOWN,
                                         "LIST", null, file));
             } catch (IllegalArgumentException e) {
                 LOG.debug("Illegal list syntax: " + request.getArgument(), e);
                 // if listing syntax error - send message
-                session
-                        .write(LocalizedDataTransferFtpReply
-                                .translate(
-                                        session,
-                                        request,
-                                        context,
+                session.write(LocalizedDataTransferFtpReply
+                                .translate(session, request, context,
                                         FtpReply.REPLY_501_SYNTAX_ERROR_IN_PARAMETERS_OR_ARGUMENTS,
                                         "LIST", null, file));
             }
@@ -171,5 +171,4 @@ public class LIST extends AbstractCommand {
             session.getDataConnection().closeDataConnection();
         }
     }
-
 }

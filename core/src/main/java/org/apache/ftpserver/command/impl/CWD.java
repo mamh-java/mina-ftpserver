@@ -48,23 +48,26 @@ import org.slf4j.LoggerFactory;
  * @author <a href="http://mina.apache.org">Apache MINA Project</a>
  */
 public class CWD extends AbstractCommand {
-
+    /** Class logger */
     private final Logger LOG = LoggerFactory.getLogger(CWD.class);
 
+    /** Public constructor */
+    public CWD() {
+        super();
+    }
+
     /**
-     * Execute command
-     *
      * {@inheritDoc}
      */
     public void execute(final FtpIoSession session,
             final FtpServerContext context, final FtpRequest request)
             throws IOException, FtpException {
-
         // reset state variables
         session.resetState();
 
         // get new directory name
         String dirName = "/";
+
         if (request.hasArgument()) {
             dirName = request.getArgument();
         }
@@ -72,12 +75,15 @@ public class CWD extends AbstractCommand {
         // change directory
         FileSystemView fsview = session.getFileSystemView();
         boolean success = false;
+
         try {
             success = fsview.changeWorkingDirectory(dirName);
         } catch (Exception ex) {
             LOG.debug("Failed to change directory in file system", ex);
         }
+
         FtpFile cwd = fsview.getWorkingDirectory();
+
         if (success) {
             dirName = cwd.getAbsolutePath();
             session.write(LocalizedFileActionFtpReply.translate(session, request, context,

@@ -55,7 +55,7 @@ import org.slf4j.LoggerFactory;
  * @author <a href="http://mina.apache.org">Apache MINA Project</a>
  */
 public class DbUserManager extends AbstractUserManager {
-
+    /** The class logger */
     private final Logger LOG = LoggerFactory.getLogger(DbUserManager.class);
 
     private String insertUserStmt;
@@ -124,8 +124,7 @@ public class DbUserManager extends AbstractUserManager {
     /**
      * Set the data source to be used by the user manager
      *
-     * @param dataSource
-     *            The data source to use
+     * @param dataSource The data source to use
      */
     public void setDataSource(DataSource dataSource) {
         this.dataSource = dataSource;
@@ -144,8 +143,7 @@ public class DbUserManager extends AbstractUserManager {
      * Set the SQL INSERT statement used to add a new user. All the dynamic
      * values will be replaced during runtime.
      *
-     * @param sql
-     *            The SQL statement
+     * @param sql The SQL statement
      */
     public void setSqlUserInsert(String sql) {
         insertUserStmt = sql;
@@ -164,8 +162,7 @@ public class DbUserManager extends AbstractUserManager {
      * Set the SQL DELETE statement used to delete an existing user. All the
      * dynamic values will be replaced during runtime.
      *
-     * @param sql
-     *            The SQL statement
+     * @param sql The SQL statement
      */
     public void setSqlUserDelete(String sql) {
         deleteUserStmt = sql;
@@ -184,8 +181,7 @@ public class DbUserManager extends AbstractUserManager {
      * Set the SQL UPDATE statement used to update an existing user. All the
      * dynamic values will be replaced during runtime.
      *
-     * @param sql
-     *            The SQL statement
+     * @param sql The SQL statement
      */
     public void setSqlUserUpdate(String sql) {
         updateUserStmt = sql;
@@ -224,8 +220,7 @@ public class DbUserManager extends AbstractUserManager {
      * Set the SQL SELECT statement used to select all user ids. All the dynamic
      * values will be replaced during runtime.
      *
-     * @param sql
-     *            The SQL statement
+     * @param sql The SQL statement
      */
     public void setSqlUserSelectAll(String sql) {
         selectAllStmt = sql;
@@ -244,8 +239,7 @@ public class DbUserManager extends AbstractUserManager {
      * Set the SQL SELECT statement used to authenticate user. All the dynamic
      * values will be replaced during runtime.
      *
-     * @param sql
-     *            The SQL statement
+     * @param sql The SQL statement
      */
     public void setSqlUserAuthenticate(String sql) {
         authenticateStmt = sql;
@@ -265,8 +259,7 @@ public class DbUserManager extends AbstractUserManager {
      * Set the SQL SELECT statement used to find whether an user is admin or
      * not. All the dynamic values will be replaced during runtime.
      *
-     * @param sql
-     *            The SQL statement
+     * @param sql The SQL statement
      */
     public void setSqlUserAdmin(String sql) {
         isAdminStmt = sql;
@@ -290,7 +283,8 @@ public class DbUserManager extends AbstractUserManager {
 
         // execute query
         try (Statement stmt = createConnection().createStatement();
-             ResultSet rs = stmt.executeQuery(sql)) {
+            ResultSet rs = stmt.executeQuery(sql)) {
+
             return rs.next();
         } catch (SQLException ex) {
             LOG.error("DbUserManager.isAdmin()", ex);
@@ -300,6 +294,9 @@ public class DbUserManager extends AbstractUserManager {
 
     /**
      * Open connection to database.
+     *
+     * @return The oepned connection
+     * @throws SQLException If the connection can't be created
      */
     protected Connection createConnection() throws SQLException {
         Connection connection = dataSource.getConnection();
@@ -310,8 +307,6 @@ public class DbUserManager extends AbstractUserManager {
 
 
     /**
-     * Delete user. Delete the row from the table.
-     *
      * {@inheritDoc}
      */
     public void delete(String name) throws FtpException {
@@ -331,8 +326,6 @@ public class DbUserManager extends AbstractUserManager {
     }
 
     /**
-     * Save user. If new insert a new row, else update the existing row.
-     *
      * {@inheritDoc}
      */
     public void save(User user) throws FtpException {
@@ -432,6 +425,7 @@ public class DbUserManager extends AbstractUserManager {
         // execute query
         try (Statement stmt = createConnection().createStatement();
             ResultSet rs = stmt.executeQuery(sql)) {
+
             // populate user object
             BaseUser thisUser = null;
 
@@ -464,13 +458,10 @@ public class DbUserManager extends AbstractUserManager {
     }
 
     /**
-     * Get the user object. Fetch the row from the table.
-     *
      * {@inheritDoc}
      */
     public User getUserByName(String name) throws FtpException {
         try {
-
             BaseUser user = selectUserByName(name);
 
             if (user != null) {
@@ -486,8 +477,6 @@ public class DbUserManager extends AbstractUserManager {
     }
 
     /**
-     * User existance check.
-     *
      * {@inheritDoc}
      */
     public boolean doesExist(String name) throws FtpException {
@@ -500,6 +489,7 @@ public class DbUserManager extends AbstractUserManager {
         // execute query
         try (Statement stmt = createConnection().createStatement();
             ResultSet rs = stmt.executeQuery(sql)) {
+
             return rs.next();
         } catch (SQLException ex) {
             LOG.error("DbUserManager.doesExist()", ex);
@@ -508,8 +498,6 @@ public class DbUserManager extends AbstractUserManager {
     }
 
     /**
-     * Get all user names from the database.
-     *
      * {@inheritDoc}
      */
     public String[] getAllUserNames() throws FtpException {
@@ -535,8 +523,6 @@ public class DbUserManager extends AbstractUserManager {
     }
 
     /**
-     * User authentication.
-     *
      * {@inheritDoc}
      */
     public User authenticate(Authentication authentication) throws AuthenticationFailedException {
@@ -563,6 +549,7 @@ public class DbUserManager extends AbstractUserManager {
             // execute query
             try (Statement stmt = createConnection().createStatement();
                 ResultSet rs = stmt.executeQuery(sql)) {
+
                 if (rs.next()) {
                     try {
                         String storedPassword = rs.getString(ATTR_PASSWORD);

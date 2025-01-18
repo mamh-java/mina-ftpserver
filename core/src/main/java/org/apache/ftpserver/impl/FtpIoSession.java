@@ -579,12 +579,16 @@ public class FtpIoSession implements IoSession {
         removeAttribute(ATTRIBUTE_FILE_OFFSET);
     }
 
+    /**
+     * Get the DataConnection
+     *
+     * @return The DataConnection instance
+     */
     public synchronized ServerDataConnectionFactory getDataConnection() {
         if (containsAttribute(ATTRIBUTE_DATA_CONNECTION)) {
             return (ServerDataConnectionFactory) getAttribute(ATTRIBUTE_DATA_CONNECTION);
         } else {
-            IODataConnectionFactory dataCon = new IODataConnectionFactory(
-                    context, this);
+            IODataConnectionFactory dataCon = new IODataConnectionFactory(context, this);
             dataCon.setServerControlAddress(((InetSocketAddress) getLocalAddress()).getAddress());
             setAttribute(ATTRIBUTE_DATA_CONNECTION, dataCon);
 

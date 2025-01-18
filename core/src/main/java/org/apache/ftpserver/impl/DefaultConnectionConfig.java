@@ -42,6 +42,18 @@ public class DefaultConnectionConfig implements ConnectionConfig {
 
     private final int maxThreads;
 
+    /**
+     * Create a DefaultConnectionConfig istance, with default values:
+     *
+     * <ul>
+     *   <li>anonymousLoginEnabled: <code>true</code></li>
+     *   <li>loginFailureDelay: <code>500</code>ms</li>
+     *   <li>maxLogins: <code>10</code></li>
+     *   <li>maxAnonymousLogins: <code>10</code></li>
+     *   <li>maxLoginFailures: <code>3</code></li>
+     *   <li>maxThreads: <code>0</code></li>
+     * </ul>
+     */
     public DefaultConnectionConfig() {
         this(true, 500, 10, 10, 3, 0);
     }
@@ -90,5 +102,4 @@ public class DefaultConnectionConfig implements ConnectionConfig {
     public int getMaxThreads() {
         return maxThreads;
     }
-
 }

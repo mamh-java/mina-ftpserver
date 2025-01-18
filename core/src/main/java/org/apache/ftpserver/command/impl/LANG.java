@@ -41,6 +41,10 @@ import org.apache.ftpserver.message.MessageResource;
  * @author <a href="http://mina.apache.org">Apache MINA Project</a>
  */
 public class LANG extends AbstractCommand {
+    /** Public constructor */
+    public LANG() {
+        super();
+    }
 
     /**
      * Execute command.
@@ -55,10 +59,12 @@ public class LANG extends AbstractCommand {
 
         // default language
         String language = request.getArgument();
+
         if (language == null) {
             session.setLanguage(null);
             session.write(LocalizedFtpReply.translate(session, request, context,
                     FtpReply.REPLY_200_COMMAND_OKAY, "LANG", null));
+
             return;
         }
 
@@ -66,13 +72,14 @@ public class LANG extends AbstractCommand {
         language = language.toLowerCase();
         MessageResource msgResource = context.getMessageResource();
         List<String> availableLanguages = msgResource.getAvailableLanguages();
+
         if (availableLanguages != null) {
-            for (int i = 0; i < availableLanguages.size(); ++i) {
-                if (availableLanguages.get(i).equals(language)) {
+            for (String availableLanguage:availableLanguages) {
+                if (availableLanguage.equals(language)) {
                     session.setLanguage(language);
                     session.write(LocalizedFtpReply.translate(session, request,
-                            context, FtpReply.REPLY_200_COMMAND_OKAY, "LANG",
-                            null));
+                            context, FtpReply.REPLY_200_COMMAND_OKAY, "LANG", null));
+
                     return;
                 }
             }

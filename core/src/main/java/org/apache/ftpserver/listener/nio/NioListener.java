@@ -111,8 +111,6 @@ public class NioListener extends AbstractListener {
     }
 
     /**
-     * @see Listener#start(FtpServerContext)
-     *
      * {@inheritDoc}
      */
     public synchronized void start(FtpServerContext context) {
@@ -209,8 +207,6 @@ public class NioListener extends AbstractListener {
     }
 
     /**
-     * @see Listener#stop()
-     *
      * {@inheritDoc}
      */
     public synchronized void stop() {
@@ -225,8 +221,6 @@ public class NioListener extends AbstractListener {
     }
 
     /**
-     * @see Listener#isStopped()
-     *
      * {@inheritDoc}
      */
     public boolean isStopped() {
@@ -234,8 +228,6 @@ public class NioListener extends AbstractListener {
     }
 
     /**
-     * @see Listener#isSuspended()
-     *
      * {@inheritDoc}
      */
     public boolean isSuspended() {
@@ -243,8 +235,6 @@ public class NioListener extends AbstractListener {
     }
 
     /**
-     * @see Listener#resume()
-     *
      * {@inheritDoc}
      */
     public synchronized void resume() {
@@ -264,8 +254,6 @@ public class NioListener extends AbstractListener {
     }
 
     /**
-     * @see Listener#suspend()
-     *
      * {@inheritDoc}
      */
     public synchronized void suspend() {
@@ -279,8 +267,6 @@ public class NioListener extends AbstractListener {
     }
 
     /**
-     * @see Listener#getActiveSessions()
-     *
      * {@inheritDoc}
      */
     public synchronized Set<FtpIoSession> getActiveSessions() {

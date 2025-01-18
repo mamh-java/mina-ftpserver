@@ -72,18 +72,20 @@ import org.slf4j.LoggerFactory;
  * @author <a href="http://mina.apache.org">Apache MINA Project</a>
  */
 public class PASV extends AbstractCommand {
-
+    /** Class logger */
     private final Logger LOG = LoggerFactory.getLogger(PASV.class);
 
+    /** Public constructor */
+    public PASV() {
+        super();
+    }
+
     /**
-     * Execute command
-     *
      * {@inheritDoc}
      */
     public void execute(final FtpIoSession session,
         final FtpServerContext context, final FtpRequest request)
         throws IOException, FtpException {
-
         // reset state variables
         session.resetState();
 
@@ -92,11 +94,11 @@ public class PASV extends AbstractCommand {
         String externalPassiveAddress = getPassiveExternalAddress(session);
 
         try {
-
             InetSocketAddress dataConAddress = dataCon.initPassiveDataConnection();
 
             // get connection info
             InetAddress servAddr;
+
             if (externalPassiveAddress != null) {
                 servAddr = resolveAddress(externalPassiveAddress);
             } else {
@@ -115,15 +117,15 @@ public class PASV extends AbstractCommand {
             session.write(LocalizedFtpReply.translate(session, request, context,
                 FtpReply.REPLY_425_CANT_OPEN_DATA_CONNECTION,
                 "PASV", null));
+
             return;
         }
-
     }
+
     /*
      *  (non-Javadoc)
      *   Returns an InetAddress object from a hostname or IP address.
      */
-
     private InetAddress resolveAddress(String host) throws DataConnectionException {
         try {
             return InetAddress.getByName(host);
@@ -131,13 +133,14 @@ public class PASV extends AbstractCommand {
             throw new DataConnectionException(ex.getLocalizedMessage(), ex);
         }
     }
-    /*
-     * (non-Javadoc)
+
+    /**
      * Returns the server's IP address which will be reported by the PASV response.
      *
+     * @param session The FTP session
+     * @return The passive external address
      */
     protected String getPassiveExternalAddress(final FtpIoSession session) {
         return session.getListener().getDataConnectionConfiguration().getPassiveExernalAddress();
-
     }
 }

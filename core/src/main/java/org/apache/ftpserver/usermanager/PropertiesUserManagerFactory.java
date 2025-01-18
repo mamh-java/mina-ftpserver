@@ -39,6 +39,13 @@ public class PropertiesUserManagerFactory implements UserManagerFactory {
     private URL userDataURL;
 
     /**
+     * Create a PropertiesUserManagerFactory instance
+     */
+    public PropertiesUserManagerFactory() {
+        // Nothing to do
+    }
+
+    /**
      * The default password encryption method. It's a one way mechanism, ie
      * a password is *never* unencrypted.
      **/
@@ -78,6 +85,7 @@ public class PropertiesUserManagerFactory implements UserManagerFactory {
 
     /**
      * Retrieve the file used to load and store users
+     *
      * @return The file
      */
     public File getFile() {
@@ -87,8 +95,7 @@ public class PropertiesUserManagerFactory implements UserManagerFactory {
     /**
      * Set the file used to store and read users.
      *
-     * @param propFile
-     *            A file containing users
+     * @param propFile A file containing users
      */
     public void setFile(File propFile) {
         this.userDataFile = propFile;
@@ -96,6 +103,7 @@ public class PropertiesUserManagerFactory implements UserManagerFactory {
 
     /**
      * Retrieve the URL used to load and store users
+     *
      * @return The {@link URL}
      */
     public URL getUrl() {
@@ -105,8 +113,7 @@ public class PropertiesUserManagerFactory implements UserManagerFactory {
     /**
      * Set the URL used to store and read users.
      *
-     * @param userDataURL
-     *            A {@link URL} containing users
+     * @param userDataURL A {@link URL} containing users
      */
     public void setUrl(URL userDataURL) {
         this.userDataURL = userDataURL;
@@ -114,6 +121,7 @@ public class PropertiesUserManagerFactory implements UserManagerFactory {
 
     /**
      * Retrieve the password encryptor used by user managers created by this factory
+     *
      * @return The password encryptor. Default to {@link Md5PasswordEncryptor}
      *  if no other has been provided
      */
@@ -123,6 +131,7 @@ public class PropertiesUserManagerFactory implements UserManagerFactory {
 
     /**
      * Set the password encryptor to use by user managers created by this factory
+     *
      * @param passwordEncryptor The password encryptor
      */
     public void setPasswordEncryptor(PasswordEncryptor passwordEncryptor) {

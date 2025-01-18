@@ -45,9 +45,12 @@ import org.apache.ftpserver.impl.LocalizedFtpReply;
  * @author <a href="http://mina.apache.org">Apache MINA Project</a>
  */
 public class ABOR extends AbstractCommand {
+    /** Public constructor */
+    public ABOR() {
+        super();
+    }
+
     /**
-     * Execute command
-     *
      * {@inheritDoc}
      */
     public void execute(final FtpIoSession session,

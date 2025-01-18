@@ -132,14 +132,8 @@ public abstract class SSLTestTemplate extends ClientTestTemplate {
     protected abstract String getAuthValue();
 
     protected void writeDataToFile(File file, byte[] data) throws IOException {
-        FileOutputStream fos = null;
-
-        try {
-            fos = new FileOutputStream(file);
-
+        try (FileOutputStream fos = new FileOutputStream(file)) {
             fos.write(data);
-        } finally {
-            IoUtils.close(fos);
         }
     }
 

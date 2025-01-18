@@ -189,8 +189,6 @@ public class DefaultDataConnectionConfiguration implements
     }
 
     /**
-     * @see org.apache.ftpserver.DataConnectionConfiguration#isImplicitSsl()
-     *
      * {@inheritDoc}
      */
     public boolean isImplicitSsl() {

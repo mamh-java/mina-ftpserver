@@ -35,17 +35,25 @@ import org.apache.ftpserver.util.PasswordUtil;
  * @author <a href="http://mina.apache.org">Apache MINA Project</a>
  */
 public class SaltedPasswordEncryptor implements PasswordEncryptor {
-
     private SecureRandom rnd = new SecureRandom();
 
     private static final int MAX_SEED = 99999999;
     private static final int HASH_ITERATIONS = 1000;
 
+    /**
+     * Create a SaltedPasswordEncryptor instance
+     */
+    public SaltedPasswordEncryptor() {
+        // Nothing to do
+    }
+
     private String encrypt(String password, String salt) {
         String hash = salt + password;
+
         for (int i = 0; i < HASH_ITERATIONS; i++) {
             hash = EncryptUtils.encryptMD5(hash);
         }
+
         return salt + ":" + hash;
     }
 
@@ -68,6 +76,7 @@ public class SaltedPasswordEncryptor implements PasswordEncryptor {
         if (storedPassword == null) {
             throw new NullPointerException("storedPassword can not be null");
         }
+
         if (passwordToCheck == null) {
             throw new NullPointerException("passwordToCheck can not be null");
         }
@@ -84,5 +93,4 @@ public class SaltedPasswordEncryptor implements PasswordEncryptor {
         return PasswordUtil.secureCompareFast(encrypt(passwordToCheck, storedSalt).toLowerCase(),
                 storedPassword.toLowerCase());
     }
-
 }

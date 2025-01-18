@@ -39,25 +39,25 @@ public class FtpLoggingFilter extends LoggingFilter {
     private final Logger logger;
 
     /**
-     * @see LoggingFilter#LoggingFilter()
+     * Create an instance using the FtpLoggingFilter class name as a logger name
      */
     public FtpLoggingFilter() {
         this(FtpLoggingFilter.class.getName());
     }
 
     /**
-     * @see LoggingFilter#LoggingFilter(Class)
+     * Create an instance of this class
      *
-     * {@inheritDoc}
+     * @param clazz The class for which we want this logger to be named from
      */
     public FtpLoggingFilter(Class<?> clazz) {
         this(clazz.getName());
     }
 
     /**
-     * @see LoggingFilter#LoggingFilter(String)
+     * Create an instance of this class
      *
-     * {@inheritDoc}
+     * @param name The logger name to use
      */
     public FtpLoggingFilter(String name) {
         super(name);
@@ -66,9 +66,6 @@ public class FtpLoggingFilter extends LoggingFilter {
     }
 
     /**
-     * @see LoggingFilter#messageReceived(org.apache.mina.core.filterchain.IoFilter.NextFilter,
-     *      IoSession, Object)
-     *
      * {@inheritDoc}
      */
     @Override

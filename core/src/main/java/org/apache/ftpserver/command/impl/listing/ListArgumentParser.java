@@ -22,21 +22,25 @@ import java.util.StringTokenizer;
 
 /**
  * <strong>Internal class, do not use directly.</strong>
- *
+ * <p>
  * Parses a list argument (e.g. for LIST or NLST) into a {@link ListArgument}
  *
  * @author <a href="http://mina.apache.org">Apache MINA Project</a>
  */
 public class ListArgumentParser {
+    /**
+     * A private constructor
+     */
+    private ListArgumentParser() {
+        // Nothing to do
+    }
 
     /**
      * Parse the argument
      *
-     * @param argument
-     *            The argument string
+     * @param argument The argument string
      * @return The parsed argument
-     * @throws IllegalArgumentException
-     *             If the argument string is incorrectly formated
+     * @throws IllegalArgumentException If the argument string is incorrectly formated
      */
     public static ListArgument parse(String argument) {
         String file = "./";
@@ -49,6 +53,7 @@ public class ListArgumentParser {
             StringBuilder optionsSb = new StringBuilder(4);
             StringBuilder fileSb = new StringBuilder(16);
             StringTokenizer st = new StringTokenizer(argument, " ", true);
+
             while (st.hasMoreTokens()) {
                 String token = st.nextToken();
 
@@ -73,10 +78,12 @@ public class ListArgumentParser {
             if (fileSb.length() != 0) {
                 file = fileSb.toString();
             }
+
             options = optionsSb.toString();
         }
 
         int slashIndex = file.lastIndexOf('/');
+
         if (slashIndex == -1) {
             if (containsPattern(file)) {
                 pattern = file;
@@ -91,8 +98,7 @@ public class ListArgumentParser {
             }
 
             if (containsPattern(file)) {
-                throw new IllegalArgumentException(
-                        "Directory path can not contain regular expression");
+                throw new IllegalArgumentException("Directory path can not contain regular expression");
             }
         }
 
@@ -104,8 +110,6 @@ public class ListArgumentParser {
     }
 
     private static boolean containsPattern(String file) {
-        return file.indexOf('*') > -1 || file.indexOf('?') > -1
-                || file.indexOf('[') > -1;
-
+        return file.indexOf('*') > -1 || file.indexOf('?') > -1 || file.indexOf('[') > -1;
     }
 }

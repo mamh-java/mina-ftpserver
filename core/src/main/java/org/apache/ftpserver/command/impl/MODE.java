@@ -41,16 +41,17 @@ import org.apache.ftpserver.impl.LocalizedFtpReply;
  * @author <a href="http://mina.apache.org">Apache MINA Project</a>
  */
 public class MODE extends AbstractCommand {
+    /** Public constructor */
+    public MODE() {
+        super();
+    }
 
     /**
-     * Execute command.
-     *
      * {@inheritDoc}
      */
     public void execute(final FtpIoSession session,
             final FtpServerContext context, final FtpRequest request)
             throws IOException {
-
         // reset state
         session.resetState();
 
@@ -59,27 +60,31 @@ public class MODE extends AbstractCommand {
             session.write(LocalizedFtpReply.translate(session, request, context,
                     FtpReply.REPLY_501_SYNTAX_ERROR_IN_PARAMETERS_OR_ARGUMENTS,
                     "MODE", null));
+
             return;
         }
 
         // set mode
-        char md = request.getArgument().charAt(0);
-        md = Character.toUpperCase(md);
-        if (md == 'S') {
-            session.getDataConnection().setZipMode(false);
-            session.write(LocalizedFtpReply.translate(session, request, context,
-                    FtpReply.REPLY_200_COMMAND_OKAY, "MODE", "S"));
-        } else if (md == 'Z') {
-            session.getDataConnection().setZipMode(true);
-            session.write(LocalizedFtpReply.translate(session, request, context,
-                    FtpReply.REPLY_200_COMMAND_OKAY, "MODE", "Z"));
-        } else {
-            session
-                    .write(LocalizedFtpReply
-                            .translate(
-                                    session,
-                                    request,
-                                    context,
+        switch (request.getArgument().charAt(0)) {
+            case 's':
+            case 'S':
+                session.getDataConnection().setZipMode(false);
+                session.write(LocalizedFtpReply.translate(session, request, context,
+                        FtpReply.REPLY_200_COMMAND_OKAY, "MODE", "S"));
+
+                return;
+
+            case 'z':
+            case 'Z':
+                session.getDataConnection().setZipMode(true);
+                session.write(LocalizedFtpReply.translate(session, request, context,
+                        FtpReply.REPLY_200_COMMAND_OKAY, "MODE", "Z"));
+
+                return;
+
+            default:
+                session.write(LocalizedFtpReply
+                            .translate(session, request, context,
                                     FtpReply.REPLY_504_COMMAND_NOT_IMPLEMENTED_FOR_THAT_PARAMETER,
                                     "MODE", null));
         }

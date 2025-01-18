@@ -34,6 +34,12 @@ import org.apache.ftpserver.impl.LocalizedFtpReply;
  * @author <a href="http://mina.apache.org">Apache MINA Project</a>
  */
 public class NotSupportedCommand extends AbstractCommand {
+    /**
+     * Create a NotSupportedCommand instance
+     */
+    public NotSupportedCommand() {
+        super();
+    }
 
     /**
      * Execute command
@@ -43,7 +49,6 @@ public class NotSupportedCommand extends AbstractCommand {
     public void execute(final FtpIoSession session,
             final FtpServerContext context, final FtpRequest request)
             throws IOException {
-
         // reset state variables
         session.resetState();
 

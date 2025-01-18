@@ -58,8 +58,6 @@ public class RegexFileFilter implements FileFilter {
     }
 
     /**
-     * @see FileFilter#accept(FtpFile)
-     *
      * {@inheritDoc}
      */
     public boolean accept(FtpFile file) {

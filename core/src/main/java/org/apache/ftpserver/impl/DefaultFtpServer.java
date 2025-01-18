@@ -66,7 +66,7 @@ public class DefaultFtpServer implements FtpServer {
 
     /**
      * Start the server. Open a new listener thread.
-     * @throws FtpException
+     * @throws FtpException If the server failed to start
      */
     public void start() throws FtpException {
         if (serverContext == null) {
@@ -185,8 +185,6 @@ public class DefaultFtpServer implements FtpServer {
     }
 
     /**
-     * Is the server suspended
-     *
      * {@inheritDoc}
      */
     public boolean isSuspended() {
@@ -196,7 +194,7 @@ public class DefaultFtpServer implements FtpServer {
     /**
      * Get the root server context.
      *
-     * {@inheritDoc}
+     * @return The FTP Server context
      */
     public FtpServerContext getServerContext() {
         return serverContext;

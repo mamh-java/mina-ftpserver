@@ -32,17 +32,31 @@ import org.springframework.beans.factory.FactoryBean;
  * @see ListenerFactory
  */
 public class ListenerFactoryBean extends ListenerFactory implements FactoryBean {
+    /**
+     * Create a ListenerFactoryBean instance
+     */
+    public ListenerFactoryBean() {
+        super();
+    }
 
+    /**
+     * {@inheritDoc}
+     */
     public Object getObject() throws Exception {
         return createListener();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public Class<?> getObjectType() {
         return Listener.class;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public boolean isSingleton() {
         return false;
     }
-
 }

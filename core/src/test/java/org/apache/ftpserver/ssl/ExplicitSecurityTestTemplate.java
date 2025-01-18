@@ -180,12 +180,8 @@ public abstract class ExplicitSecurityTestTemplate extends SSLTestTemplate {
         File file = new File(ROOT_DIR, "foo");
         file.createNewFile();
 
-        InputStream is = null;
-        try {
-            is = client.retrieveFileStream(file.getName());
+        try (InputStream is = client.retrieveFileStream(file.getName())) {
             assertEquals(-1, is.read(new byte[1024]));
-        } finally {
-            IoUtils.close(is);
         }
     }
 }

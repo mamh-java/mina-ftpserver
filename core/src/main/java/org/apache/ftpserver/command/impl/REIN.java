@@ -41,16 +41,17 @@ import org.apache.ftpserver.impl.LocalizedFtpReply;
  * @author <a href="http://mina.apache.org">Apache MINA Project</a>
  */
 public class REIN extends AbstractCommand {
+    /** Public constructor */
+    public REIN() {
+        super();
+    }
 
     /**
-     * Execute command.
-     *
      * {@inheritDoc}
      */
     public void execute(final FtpIoSession session,
             final FtpServerContext context, final FtpRequest request)
             throws IOException {
-
         session.reinitialize();
         session.setLanguage(null);
         session.write(LocalizedFtpReply.translate(session, request, context,

@@ -40,7 +40,7 @@ import org.slf4j.LoggerFactory;
 
 /**
  * <strong>Internal class, do not use directly.</strong>
- *
+ * <p>
  * We can get the FTP data connection using this class. It uses either PORT or PASV command.
  *
  * @author <a href="http://mina.apache.org">Apache MINA Project</a>
@@ -71,6 +71,12 @@ public class IODataConnectionFactory implements ServerDataConnectionFactory {
 
     FtpIoSession session;
 
+    /**
+     * Create a IODataConnectionFactory instance
+     *
+     * @param serverContext The FTP server context
+     * @param session The FTP session
+     */
     public IODataConnectionFactory(final FtpServerContext serverContext, final FtpIoSession session) {
         this.session = session;
         this.serverContext = serverContext;

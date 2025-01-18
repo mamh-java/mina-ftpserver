@@ -47,16 +47,19 @@ import org.apache.ftpserver.impl.ServerDataConnectionFactory;
  * @author <a href="http://mina.apache.org">Apache MINA Project</a>
  */
 public class EPSV extends AbstractCommand {
+    /**
+     * A EPSV constructor
+     */
+    public EPSV() {
+        super();
+    }
 
     /**
-     * Execute command.
-     *
      * {@inheritDoc}
      */
     public void execute(final FtpIoSession session,
             final FtpServerContext context, final FtpRequest request)
             throws IOException {
-
         // reset state variables
         session.resetState();
 
@@ -64,21 +67,20 @@ public class EPSV extends AbstractCommand {
         ServerDataConnectionFactory dataCon = session.getDataConnection();
 
         try {
-            InetSocketAddress dataConAddress = dataCon
-                    .initPassiveDataConnection();
+            InetSocketAddress dataConAddress = dataCon.initPassiveDataConnection();
+
             // get connection info
             int servPort = dataConAddress.getPort();
 
             // send connection info to client
             String portStr = "|||" + servPort + '|';
-            session.write(LocalizedFtpReply.translate(session, request, context,
-                    229, "EPSV", portStr));
+            session.write(LocalizedFtpReply.translate(session, request, context, 229, "EPSV", portStr));
 
         } catch (DataConnectionException e) {
-            session
-                    .write(LocalizedFtpReply.translate(session, request, context,
+            session.write(LocalizedFtpReply.translate(session, request, context,
                             FtpReply.REPLY_425_CANT_OPEN_DATA_CONNECTION,
                             "EPSV", null));
+
             return;
         }
     }

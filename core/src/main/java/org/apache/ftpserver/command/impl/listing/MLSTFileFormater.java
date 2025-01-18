@@ -20,26 +20,26 @@ package org.apache.ftpserver.command.impl.listing;
 
 import org.apache.ftpserver.ftplet.FtpFile;
 import org.apache.ftpserver.util.DateUtils;
+import org.apache.ftpserver.util.StringUtils;
 
 /**
  * <strong>Internal class, do not use directly.</strong>
- *
+ * <p>
  * Formats files according to the MLST specification
  *
  * @author <a href="http://mina.apache.org">Apache MINA Project</a>
  */
 public class MLSTFileFormater implements FileFormater {
+    /** The default types */
+    private static final String[] DEFAULT_TYPES = new String[] { "Size", "Modify", "Type" };
 
-    private static final String[] DEFAULT_TYPES = new String[] { "Size",
-            "Modify", "Type" };
-
-    private static final char[] NEWLINE = { '\r', '\n' };
-
+    /** The selected types default value */
     private String[] selectedTypes = DEFAULT_TYPES;
 
     /**
-     * @param selectedTypes
-     *            The types to show in the formated file
+     * Create an instance
+     *
+     * @param selectedTypes The types to show in the formated file
      */
     public MLSTFileFormater(String[] selectedTypes) {
         if (selectedTypes != null) {
@@ -48,60 +48,62 @@ public class MLSTFileFormater implements FileFormater {
     }
 
     /**
-     * @see FileFormater#format(FtpFile)
-     *
      * {@inheritDoc}
      */
     public String format(FtpFile file) {
         StringBuilder sb = new StringBuilder();
 
-        for (int i = 0; i < selectedTypes.length; ++i) {
-            String type = selectedTypes[i];
-            if (type.equalsIgnoreCase("size")) {
-                sb.append("Size=");
-                sb.append(String.valueOf(file.getSize()));
-                sb.append(';');
-            } else if (type.equalsIgnoreCase("modify")) {
-                String timeStr = DateUtils.getFtpDate(file.getLastModified());
-                sb.append("Modify=");
-                sb.append(timeStr);
-                sb.append(';');
-            } else if (type.equalsIgnoreCase("type")) {
-                if (file.isFile()) {
-                    sb.append("Type=file;");
-                } else if (file.isDirectory()) {
-                    sb.append("Type=dir;");
-                }
-            } else if (type.equalsIgnoreCase("perm")) {
-                sb.append("Perm=");
-                if (file.isReadable()) {
+        for (String selectedType:selectedTypes) {
+            switch (selectedType.toUpperCase()) {
+                case "SIZE":
+                    sb.append("Size=");
+                    sb.append(String.valueOf(file.getSize()));
+                    sb.append(';');
+                    break;
+
+                case "MODIFY":
+                    String timeStr = DateUtils.getFtpDate(file.getLastModified());
+                    sb.append("Modify=");
+                    sb.append(timeStr);
+                    sb.append(';');
+                    break;
+
+                case "TYPE":
                     if (file.isFile()) {
-                        sb.append('r');
+                        sb.append("Type=file;");
                     } else if (file.isDirectory()) {
-                        sb.append('e');
-                        sb.append('l');
+                        sb.append("Type=dir;");
                     }
-                }
-                if (file.isWritable()) {
-                    if (file.isFile()) {
-                        sb.append('a');
-                        sb.append('d');
-                        sb.append('f');
-                        sb.append('w');
-                    } else if (file.isDirectory()) {
-                        sb.append('f');
-                        sb.append('p');
-                        sb.append('c');
-                        sb.append('m');
+
+                    break;
+
+                default:
+                    sb.append("Perm=");
+
+                    if (file.isReadable()) {
+                        if (file.isFile()) {
+                            sb.append('r');
+                        } else if (file.isDirectory()) {
+                            sb.append("el");
+                        }
                     }
-                }
-                sb.append(';');
+
+                    if (file.isWritable()) {
+                        if (file.isFile()) {
+                            sb.append("adfw");
+                        } else if (file.isDirectory()) {
+                            sb.append("fpcm");
+                        }
+                    }
+
+                    sb.append(';');
+                    break;
             }
         }
+
         sb.append(' ');
         sb.append(file.getName());
-
-        sb.append(NEWLINE);
+        sb.append(StringUtils.NEWLINE);
 
         return sb.toString();
     }

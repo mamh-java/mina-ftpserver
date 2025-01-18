@@ -35,11 +35,19 @@ import org.slf4j.LoggerFactory;
  * @author <a href="http://mina.apache.org">Apache MINA Project</a>
  */
 public class NativeFileSystemFactory implements FileSystemFactory {
+    /** The class logger */
     private final Logger LOG = LoggerFactory.getLogger(NativeFileSystemFactory.class);
 
     private boolean createHome;
 
     private boolean caseInsensitive;
+
+    /**
+     * Create a NativeFileSystemFactory instance
+     */
+    public NativeFileSystemFactory() {
+        // Nothing to do
+    }
 
     /**
      * Should the home directories be created automatically

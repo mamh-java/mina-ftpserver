@@ -44,7 +44,7 @@ public class WriteRequest implements AuthorizationRequest {
      * Request write access to a file or directory relative to the user home
      * directory
      *
-     * @param file
+     * @param file The file to which we want write access
      */
     public WriteRequest(final String file) {
         this.file = file;

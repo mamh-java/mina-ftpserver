@@ -47,12 +47,17 @@ import java.util.Random;
  * @author <a href="http://mina.apache.org">Apache MINA Project</a>
  */
 public class IoUtils {
+    /**
+     * Private constructor
+     */
+    private IoUtils () {
+        // Nothing to do
+    }
 
     /**
      * Random number generator to make unique file name
      */
-    private static final Random RANDOM_GEN = new Random(System
-            .currentTimeMillis());
+    private static final Random RANDOM_GEN = new Random(System.currentTimeMillis());
 
     /**
      * Get a <code>BufferedInputStream</code>.
@@ -60,14 +65,15 @@ public class IoUtils {
      * @param in The incoming InputStream
      * @return A BufferedInputStream
      */
-    public static final BufferedInputStream getBufferedInputStream(
-            InputStream in) {
+    public static final BufferedInputStream getBufferedInputStream(InputStream in) {
         BufferedInputStream bin = null;
+
         if (in instanceof java.io.BufferedInputStream) {
             bin = (BufferedInputStream) in;
         } else {
             bin = new BufferedInputStream(in);
         }
+
         return bin;
     }
 
@@ -77,14 +83,15 @@ public class IoUtils {
      * @param out The incoming OutputStream
      * @return A BufferedOutputStream
      */
-    public static final BufferedOutputStream getBufferedOutputStream(
-            OutputStream out) {
+    public static final BufferedOutputStream getBufferedOutputStream(OutputStream out) {
         BufferedOutputStream bout = null;
+
         if (out instanceof java.io.BufferedOutputStream) {
             bout = (BufferedOutputStream) out;
         } else {
             bout = new BufferedOutputStream(out);
         }
+
         return bout;
     }
 
@@ -96,11 +103,13 @@ public class IoUtils {
      */
     public static final BufferedReader getBufferedReader(Reader reader) {
         BufferedReader buffered = null;
+
         if (reader instanceof java.io.BufferedReader) {
             buffered = (BufferedReader) reader;
         } else {
             buffered = new BufferedReader(reader);
         }
+
         return buffered;
     }
 
@@ -112,11 +121,13 @@ public class IoUtils {
      */
     public static final BufferedWriter getBufferedWriter(Writer wr) {
         BufferedWriter bw = null;
+
         if (wr instanceof java.io.BufferedWriter) {
             bw = (BufferedWriter) wr;
         } else {
             bw = new BufferedWriter(wr);
         }
+
         return bw;
     }
 
@@ -128,13 +139,15 @@ public class IoUtils {
      */
     public static final File getUniqueFile(File oldFile) {
         File newFile = oldFile;
+
         while (true) {
             if (!newFile.exists()) {
                 break;
             }
-            newFile = new File(oldFile.getAbsolutePath() + '.'
-                    + Math.abs(RANDOM_GEN.nextLong()));
+
+            newFile = new File(oldFile.getAbsolutePath() + '.' + Math.abs(RANDOM_GEN.nextLong()));
         }
+
         return newFile;
     }
 
@@ -142,6 +155,7 @@ public class IoUtils {
      * No exception <code>InputStream</code> close method.
      *
      * @param is The InputStream to close
+     * @deprecated Use try-with-resources instead
      */
     public static final void close(InputStream is) {
         if (is != null) {
@@ -156,6 +170,7 @@ public class IoUtils {
      * No exception <code>OutputStream</code> close method.
      *
      * @param os The OutputStream to close
+     * @deprecated Use try-with-resources instead
      */
     public static final void close(OutputStream os) {
         if (os != null) {
@@ -170,6 +185,7 @@ public class IoUtils {
      * No exception <code>java.io.Reader</code> close method.
      *
      * @param rd The Reader to close
+     * @deprecated Use try-with-resources instead
      */
     public static final void close(Reader rd) {
         if (rd != null) {
@@ -184,6 +200,7 @@ public class IoUtils {
      * No exception <code>java.io.Writer</code> close method.
      *
      * @param wr The Writer to close
+     * @deprecated Use try-with-resources instead
      */
     public static final void close(Writer wr) {
         if (wr != null) {
@@ -202,6 +219,7 @@ public class IoUtils {
      */
     public static final String getStackTrace(Throwable ex) {
         String result = "";
+
         if (ex != null) {
             try {
                 StringWriter sw = new StringWriter();
@@ -214,6 +232,7 @@ public class IoUtils {
                 e.printStackTrace();
             }
         }
+
         return result;
     }
 
@@ -225,10 +244,10 @@ public class IoUtils {
      * @param bufferSize Size of internal buffer to use.
      * @throws IOException If the copy failed
      */
-    public static final void copy(Reader input, Writer output, int bufferSize)
-            throws IOException {
+    public static final void copy(Reader input, Writer output, int bufferSize) throws IOException {
         char[] buffer = new char[bufferSize];
         int n = 0;
+
         while ((n = input.read(buffer)) != -1) {
             output.write(buffer, 0, n);
         }
@@ -242,10 +261,10 @@ public class IoUtils {
      * @param bufferSize Size of internal buffer to use.
      * @throws IOException If the copy failed
      */
-    public static final void copy(InputStream input, OutputStream output,
-            int bufferSize) throws IOException {
+    public static final void copy(InputStream input, OutputStream output, int bufferSize) throws IOException {
         byte[] buffer = new byte[bufferSize];
         int n = 0;
+
         while ((n = input.read(buffer)) != -1) {
             output.write(buffer, 0, n);
         }
@@ -261,6 +280,7 @@ public class IoUtils {
     public static final String readFully(Reader reader) throws IOException {
         StringWriter writer = new StringWriter();
         copy(reader, writer, 1024);
+
         return writer.toString();
     }
 
@@ -275,9 +295,16 @@ public class IoUtils {
         StringWriter writer = new StringWriter();
         InputStreamReader reader = new InputStreamReader(input);
         copy(reader, writer, 1024);
+
         return writer.toString();
     }
 
+    /**
+     * Delete a file
+     *
+     * @param file The file to delete
+     * @throws IOException If the deletion failed
+     */
     public static final void delete(File file) throws IOException {
         if (file.isDirectory()) {
             deleteDir(file);
@@ -311,10 +338,12 @@ public class IoUtils {
             if (OS.isFamilyWindows()) {
                 System.gc();
             }
+
             try {
                 Thread.sleep(10);
             } catch (InterruptedException e) {
             }
+
             if (!file.delete()) {
                 throw new IOException("Failed to delete file: " + file);
             }

@@ -48,18 +48,19 @@ import org.slf4j.LoggerFactory;
  * @author <a href="http://mina.apache.org">Apache MINA Project</a>
  */
 public class MLST extends AbstractCommand {
-
+    /** Class logger */
     private final Logger LOG = LoggerFactory.getLogger(MLST.class);
 
-    /**
-     * Execute command.
-     *
-     * {@inheritDoc}
+    /** Public constructor */
+    public MLST() {
+        super();
+    }
+
+    /**     * {@inheritDoc}
      */
     public void execute(final FtpIoSession session,
             final FtpServerContext context, final FtpRequest request)
             throws IOException {
-
         // reset state variables
         session.resetState();
 
@@ -68,22 +69,18 @@ public class MLST extends AbstractCommand {
                 .parse(request.getArgument());
 
         FtpFile file = null;
+
         try {
-            file = session.getFileSystemView().getFile(
-                    parsedArg.getFile());
+            file = session.getFileSystemView().getFile(parsedArg.getFile());
+
             if (file != null && file.doesExist()) {
-                FileFormater formater = new MLSTFileFormater((String[]) session
-                        .getAttribute("MLST.types"));
+                FileFormater formater = new MLSTFileFormater((String[]) session.getAttribute("MLST.types"));
                 session.write(LocalizedFtpReply.translate(session, request, context,
                         FtpReply.REPLY_250_REQUESTED_FILE_ACTION_OKAY, "MLST",
                         formater.format(file)));
             } else {
-                session
-                        .write(LocalizedFtpReply
-                                .translate(
-                                        session,
-                                        request,
-                                        context,
+                session.write(LocalizedFtpReply
+                                .translate(session, request, context,
                                         FtpReply.REPLY_501_SYNTAX_ERROR_IN_PARAMETERS_OR_ARGUMENTS,
                                         "MLST", null));
             }

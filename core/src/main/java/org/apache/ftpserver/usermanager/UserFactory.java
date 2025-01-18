@@ -46,7 +46,16 @@ public class UserFactory {
     private List<Authority> authorities = new ArrayList<>();
 
     /**
+     * Public constructor
+     */
+    public UserFactory() {
+        // Nothing to do
+    }
+
+
+    /**
      * Creates a user based on the configuration set on the factory
+     *
      * @return The created user
      */
     public User createUser() {
@@ -63,6 +72,7 @@ public class UserFactory {
 
     /**
      * Get the user name for users created by this factory
+     *
      * @return The user name
      */
     public String getName() {
@@ -71,6 +81,7 @@ public class UserFactory {
 
     /**
      * Set the user name for users created by this factory
+     *
      * @param name The user name
      */
     public void setName(String name) {
@@ -79,6 +90,7 @@ public class UserFactory {
 
     /**
      * Get the password for users created by this factory
+     *
      * @return The password
      */
     public String getPassword() {
@@ -87,6 +99,7 @@ public class UserFactory {
 
     /**
      * Set the user name for users created by this factory
+     *
      * @param password The password
      */
     public void setPassword(String password) {
@@ -95,6 +108,7 @@ public class UserFactory {
 
     /**
      * Get the max idle time for users created by this factory
+     *
      * @return The max idle time in seconds
      */
     public int getMaxIdleTime() {
@@ -103,6 +117,7 @@ public class UserFactory {
 
     /**
      * Set the user name for users created by this factory
+     *
      * @param maxIdleTimeSec The max idle time in seconds
      */
     public void setMaxIdleTime(int maxIdleTimeSec) {
@@ -111,6 +126,7 @@ public class UserFactory {
 
     /**
      * Get the home directory for users created by this factory
+     *
      * @return The home directory path
      */
     public String getHomeDirectory() {
@@ -119,6 +135,7 @@ public class UserFactory {
 
     /**
      * Set the user name for users created by this factory
+     *
      * @param homeDir The home directory path
      */
     public void setHomeDirectory(String homeDir) {
@@ -127,6 +144,7 @@ public class UserFactory {
 
     /**
      * Get the enabled status for users created by this factory
+     *
      * @return <code>true</code> if the user is enabled (allowed to log in)
      */
     public boolean isEnabled() {
@@ -135,6 +153,7 @@ public class UserFactory {
 
     /**
      * Get the enabled status for users created by this factory
+     *
      * @param isEnabled true if the user should be enabled (allowed to log in)
      */
     public void setEnabled(boolean isEnabled) {
@@ -143,6 +162,7 @@ public class UserFactory {
 
     /**
      * Get the authorities for users created by this factory
+     *
      * @return The authorities
      */
     public List<? extends Authority> getAuthorities() {
@@ -151,6 +171,7 @@ public class UserFactory {
 
     /**
      * Set the authorities for users created by this factory
+     *
      * @param authorities The authorities
      */
     public void setAuthorities(List<Authority> authorities) {

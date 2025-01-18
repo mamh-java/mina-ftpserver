@@ -49,20 +49,23 @@ import org.apache.ftpserver.impl.LocalizedFtpReply;
  * @author <a href="http://mina.apache.org">Apache MINA Project</a>
  */
 public class STAT extends AbstractCommand {
-
+    /** The list file formatter */
     private static final LISTFileFormater LIST_FILE_FORMATER = new LISTFileFormater();
 
+    /** The directory listener */
     private final DirectoryLister directoryLister = new DirectoryLister();
 
+    /** STAT constructor */
+    public STAT() {
+        super();
+    }
+
     /**
-     * Execute command.
-     *
      * {@inheritDoc}
      */
     public void execute(final FtpIoSession session,
             final FtpServerContext context, final FtpRequest request)
             throws IOException {
-
         // reset state variables
         session.resetState();
 
@@ -71,12 +74,15 @@ public class STAT extends AbstractCommand {
 
             // check that the directory or file exists
             FtpFile file = null;
+
             try {
                 file = session.getFileSystemView().getFile(parsedArg.getFile());
+
                 if (!file.doesExist()) {
                     session.write(LocalizedDataTransferFtpReply.translate(session, request, context,
                             FtpReply.REPLY_450_REQUESTED_FILE_ACTION_NOT_TAKEN, "LIST",
                             null, file));
+
                     return;
                 }
 
@@ -84,6 +90,7 @@ public class STAT extends AbstractCommand {
                         session.getFileSystemView(), LIST_FILE_FORMATER);
 
                 int replyCode;
+
                 if (file.isDirectory()) {
                     replyCode = FtpReply.REPLY_212_DIRECTORY_STATUS;
                 } else {
@@ -94,14 +101,8 @@ public class STAT extends AbstractCommand {
                         replyCode, "STAT", dirList, file));
 
             } catch (FtpException e) {
-                session
-                .write(LocalizedFileActionFtpReply
-                        .translate(
-                                session,
-                                request,
-                                context,
-                                FtpReply.REPLY_450_REQUESTED_FILE_ACTION_NOT_TAKEN,
-                                "STAT", null, file));
+                session.write(LocalizedFileActionFtpReply.translate(session, request, context,
+                        FtpReply.REPLY_450_REQUESTED_FILE_ACTION_NOT_TAKEN, "STAT", null, file));
             }
 
         } else {
@@ -110,5 +111,4 @@ public class STAT extends AbstractCommand {
                     FtpReply.REPLY_211_SYSTEM_STATUS_REPLY, "STAT", null));
         }
     }
-
 }

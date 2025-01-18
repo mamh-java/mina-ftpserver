@@ -26,16 +26,20 @@ package org.apache.ftpserver.util;
  *
  */
 public class ClassUtils {
+    /**
+     * Private constructor
+     */
+    private ClassUtils() {
+        // Nothing to do
+    }
 
     /**
      * Checks if a class is a subclass of a class with the specified name. Used
      * as an instanceOf without having to load the class, useful when trying to
      * check for classes that might not be available in the runtime JRE.
      *
-     * @param clazz
-     *            The class to check
-     * @param className
-     *            The class name to look for in the super classes
+     * @param clazz The class to check
+     * @param className The class name to look for in the super classes
      * @return <code>true</code> if the class extends a class by the specified name.
      */
     public static boolean extendsClass(final Class<?> clazz, String className) {
@@ -45,9 +49,11 @@ public class ClassUtils {
             if (superClass.getName().equals(className)) {
                 return true;
             }
+
             superClass = superClass.getSuperclass();
 
         }
+
         return false;
     }
 }

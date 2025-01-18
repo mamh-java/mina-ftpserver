@@ -43,12 +43,15 @@ import org.slf4j.LoggerFactory;
  * @author <a href="http://mina.apache.org">Apache MINA Project</a>
  */
 public class STRU extends AbstractCommand {
-
+    /** Class logger */
     private final Logger LOG = LoggerFactory.getLogger(STRU.class);
 
+    /** STRU constructor */
+    public STRU() {
+        super();
+    }
+
     /**
-     * Execute command.
-     *
      * {@inheritDoc}
      */
     public void execute(final FtpIoSession session,
@@ -63,28 +66,21 @@ public class STRU extends AbstractCommand {
             session.write(LocalizedFtpReply.translate(session, request, context,
                     FtpReply.REPLY_501_SYNTAX_ERROR_IN_PARAMETERS_OR_ARGUMENTS,
                     "STRU", null));
+
             return;
         }
 
         // set structure
         char stru = request.getArgument().charAt(0);
+
         try {
             session.setStructure(Structure.parseArgument(stru));
             session.write(LocalizedFtpReply.translate(session, request, context,
                     FtpReply.REPLY_200_COMMAND_OKAY, "STRU", null));
         } catch (IllegalArgumentException e) {
-            LOG
-                    .debug("Illegal structure argument: "
-                            + request.getArgument(), e);
-            session
-                    .write(LocalizedFtpReply
-                            .translate(
-                                    session,
-                                    request,
-                                    context,
-                                    FtpReply.REPLY_504_COMMAND_NOT_IMPLEMENTED_FOR_THAT_PARAMETER,
-                                    "STRU", null));
+            LOG.debug("Illegal structure argument: {}", request.getArgument(), e);
+            session.write(LocalizedFtpReply.translate(session, request, context,
+                    FtpReply.REPLY_504_COMMAND_NOT_IMPLEMENTED_FOR_THAT_PARAMETER, "STRU", null));
         }
     }
-
 }

@@ -32,6 +32,12 @@ import org.springframework.beans.factory.FactoryBean;
  * @see SslConfigurationFactory
  */
 public class SslConfigurationFactoryBean extends SslConfigurationFactory implements FactoryBean {
+    /**
+     * Create a SslConfigurationFactoryBean instance
+     */
+    public SslConfigurationFactoryBean() {
+        // Nothing tp do
+    }
 
     public Object getObject() throws Exception {
         return createSslConfiguration();

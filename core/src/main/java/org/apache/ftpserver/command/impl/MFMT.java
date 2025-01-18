@@ -43,56 +43,49 @@ import org.slf4j.LoggerFactory;
  * @author <a href="http://mina.apache.org">Apache MINA Project</a>
  */
 public class MFMT extends AbstractCommand {
-
+    /** Class logger */
     private final Logger LOG = LoggerFactory.getLogger(MFMT.class);
 
+    /** Public constructor */
+    public MFMT() {
+        super();
+    }
+
     /**
-     * Execute command.
-     *
      * {@inheritDoc}
      */
     public void execute(final FtpIoSession session,
             final FtpServerContext context, final FtpRequest request)
             throws IOException {
-
-
         // reset state variables
         session.resetState();
 
         String argument = request.getArgument();
 
         if (argument == null || argument.trim().length() == 0) {
-            session
-                    .write(LocalizedFtpReply
-                            .translate(
-                                    session,
-                                    request,
-                                    context,
+            session.write(LocalizedFtpReply
+                            .translate(session, request, context,
                                     FtpReply.REPLY_501_SYNTAX_ERROR_IN_PARAMETERS_OR_ARGUMENTS,
                                     "MFMT.invalid", null));
+
             return;
         }
 
         String[] arguments = argument.split(" ", 2);
 
         if (arguments.length != 2) {
-            session
-            .write(LocalizedFtpReply
-                    .translate(
-                            session,
-                            request,
-                            context,
+            session.write(LocalizedFtpReply
+                    .translate(session, request, context,
                             FtpReply.REPLY_501_SYNTAX_ERROR_IN_PARAMETERS_OR_ARGUMENTS,
                             "MFMT.invalid", null));
+
             return;
         }
 
         String timestamp = arguments[0].trim();
 
         try {
-
             Date time = DateUtils.parseFTPDate(timestamp);
-
             String fileName = arguments[1].trim();
 
             // get file object
@@ -105,27 +98,21 @@ public class MFMT extends AbstractCommand {
             }
 
             if (file == null || !file.doesExist()) {
-                session
-                .write(LocalizedFtpReply
-                        .translate(
-                                session,
-                                request,
-                                context,
+                session.write(LocalizedFtpReply
+                        .translate(session, request, context,
                                 FtpReply.REPLY_550_REQUESTED_ACTION_NOT_TAKEN,
                                 "MFMT.filemissing", fileName));
+
                 return;
             }
 
             // check file
             if (!file.isFile()) {
-                session
-                .write(LocalizedFtpReply
-                        .translate(
-                                session,
-                                request,
-                                context,
+                session.write(LocalizedFtpReply
+                        .translate(session, request, context,
                                 FtpReply.REPLY_501_SYNTAX_ERROR_IN_PARAMETERS_OR_ARGUMENTS,
                                 "MFMT.invalid", null));
+
                 return;
             }
 
@@ -136,31 +123,24 @@ public class MFMT extends AbstractCommand {
                          FtpReply.REPLY_450_REQUESTED_FILE_ACTION_NOT_TAKEN, "MFMT",
                          fileName));
                  return;
+
              }
 
              // all checks okay, lets go
-            session
-            .write(LocalizedFtpReply
-                    .translate(
-                            session,
-                            request,
-                            context,
+            session.write(LocalizedFtpReply
+                    .translate(session, request, context,
                             FtpReply.REPLY_213_FILE_STATUS,
                             "MFMT", "ModifyTime=" + timestamp + "; " + fileName));
+
             return;
 
         } catch (ParseException e) {
-            session
-            .write(LocalizedFtpReply
-                    .translate(
-                            session,
-                            request,
-                            context,
+            session.write(LocalizedFtpReply
+                    .translate(session, request, context,
                             FtpReply.REPLY_501_SYNTAX_ERROR_IN_PARAMETERS_OR_ARGUMENTS,
                             "MFMT.invalid", null));
+
             return;
         }
-
-
     }
 }

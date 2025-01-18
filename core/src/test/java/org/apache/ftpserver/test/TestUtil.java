@@ -167,36 +167,20 @@ public class TestUtil {
         return null;
     }
 
-    public static void writeDataToFile(File file, byte[] data)
-            throws IOException {
-        FileOutputStream fos = null;
-
-        try {
-            fos = new FileOutputStream(file);
-
+    public static void writeDataToFile(File file, byte[] data) throws IOException {
+        try (FileOutputStream fos = new FileOutputStream(file)) {
             fos.write(data);
-        } finally {
-            IoUtils.close(fos);
         }
     }
 
-    public static void assertFileEqual(byte[] expected, File file)
-            throws Exception {
-        ByteArrayOutputStream baos = null;
-        FileInputStream fis = null;
-
-        try {
-            baos = new ByteArrayOutputStream();
-            fis = new FileInputStream(file);
-
+    public static void assertFileEqual(byte[] expected, File file) throws Exception {
+        try (ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            FileInputStream fis = new FileInputStream(file)) {
             IoUtils.copy(fis, baos, 1024);
 
             byte[] actual = baos.toByteArray();
 
             assertArraysEqual(expected, actual);
-        } finally {
-            IoUtils.close(fis);
-            IoUtils.close(baos);
         }
     }
 

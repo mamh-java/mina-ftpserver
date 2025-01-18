@@ -26,34 +26,48 @@ import java.util.StringTokenizer;
 
 /**
  * <strong>Internal class, do not use directly.</strong>
- *
+ * <p>
  * Encodes and decodes socket addresses (IP and port) from and to the format
  * used with for example the PORT and PASV command
  *
  * @author <a href="http://mina.apache.org">Apache MINA Project</a>
  */
 public class SocketAddressEncoder {
+    /**
+     * Public constructor
+     */
+    public SocketAddressEncoder() {
+        // Nothinhg to do
+    }
 
     private static int convertAndValidateNumber(String s) {
         int i = Integer.parseInt(s);
+
         if (i < 0) {
             throw new IllegalArgumentException("Token can not be less than 0");
         } else if (i > 255) {
-            throw new IllegalArgumentException(
-                    "Token can not be larger than 255");
+            throw new IllegalArgumentException("Token can not be larger than 255");
         }
 
         return i;
     }
 
-    public static InetSocketAddress decode(String str)
-            throws UnknownHostException {
+    /**
+     * Decode an address
+     *
+     * @param str The string containing the address to decode
+     * @return The decodd address
+     * @throws UnknownHostException If the host is unkown
+     */
+    public static InetSocketAddress decode(String str) throws UnknownHostException {
         StringTokenizer st = new StringTokenizer(str, ",");
+
         if (st.countTokens() != 6) {
             throw new IllegalInetAddressException("Illegal amount of tokens");
         }
 
         StringBuilder sb = new StringBuilder();
+
         try {
             sb.append(convertAndValidateNumber(st.nextToken()));
             sb.append('.');
@@ -70,6 +84,7 @@ public class SocketAddressEncoder {
 
         // get data server port
         int dataPort = 0;
+
         try {
             int hi = convertAndValidateNumber(st.nextToken());
             int lo = convertAndValidateNumber(st.nextToken());
@@ -81,11 +96,16 @@ public class SocketAddressEncoder {
         return new InetSocketAddress(dataAddr, dataPort);
     }
 
+    /**
+     * Encode the address
+     *
+     * @param address The address to encode
+     * @return The encoded address
+     */
     public static String encode(InetSocketAddress address) {
         InetAddress servAddr = address.getAddress();
         int servPort = address.getPort();
-        return servAddr.getHostAddress().replace('.', ',') + ','
-                + (servPort >> 8) + ',' + (servPort & 0xFF);
-    }
 
+        return servAddr.getHostAddress().replace('.', ',') + ',' + (servPort >> 8) + ',' + (servPort & 0xFF);
+    }
 }

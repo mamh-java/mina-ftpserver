@@ -31,7 +31,6 @@ import javax.net.ssl.TrustManagerFactory;
 
 import org.apache.ftpserver.FtpServerConfigurationException;
 import org.apache.ftpserver.ssl.impl.DefaultSslConfiguration;
-import org.apache.ftpserver.util.IoUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -41,7 +40,7 @@ import org.slf4j.LoggerFactory;
  * @author <a href="http://mina.apache.org">Apache MINA Project</a>
  */
 public class SslConfigurationFactory {
-
+    /** Class logger */
     private final Logger LOG = LoggerFactory.getLogger(SslConfigurationFactory.class);
 
     private File keystoreFile = new File("./res/.keystore");
@@ -69,6 +68,13 @@ public class SslConfigurationFactory {
     private String keyAlias;
 
     private String[] enabledCipherSuites;
+
+    /**
+     * A SslConfigurationFactory constructor
+     */
+    public SslConfigurationFactory() {
+        // Nothing to do
+    }
 
     /**
      * The key store file used by this configuration
@@ -322,27 +328,26 @@ public class SslConfigurationFactory {
 
     private KeyStore loadStore(File storeFile, String storeType, String storePass)
         throws IOException, GeneralSecurityException {
-    InputStream fin = null;
-    try {
+
         if (storeFile.exists()) {
-        LOG.debug("Trying to load store from file");
-        fin = new FileInputStream(storeFile);
+            LOG.debug("Trying to load store from file");
+
+            try (InputStream fin = new FileInputStream(storeFile)) {
+                KeyStore store = KeyStore.getInstance(storeType);
+                store.load(fin, storePass.toCharArray());
+
+                return store;
+            }
         } else {
-        LOG.debug("Trying to load store from classpath");
-        fin = getClass().getClassLoader().getResourceAsStream(storeFile.getPath());
+            LOG.debug("Trying to load store from classpath");
 
-        if (fin == null) {
-            throw new FtpServerConfigurationException("Key store could not be loaded from " + storeFile.getPath());
+            try (InputStream fin = getClass().getClassLoader().getResourceAsStream(storeFile.getPath())) {
+                KeyStore store = KeyStore.getInstance(storeType);
+                store.load(fin, storePass.toCharArray());
+
+                return store;
+            }
         }
-        }
-
-        KeyStore store = KeyStore.getInstance(storeType);
-        store.load(fin, storePass.toCharArray());
-
-        return store;
-    } finally {
-        IoUtils.close(fin);
-    }
     }
 
     /**
@@ -420,7 +425,7 @@ public class SslConfigurationFactory {
      * Set the allowed cipher suites, note that the exact list of supported cipher suites differs between JRE
      * implementations.
      *
-     * @param enabledCipherSuites
+     * @param enabledCipherSuites The set of enabled ciphers
      */
     public void setEnabledCipherSuites(String[] enabledCipherSuites) {
     if (enabledCipherSuites != null) {

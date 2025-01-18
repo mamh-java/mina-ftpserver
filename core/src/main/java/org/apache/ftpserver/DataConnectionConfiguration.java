@@ -123,6 +123,8 @@ public interface DataConnectionConfiguration {
     SslConfiguration getSslConfiguration();
 
     /**
+     * Tells if the connection is implicitely secured
+     *
      * @return True if SSL is mandatory for the data channel
      */
     boolean isImplicitSsl();
