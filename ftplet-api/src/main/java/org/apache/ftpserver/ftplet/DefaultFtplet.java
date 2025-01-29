@@ -32,7 +32,7 @@ public class DefaultFtplet implements Ftplet {
     /**
      * A default constructor that does nothing
      */
-    protected DefaultFtplet() {
+    public DefaultFtplet() {
     }
 
     /**
