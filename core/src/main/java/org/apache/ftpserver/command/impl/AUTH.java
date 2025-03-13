@@ -63,10 +63,10 @@ public class AUTH extends AbstractCommand {
     private static final String TLS_TYPE = "TLS";
 
     /** TLS authentication type */
-    private static final String TLS_C_TYPE = "TLS_C";
+    private static final String TLS_C_TYPE = "TLS-C";
 
     /** TLS authentication type */
-    private static final String TLS_P_TYPE = "TLS_P";
+    private static final String TLS_P_TYPE = "TLS-P";
 
     /** The valid authentication types */
     private static final List<String> VALID_AUTH_TYPES = Arrays.asList(SSL_TYPE, TLS_TYPE, TLS_C_TYPE, TLS_P_TYPE);
